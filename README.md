@@ -1,6 +1,11 @@
 
 # Hospitales2000
 
+## Modo de Operación
+1. Por cada nueva funcionalidad a programar, creo una nueva rama.
+2. Una vez terminada, hago un PULL REQUEST hacia la rama de development.
+3. Luego de que se revise y este OK el cambio, se le hara un MERGE.
+
 Comision 1  -Proyectos de Sistemas de Software.
 
 
