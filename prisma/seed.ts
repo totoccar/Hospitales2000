@@ -3,20 +3,19 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  // Crear roles
-  const adminRole = await prisma.roles.create({
+  const adminRole = await prisma.rol.create({
     data: { nombre: 'ADMIN' },
   });
 
-  const pacienteRole = await prisma.roles.create({
+  const pacienteRole = await prisma.rol.create({
     data: { nombre: 'Paciente' },
   });
 
-  const medicoRole = await prisma.roles.create({
+  const medicoRole = await prisma.rol.create({
     data: { nombre: 'Medico' },
   });
 
-  const secretariaRole = await prisma.roles.create({
+  const secretariaRole = await prisma.rol.create({
     data: { nombre: 'Secretaria' },
   });
 
@@ -52,7 +51,7 @@ async function main() {
       numero_telefono: '123456789',
       contrasena: 'adminpassword',
       ubicacion: { connect: { id: ubicacion1.id } },
-      UsuarioRoles: {
+      usuarioRol: {
         create: {
           rol: { connect: { id: adminRole.id } },
         },
@@ -70,12 +69,12 @@ async function main() {
       numero_telefono: '987654321',
       contrasena: 'pacientepassword',
       ubicacion: { connect: { id: ubicacion2.id } },
-      UsuarioRoles: {
+      usuarioRol: {
         create: {
           rol: { connect: { id: pacienteRole.id } },
         },
       },
-      Paciente: {
+      paciente: {
         create: {
           fecha_nacimiento: new Date('1990-01-01'),
           lugar_nacimiento: 'Ciudad Nacimiento',
@@ -104,12 +103,12 @@ async function main() {
       numero_telefono: '12344321',
       contrasena: 'medicopassword',
       ubicacion: { connect: { id: ubicacion1.id } },
-      UsuarioRoles: {
+      usuarioRol: {
         create: {
           rol: { connect: { id: medicoRole.id } },
         },
       },
-      Medico: {
+      medico: {
         create: {
           tipo_matricula: 'nacional',
           numero_matricula: 'ABC123',
@@ -130,12 +129,12 @@ async function main() {
       numero_telefono: '98761234',
       contrasena: 'secretariapassword',
       ubicacion: { connect: { id: ubicacion2.id } },
-      UsuarioRoles: {
+      usuarioRol: {
         create: {
           rol: { connect: { id: secretariaRole.id } },
         },
       },
-      Secretaria: {
+      secretaria: {
         create: {},
       },
     },
