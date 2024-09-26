@@ -52,9 +52,9 @@ export default function LoginForm() {
               <div className="relative">
                 <input
                   className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-m outline-2 placeholder:text-gray-500"
-                  id="documento"
+                  id="numero_documento"
                   type="text"
-                  name="documento"
+                  name="numero_documento"
                   placeholder="Ingresa tu número de documento"
                   required
                 />
