@@ -72,6 +72,7 @@ model Usuario {
   numero_telefono String
   ubicacion      Ubicacion  @relation(fields: [ubicacion_id], references: [id])
   ubicacion_id   BigInt
+  contrasena      String
   Secretaria     Secretaria?
   Medico         Medico?
   Paciente       Paciente?
@@ -127,3 +128,4 @@ model ObraSocial {
   nombre String   @unique
   Paciente Paciente[]
 }
+
