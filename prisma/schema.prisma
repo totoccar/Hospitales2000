@@ -9,113 +9,108 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model ubicacion {
-  id            String  @id @default(uuid())
+model Ubicacion {
+  id            String      @id @default(uuid())
   calle         String
   numero        String
   codigo_postal String
   ciudad        String
   provincia     String
-  usuario       usuario[] // Solo relación con Usuario
+  paciente      Paciente?
+  secretaria    Secretaria?
+  medico        Medico?
 }
 
-model secretaria {
-  id        String    @id @default(uuid())
-  usuario   usuario  @relation(fields: [usuario_id], references: [id])
-  usuario_id String  @unique
-}
-
-model medico {
-  id              String    @id @default(uuid())
-  usuario         usuario  @relation(fields: [usuario_id], references: [id])
-  usuario_id      String   @unique
-  tipo_matricula  tipoMatriculaEnum 
-  numero_matricula String  @unique
-  especialidad    especialidad @relation(fields: [especialidad_id], references: [id]) // Relación con Especialidad
-  especialidad_id String
-  descripcion     String?
-}
-
-model paciente {
-  id                 String    @id @default(uuid())
-  usuario            usuario  @relation(fields: [usuario_id], references: [id])
-  usuario_id         String   @unique
-  fecha_nacimiento   DateTime
-  lugar_nacimiento   String
-  contacto_emergencia String
-  obra_social        obraSocial @relation(fields: [obra_social_id], references: [id])
-  obra_social_id     String
-  fichaMedica        fichaMedica[]
-}
-
-model usuario {
-  id            String     @id @default(uuid())
-  tipo_documento TipoDocumentoEnum
-  numero_documento String @unique
-  nombre         String
-  apellido       String
-  correo_electronico String
+model Secretaria {
+  usuario         Usuario   @relation(fields: [usuario_id], references: [id])
+  usuario_id      String    @id
   numero_telefono String
-  ubicacion      ubicacion  @relation(fields: [ubicacion_id], references: [id])
-  ubicacion_id   String
-  contrasena     String
-  secretaria     secretaria?
-  medico         medico?
-  paciente       paciente?
-  usuarioRol   usuarioRol[]
+  ubicacion       Ubicacion @relation(fields: [ubicacion_id], references: [id])
+  ubicacion_id    String    @unique
+}
+
+model Medico {
+  usuario          Usuario           @relation(fields: [usuario_id], references: [id])
+  usuario_id       String            @id
+  tipo_matricula   TipoMatriculaEnum
+  numero_matricula String            @unique
+  numero_telefono  String
+  ubicacion        Ubicacion         @relation(fields: [ubicacion_id], references: [id])
+  ubicacion_id     String            @unique
+  especialidad     Especialidad      @relation(fields: [especialidad_id], references: [id]) // Relación con Especialidad
+  especialidad_id  String
+  descripcion      String?
+}
+
+model Paciente {
+  usuario             Usuario     @relation(fields: [usuario_id], references: [id])
+  usuario_id          String      @id
+  fecha_nacimiento    DateTime
+  lugar_nacimiento    String
+  contacto_emergencia String
+  numero_telefono     String
+  ubicacion           Ubicacion   @relation(fields: [ubicacion_id], references: [id])
+  ubicacion_id        String      @unique
+  obra_social         ObraSocial  @relation(fields: [obra_social_id], references: [id])
+  obra_social_id      String
+  ficha_medica        FichaMedica @relation(fields: [ficha_medica_id], references: [id])
+  ficha_medica_id     String      @unique
+}
+
+model Admin {
+  usuario    Usuario @relation(fields: [usuario_id], references: [id])
+  usuario_id String  @id
+}
+
+model Usuario {
+  id                 String            @id @default(uuid())
+  tipo_documento     TipoDocumentoEnum
+  numero_documento   String            @unique
+  nombre             String
+  apellido           String
+  correo_electronico String
+  contrasena         String
+  secretaria         Secretaria?
+  medico             Medico?
+  paciente           Paciente?
+  admin              Admin?
 }
 
 enum TipoDocumentoEnum {
-  Cedula_de_identidad
-  DNI
-  Libreta_civica
-  Libreta_de_enrolamiento
-  Pasaporte
+  CEDULA_IDENTIDAD
+  DOCUMENTO_NACIONAL_IDENTIDAD
+  LIBRETA_CIVICA
+  LIBRETA_ENROLAMIENTO
+  PASAPORTE
 }
 
-model rol {
-  id     String    @id @default(uuid())
-  nombre String   @unique
-  usuarioRol usuarioRol[]
+model FichaMedica {
+  id                     String    @id @default(uuid())
+  paciente               Paciente?
+  alergias               String
+  diagnostico            String
+  tratamientos           String
+  medicamentos_recetados String
 }
 
-model usuarioRol {
-  usuario   usuario  @relation(fields: [usuario_id], references: [id])
-  usuario_id String
-  rol       rol    @relation(fields: [rol_id], references: [id])
-  rol_id    String
-
-  @@id([usuario_id, rol_id])
-}
-
-model fichaMedica {
-  id                  String    @id @default(uuid())
-  paciente            paciente @relation(fields: [paciente_id], references: [id])
-  paciente_id         String
-  alergias            String?
-  diagnostico         String?
-  tratamientos        String?
-  medicamentos_recetados String?
-}
-
-enum tipoMatriculaEnum {
+enum TipoMatriculaEnum {
   nacional
   provincial
 }
 
-model especialidad {
-  id     String    @id @default(uuid())
+model Especialidad {
+  id     String   @id @default(uuid())
   nombre String   @unique
-  medico medico[]
+  medico Medico[]
 }
 
-model obraSocial {
-  id     String    @id @default(uuid())
-  nombre String   @unique
-  paciente paciente[]
+model ObraSocial {
+  id       String     @id @default(uuid())
+  nombre   String     @unique
+  paciente Paciente[]
 }
