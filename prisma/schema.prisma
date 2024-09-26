@@ -14,8 +14,118 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model Ubicacion {
+  id            BigInt    @id @default(autoincrement())
+  calle         String
+  numero        String
+  codigo_postal String
+  ciudad        String
+  provincia     String
+  Secretaria    Secretaria[]
+  Medico        Medico[]
+  Paciente      Paciente[]
+  Usuario       Usuario[]
 }
+
+model Secretaria {
+  id        BigInt   @id @default(autoincrement())
+  usuario   Usuario  @relation(fields: [usuario_id], references: [id])
+  usuario_id BigInt  @unique
+  ubicacion Ubicacion @relation(fields: [ubicacion_id], references: [id]) // Relación inversa
+  ubicacion_id BigInt
+}
+
+model Medico {
+  id              BigInt   @id @default(autoincrement())
+  usuario         Usuario  @relation(fields: [usuario_id], references: [id])
+  usuario_id      BigInt   @unique
+  tipo_matricula  TipoMatriculaEnum @unique
+  numero_matricula String  @unique
+  especialidad    Especialidad @relation(fields: [especialidad_id], references: [id]) // Relación con Especialidad
+  especialidad_id BigInt
+  descripcion     String?
+  ubicacion       Ubicacion @relation(fields: [ubicacion_id], references: [id]) // Relación inversa
+  ubicacion_id    BigInt
+}
+
+model Paciente {
+  id                 BigInt   @id @default(autoincrement())
+  usuario            Usuario  @relation(fields: [usuario_id], references: [id])
+  usuario_id         BigInt   @unique
+  fecha_nacimiento   DateTime
+  lugar_nacimiento   String
+  contacto_emergencia String
+  obra_social        ObraSocial @relation(fields: [obra_social_id], references: [id]) // Relación con ObraSocial
+  obra_social_id     BigInt
+  FichaMedica        FichaMedica[]
+  ubicacion          Ubicacion @relation(fields: [ubicacion_id], references: [id]) // Relación inversa
+  ubicacion_id       BigInt
+}
+
+model Usuario {
+  id            BigInt     @id @default(autoincrement())
+  tipo_documento TipoDocumentoEnum @unique
+  numero_documento String @unique
+  nombre         String
+  apellido       String
+  correo_electronico String
+  numero_telefono String
+  ubicacion      Ubicacion  @relation(fields: [ubicacion_id], references: [id])
+  ubicacion_id   BigInt
+  contrasena      String
+  Secretaria     Secretaria?
+  Medico         Medico?
+  Paciente       Paciente?
+  UsuarioRoles   UsuarioRoles[]
+}
+enum TipoDocumentoEnum {
+  Cedula_de_identidad
+  DNI
+  Libreta_civica
+  Libreta_de_enrolamiento
+  Pasaporte
+}
+
+
+model Roles {
+  id     BigInt   @id @default(autoincrement())
+  nombre String   @unique
+  UsuarioRoles UsuarioRoles[]
+}
+
+model UsuarioRoles {
+  usuario   Usuario  @relation(fields: [usuario_id], references: [id])
+  usuario_id BigInt
+  rol       Roles    @relation(fields: [rol_id], references: [id])
+  rol_id    BigInt
+
+  @@id([usuario_id, rol_id])
+}
+
+model FichaMedica {
+  id                  BigInt   @id @default(autoincrement())
+  paciente            Paciente @relation(fields: [paciente_id], references: [id])
+  paciente_id         BigInt
+  alergias            String?
+  diagnostico         String?
+  tratamientos        String?
+  medicamentos_recetados String?
+}
+
+enum TipoMatriculaEnum {
+  nacional
+  provincial
+}
+
+model Especialidad {
+  id     BigInt   @id @default(autoincrement())
+  nombre String   @unique
+  Medico Medico[]
+}
+
+model ObraSocial {
+  id     BigInt   @id @default(autoincrement())
+  nombre String   @unique
+  Paciente Paciente[]
+}
+
