@@ -14,49 +14,46 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-model Ubicacion {
+model ubicacion {
   id            String  @id @default(uuid())
   calle         String
   numero        String
   codigo_postal String
   ciudad        String
   provincia     String
-  Usuario       Usuario[] // Solo relación con Usuario
+  usuario       usuario[] // Solo relación con Usuario
 }
 
-model Secretaria {
+model secretaria {
   id        String    @id @default(uuid())
-  usuario   Usuario  @relation(fields: [usuario_id], references: [id])
+  usuario   usuario  @relation(fields: [usuario_id], references: [id])
   usuario_id String  @unique
-  // Ya no tiene relación directa con Ubicacion, obtiene la ubicación a través de Usuario
 }
 
-model Medico {
+model medico {
   id              String    @id @default(uuid())
-  usuario         Usuario  @relation(fields: [usuario_id], references: [id])
+  usuario         usuario  @relation(fields: [usuario_id], references: [id])
   usuario_id      String   @unique
-  tipo_matricula  TipoMatriculaEnum @unique
+  tipo_matricula  tipoMatriculaEnum 
   numero_matricula String  @unique
-  especialidad    Especialidad @relation(fields: [especialidad_id], references: [id]) // Relación con Especialidad
+  especialidad    especialidad @relation(fields: [especialidad_id], references: [id]) // Relación con Especialidad
   especialidad_id String
   descripcion     String?
-  // Ya no tiene relación directa con Ubicacion, obtiene la ubicación a través de Usuario
 }
 
-model Paciente {
+model paciente {
   id                 String    @id @default(uuid())
-  usuario            Usuario  @relation(fields: [usuario_id], references: [id])
+  usuario            usuario  @relation(fields: [usuario_id], references: [id])
   usuario_id         String   @unique
   fecha_nacimiento   DateTime
   lugar_nacimiento   String
   contacto_emergencia String
-  obra_social        ObraSocial @relation(fields: [obra_social_id], references: [id]) // Relación con ObraSocial
+  obra_social        obraSocial @relation(fields: [obra_social_id], references: [id])
   obra_social_id     String
-  FichaMedica        FichaMedica[]
-  // Ya no tiene relación directa con Ubicacion, obtiene la ubicación a través de Usuario
+  fichaMedica        fichaMedica[]
 }
 
-model Usuario {
+model usuario {
   id            String     @id @default(uuid())
   tipo_documento TipoDocumentoEnum
   numero_documento String @unique
@@ -64,13 +61,13 @@ model Usuario {
   apellido       String
   correo_electronico String
   numero_telefono String
-  ubicacion      Ubicacion  @relation(fields: [ubicacion_id], references: [id])
+  ubicacion      ubicacion  @relation(fields: [ubicacion_id], references: [id])
   ubicacion_id   String
   contrasena     String
-  Secretaria     Secretaria?
-  Medico         Medico?
-  Paciente       Paciente?
-  UsuarioRoles   UsuarioRoles[]
+  secretaria     secretaria?
+  medico         medico?
+  paciente       paciente?
+  usuarioRol   usuarioRol[]
 }
 
 enum TipoDocumentoEnum {
@@ -81,24 +78,24 @@ enum TipoDocumentoEnum {
   Pasaporte
 }
 
-model Roles {
+model rol {
   id     String    @id @default(uuid())
   nombre String   @unique
-  UsuarioRoles UsuarioRoles[]
+  usuarioRol usuarioRol[]
 }
 
-model UsuarioRoles {
-  usuario   Usuario  @relation(fields: [usuario_id], references: [id])
+model usuarioRol {
+  usuario   usuario  @relation(fields: [usuario_id], references: [id])
   usuario_id String
-  rol       Roles    @relation(fields: [rol_id], references: [id])
+  rol       rol    @relation(fields: [rol_id], references: [id])
   rol_id    String
 
   @@id([usuario_id, rol_id])
 }
 
-model FichaMedica {
+model fichaMedica {
   id                  String    @id @default(uuid())
-  paciente            Paciente @relation(fields: [paciente_id], references: [id])
+  paciente            paciente @relation(fields: [paciente_id], references: [id])
   paciente_id         String
   alergias            String?
   diagnostico         String?
@@ -106,19 +103,19 @@ model FichaMedica {
   medicamentos_recetados String?
 }
 
-enum TipoMatriculaEnum {
+enum tipoMatriculaEnum {
   nacional
   provincial
 }
 
-model Especialidad {
+model especialidad {
   id     String    @id @default(uuid())
   nombre String   @unique
-  Medico Medico[]
+  medico medico[]
 }
 
-model ObraSocial {
+model obraSocial {
   id     String    @id @default(uuid())
   nombre String   @unique
-  Paciente Paciente[]
+  paciente paciente[]
 }
