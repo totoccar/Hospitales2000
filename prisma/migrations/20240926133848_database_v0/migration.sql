@@ -1,17 +1,8 @@
-/*
-  Warnings:
-
-  - You are about to drop the `User` table. If the table is not empty, all the data it contains will be lost.
-
-*/
 -- CreateEnum
 CREATE TYPE "TipoDocumentoEnum" AS ENUM ('Cedula_de_identidad', 'DNI', 'Libreta_civica', 'Libreta_de_enrolamiento', 'Pasaporte');
 
 -- CreateEnum
 CREATE TYPE "TipoMatriculaEnum" AS ENUM ('nacional', 'provincial');
-
--- DropTable
-DROP TABLE "User";
 
 -- CreateTable
 CREATE TABLE "Ubicacion" (
@@ -70,6 +61,7 @@ CREATE TABLE "Usuario" (
     "correo_electronico" TEXT NOT NULL,
     "numero_telefono" TEXT NOT NULL,
     "ubicacion_id" BIGINT NOT NULL,
+    "contrasena" TEXT NOT NULL,
 
     CONSTRAINT "Usuario_pkey" PRIMARY KEY ("id")
 );
@@ -132,9 +124,6 @@ CREATE UNIQUE INDEX "Medico_numero_matricula_key" ON "Medico"("numero_matricula"
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Paciente_usuario_id_key" ON "Paciente"("usuario_id");
-
--- CreateIndex
-CREATE UNIQUE INDEX "Usuario_tipo_documento_key" ON "Usuario"("tipo_documento");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Usuario_numero_documento_key" ON "Usuario"("numero_documento");
