@@ -12,6 +12,8 @@ export default function ChangePasswordForm() {
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isPending, setIsPending] = useState(false);
 
+
+    /* Constantes para hardcodear la BDD, lo ideal es buscar por ID*/
     const nombre_user = "Antonio Carlos";
     const documento_user = "87654321"
 
@@ -33,7 +35,7 @@ export default function ChangePasswordForm() {
             setIsPending(false);
 
 
-
+            /*Chequeo solo front*/
             if (formData.get('nueva_contrasena') !== formData.get('confirm_contrasena')) {
                 setErrorMessage('Las contraseñas no coinciden');
             } else {
