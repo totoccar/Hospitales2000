@@ -18,8 +18,12 @@ export default function ChangePasswordForm() {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
-        const data = authenticatePassword(nombre_user)
-        console.log(data);
+        authenticatePassword(
+            nombre_user,
+            formData.get('contrasena_actual') as string
+        )
+
+
 
     };
 
