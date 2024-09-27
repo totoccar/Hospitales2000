@@ -5,7 +5,6 @@ import {
     ExclamationCircleIcon,
     KeyIcon,
 } from '@heroicons/react/24/outline';
-import { authenticatePassword, changePasswordAPI } from '../api/actions';
 
 export default function ChangePasswordForm() {
     // Usamos useState para manejar el estado del mensaje de error
@@ -49,78 +48,37 @@ export default function ChangePasswordForm() {
     };
 
     return (
-        <div className="min-h-screen flex  items-center justify-center">
+        <div className="min-h-screen flex items-center justify-center">
             <form onSubmit={handleSubmit} className="space-y-3">
-                <div className="rounded-lg w-96 border border-gray-400 bg-gray-200 px-6 pb-4 pt-8">
+                <div className="rounded-lg w-full border border-gray-400 bg-gray-200 px-6 pb-4 pt-8">
                     <h1 className="text-center mb-3 font-bold text-3xl text-[#025951]">
-                        Cambiar Contraseña
+                        Recupera tu Cuenta
                     </h1>
                     <div className="w-full">
                         {/* Campo de contraseña actual */}
                         <div>
                             <label
-                                className="mb-3 mt-5 block text-m font-medium text-gray-900"
+                                className="mx-auto block text-m font-medium text-gray-900"
                                 htmlFor="dni"
                             >
-                                Contraseña Actual
+                                Ingresa tu correo electrónico para que te enviemos el link de cambio de contraseña.
                             </label>
-                            <div className="relative">
+                            <div className="relative mt-4 ">
                                 <input
                                     className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-m outline-2 placeholder:text-gray-500"
-                                    id="contrasena_actual"
-                                    type="password"
-                                    name="contrasena_actual"
-                                    placeholder="Ingrese su contraseña actual"
+                                    id="correo"
+                                    type="email"
+                                    name="correo"
+                                    placeholder="Correo Electronico"
                                     required
                                 />
                                 <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
                             </div>
                         </div>
-                        {/* Campo de nueva contraseña */}
-                        <div className="mt-4">
-                            <label
-                                className="mb-3 mt-5 block font-medium text-m text-gray-900"
-                                htmlFor="password"
-                            >
-                                Nueva Contraseña
-                            </label>
-                            <div className="relative">
-                                <input
-                                    className="peer block w-full rounded-md border text-m border-gray-200 py-[9px] pl-10 outline-2 placeholder:text-gray-500"
-                                    id="confirm_contrasena"
-                                    type="password"
-                                    name="nueva_contrasena"
-                                    placeholder="Ingrese su nueva contraseña"
-                                    required
-                                    minLength={3}
-                                />
-                                <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
-                            </div>
-                        </div>
-                        <div className="mt-4">
-                            <label
-                                className="mb-3 mt-5 block font-medium text-m text-gray-900"
-                                htmlFor="password"
-                            >
-                                Confirmar Contraseña
-                            </label>
-                            <div className="relative">
-                                <input
-                                    className="peer block w-full rounded-md border text-m border-gray-200 py-[9px] pl-10 outline-2 placeholder:text-gray-500"
-                                    id="contrasena"
-                                    type="password"
-                                    name="confirm_contrasena"
-                                    placeholder="Confirme su nueva contraseña"
-                                    required
-                                    minLength={3}
-                                />
-                                <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
-                            </div>
-                        </div>
 
                     </div>
                     {/* Botón de cambio de contraseña centrado */}
-                    <div className="flex justify-center mt-6">
+                    <div className="flex justify-center mx-auto">
                         <LoginButton isPending={isPending} />
                     </div>
                     {/* Enlace de 'Olvidaste tu contraseña?' */}
@@ -153,9 +111,9 @@ function LoginButton({ isPending }: { isPending: boolean }) {
             disabled={isPending}
             className={`rounded-md p-2 bg-[#025951] hover:bg-[#04D99D] text-white font-bold mt-4 w-full ${isPending ? 'cursor-not-allowed opacity-50' : ''
                 }`}
-            aria-label="Cambiar Contraseña"
+            aria-label="Buscar"
         >
-            {isPending ? 'Cargando...' : 'Cambiar Contraseña'}
+            {isPending ? 'Cargando...' : 'Buscar'}
         </button>
     );
 }
