@@ -13,10 +13,16 @@ export default async function changePassword() {
 /** Primer funcion =') nunca olvidar */
 export async function getPassword(nombre: string): Promise<string> {
     try {
-        const user = await prisma.usuario.findMany({
+        const user = await prisma.usuario.findFirst({
             where: { nombre: nombre },
         });
         console.log(user);
+
+        if (!user) {
+            throw new Error('User not found.');
+        }
+        console.log(user);
+
         return user.contrasena;
     } catch (error) {
         console.error('Failed to fetch user:', error);
