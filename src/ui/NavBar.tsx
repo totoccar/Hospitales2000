@@ -1,44 +1,81 @@
-"use client";
-import React, { useState } from 'react'
-import Link from 'next/link'
-import {Menu} from 'lucide-react'
+"use client"
 
-export const Header = () => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const toggleMobileMenu = () => {
-    setIsMobileMenuOpen(!isMobileMenuOpen)
-  }
+import { useState } from 'react'
+import { Menu, X, Hospital, Home, Stethoscope, Users, Phone } from 'lucide-react'
+import Link from 'next/link'
+
+export default function Navbar() {
+  const [isOpen, setIsOpen] = useState(false)
+
+  const navItems = [
+    { name: 'Inicio', href: '/', icon: Home },
+    { name: 'Servicios', href: '/servicios', icon: Stethoscope },
+    { name: 'Doctores', href: '/doctores', icon: Users },
+    { name: 'Contacto', href: '/contacto', icon: Phone },
+  ]
+
   return (
-    <>
-      <div className='h-6 text-xs lg:text-xl lg:h-9 justify-center pt-1 text-center bg-secondary text-white'>
-        Inicia sesion y consegui un descuento del 20% en tu primera orden
+    <nav className="bg-[#025951] text-[#F2F2F2] shadow-lg">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center w-full h-16">
+          <Link href="/" className="flex items-center space-x-2">
+            <Hospital className="h-8 w-8 text-[#04D99D]" />
+            <span className="text-xl font-bold">Hospitales 2000</span>
+          </Link>
+          <div className="hidden md:flex space-x-1">
+            {navItems.map((item) => (
+              <NavLink key={item.name} href={item.href} icon={item.icon}>
+                {item.name}
+              </NavLink>
+            ))}
+          </div>
+          <button
+            onClick={() => setIsOpen(!isOpen)}
+            className="md:hidden p-2 rounded-md text-[#F2F2F2] hover:bg-[#012623] focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#04D99D] transition-colors duration-200"
+          >
+            {isOpen ? (
+              <X className="h-6 w-6" aria-hidden="true" />
+            ) : (
+              <Menu className="h-6 w-6" aria-hidden="true" />
+            )}
+          </button>
+        </div>
       </div>
-      <header className='flex items-center sticky top-0 z-50 justify-between bg-white'>
-        <Link href={"/"} className='m-2 mt-3 pl-4 text-black text-3xl font-bold'>
-          Movie Merch
-        </Link>
-        <nav className='gap-6 items-center mx-3  hidden text-black font-semibold lg:flex'>
-          <Link href={"/products"}>Productos</Link>
-          <Link href={"/sale"}>Oferta</Link>
-          <Link href={"/cart"}>Carrito</Link>
-          <Link href={"/login"} className='bg-secondary p-2 px-4 rounded-full text-white'>
-            Login
-          </Link>
-        </nav>
-        <Menu className='mr-2 w-10 p-0 h-auto cursor-pointer lg:hidden' onClick={toggleMobileMenu} />
-      </header>
-      {isMobileMenuOpen && (
-        <div className='lg:hidden bg-white text-center text-black p-4'>
-          <Link href={"/products"} onClick={toggleMobileMenu} className='block py-2'>Productos</Link>
-          <Link href={"/sale"} onClick={toggleMobileMenu} className='block py-2'>Oferta</Link>
-          <Link href={"/cart"} onClick={toggleMobileMenu} className='block py-2'>Carrito</Link>
-          <Link href={"/login"} onClick={toggleMobileMenu} className='block py-2 bg-secondary p-2 text-center rounded-md text-white'>
-            Login
-          </Link>
+      {isOpen && (
+        <div className="md:hidden">
+          <div className="px-2 pt-2 pb-3 space-y-1">
+            {navItems.map((item) => (
+              <MobileNavLink key={item.name} href={item.href} icon={item.icon}>
+                {item.name}
+              </MobileNavLink>
+            ))}
+          </div>
         </div>
       )}
-    </>
+    </nav>
   )
 }
 
-export default Header
+function NavLink({ href, children, icon: Icon }: { href: string; children: React.ReactNode; icon: React.ElementType }) {
+  return (
+    <Link
+      href={href}
+      className="flex items-center px-3 py-2 rounded-md text-sm font-medium hover:bg-[#012623] hover:text-[#04D99D] transition-colors duration-200"
+    >
+      <Icon className="h-5 w-5 mr-2" />
+      {children}
+    </Link>
+  )
+}
+
+function MobileNavLink({ href, children, icon: Icon }: { href: string; children: React.ReactNode; icon: React.ElementType }) {
+  return (
+    <Link
+      href={href}
+      className="flex items-center px-3 py-2 rounded-md text-base font-medium hover:bg-[#012623] hover:text-[#04D99D] transition-colors duration-200"
+    >
+      <Icon className="h-5 w-5 mr-3" />
+      {children}
+    </Link>
+  )
+}
