@@ -9,8 +9,8 @@ export default function Navbar() {
 
   const navItems = [
     { name: 'Inicio', href: '/', icon: Home },
-    { name: 'Servicios', href: '/servicios', icon: Stethoscope },
-    { name: 'Doctores', href: '/doctores', icon: Users },
+    { name: 'Buscar', href: '/search/doctor', icon: Stethoscope },
+    { name: 'Vista', href: '/doctores', icon: Users },
     { name: 'Contacto', href: '/contacto', icon: Phone },
   ]
 
