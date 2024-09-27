@@ -1,121 +1,110 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
-model ubicacion {
-  id            String  @id @default(uuid())
+model Admin {
+  usuario_id String  @id
+  Usuario    Usuario @relation(fields: [usuario_id], references: [id])
+}
+
+model Especialidad {
+  id     String   @id
+  nombre String   @unique
+  Medico Medico[]
+}
+
+model FichaMedica {
+  id                     String    @id
+  alergias               String
+  diagnostico            String
+  tratamientos           String
+  medicamentos_recetados String
+  Paciente               Paciente?
+}
+
+model Medico {
+  usuario_id       String            @id
+  tipo_matricula   TipoMatriculaEnum
+  numero_matricula String            @unique
+  numero_telefono  String
+  ubicacion_id     String            @unique
+  especialidad_id  String
+  descripcion      String?
+  Especialidad     Especialidad      @relation(fields: [especialidad_id], references: [id])
+  Ubicacion        Ubicacion         @relation(fields: [ubicacion_id], references: [id])
+  Usuario          Usuario           @relation(fields: [usuario_id], references: [id])
+}
+
+model ObraSocial {
+  id       String     @id
+  nombre   String     @unique
+  Paciente Paciente[]
+}
+
+model Paciente {
+  usuario_id          String      @id
+  fecha_nacimiento    DateTime
+  lugar_nacimiento    String
+  contacto_emergencia String
+  numero_telefono     String
+  ubicacion_id        String      @unique
+  obra_social_id      String
+  ficha_medica_id     String      @unique
+  FichaMedica         FichaMedica @relation(fields: [ficha_medica_id], references: [id])
+  ObraSocial          ObraSocial  @relation(fields: [obra_social_id], references: [id])
+  Ubicacion           Ubicacion   @relation(fields: [ubicacion_id], references: [id])
+  Usuario             Usuario     @relation(fields: [usuario_id], references: [id])
+}
+
+model Secretaria {
+  usuario_id      String    @id
+  numero_telefono String
+  ubicacion_id    String    @unique
+  Ubicacion       Ubicacion @relation(fields: [ubicacion_id], references: [id])
+  Usuario         Usuario   @relation(fields: [usuario_id], references: [id])
+}
+
+model Ubicacion {
+  id            String      @id
   calle         String
   numero        String
   codigo_postal String
   ciudad        String
   provincia     String
-  usuario       usuario[] // Solo relación con Usuario
+  Medico        Medico?
+  Paciente      Paciente?
+  Secretaria    Secretaria?
 }
 
-model secretaria {
-  id        String    @id @default(uuid())
-  usuario   usuario  @relation(fields: [usuario_id], references: [id])
-  usuario_id String  @unique
-}
-
-model medico {
-  id              String    @id @default(uuid())
-  usuario         usuario  @relation(fields: [usuario_id], references: [id])
-  usuario_id      String   @unique
-  tipo_matricula  tipoMatriculaEnum 
-  numero_matricula String  @unique
-  especialidad    especialidad @relation(fields: [especialidad_id], references: [id]) // Relación con Especialidad
-  especialidad_id String
-  descripcion     String?
-}
-
-model paciente {
-  id                 String    @id @default(uuid())
-  usuario            usuario  @relation(fields: [usuario_id], references: [id])
-  usuario_id         String   @unique
-  fecha_nacimiento   DateTime
-  lugar_nacimiento   String
-  contacto_emergencia String
-  obra_social        obraSocial @relation(fields: [obra_social_id], references: [id])
-  obra_social_id     String
-  fichaMedica        fichaMedica[]
-}
-
-model usuario {
-  id            String     @id @default(uuid())
-  tipo_documento TipoDocumentoEnum
-  numero_documento String @unique
-  nombre         String
-  apellido       String
+model Usuario {
+  id                 String            @id
+  tipo_documento     TipoDocumentoEnum
+  numero_documento   String            @unique
+  nombre             String
+  apellido           String
   correo_electronico String
-  numero_telefono String
-  ubicacion      ubicacion  @relation(fields: [ubicacion_id], references: [id])
-  ubicacion_id   String
-  contrasena     String
-  secretaria     secretaria?
-  medico         medico?
-  paciente       paciente?
-  usuarioRol   usuarioRol[]
+  contrasena         String
+  Admin              Admin?
+  Medico             Medico?
+  Paciente           Paciente?
+  Secretaria         Secretaria?
 }
 
 enum TipoDocumentoEnum {
-  Cedula_de_identidad
-  DNI
-  Libreta_civica
-  Libreta_de_enrolamiento
-  Pasaporte
+  CEDULA_IDENTIDAD
+  DOCUMENTO_NACIONAL_IDENTIDAD
+  LIBRETA_CIVICA
+  LIBRETA_ENROLAMIENTO
+  PASAPORTE
 }
 
-model rol {
-  id     String    @id @default(uuid())
-  nombre String   @unique
-  usuarioRol usuarioRol[]
-}
-
-model usuarioRol {
-  usuario   usuario  @relation(fields: [usuario_id], references: [id])
-  usuario_id String
-  rol       rol    @relation(fields: [rol_id], references: [id])
-  rol_id    String
-
-  @@id([usuario_id, rol_id])
-}
-
-model fichaMedica {
-  id                  String    @id @default(uuid())
-  paciente            paciente @relation(fields: [paciente_id], references: [id])
-  paciente_id         String
-  alergias            String?
-  diagnostico         String?
-  tratamientos        String?
-  medicamentos_recetados String?
-}
-
-enum tipoMatriculaEnum {
+enum TipoMatriculaEnum {
   nacional
   provincial
-}
-
-model especialidad {
-  id     String    @id @default(uuid())
-  nombre String   @unique
-  medico medico[]
-}
-
-model obraSocial {
-  id     String    @id @default(uuid())
-  nombre String   @unique
-  paciente paciente[]
 }

@@ -11,10 +11,10 @@ const prisma = new PrismaClient();
 async function getUser(numero_documento: string) {
   try {
     const user = await prisma.usuario.findUnique({
-      where: { numero_documento },
+     where: {numero_documento},
     });
     console.log(user);
-    return user;
+     return user;
   } catch (error) {
     console.error('Failed to fetch user:', error);
     throw new Error('Failed to fetch user.');
