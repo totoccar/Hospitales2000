@@ -5,23 +5,44 @@ import {
     ExclamationCircleIcon,
     KeyIcon,
 } from '@heroicons/react/24/outline';
-import { authenticate, authenticatePassword } from '../api/actions';
+import { authenticatePassword, changePasswordAPI } from '../api/actions';
 
 export default function ChangePasswordForm() {
     // Usamos useState para manejar el estado del mensaje de error
-    const [errorMessage] = useState<string | null>(null);
+    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isPending, setIsPending] = useState(false);
 
-    const nombre_user = "Benja";
+    const nombre_user = "Antonio Carlos";
+    const documento_user = "87654321"
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         const formData = new FormData(event.currentTarget);
-        authenticatePassword(
+        setIsPending(true);
+
+        const passwordMatch = await authenticatePassword(
             nombre_user,
-            formData.get('contrasena_actual') as string
-        )
+            formData.get('contrasena_actual') as string)
+
+        if (!passwordMatch) {
+            setErrorMessage('La contraseña actual es incorrecta');
+            setIsPending(false);
+        } else {
+
+            setIsPending(false);
+
+
+
+            if (formData.get('nueva_contrasena') !== formData.get('confirm_contrasena')) {
+                setErrorMessage('Las contraseñas no coinciden');
+            } else {
+                changePasswordAPI(formData.get('nueva_contrasena') as string, documento_user);
+                setErrorMessage("god");
+            }
+        }
+
+
 
 
 
@@ -66,10 +87,30 @@ export default function ChangePasswordForm() {
                             <div className="relative">
                                 <input
                                     className="peer block w-full rounded-md border text-m border-gray-200 py-[9px] pl-10 outline-2 placeholder:text-gray-500"
+                                    id="confirm_contrasena"
+                                    type="password"
+                                    name="nueva_contrasena"
+                                    placeholder="Ingrese su nueva contraseña"
+                                    required
+                                    minLength={3}
+                                />
+                                <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+                            </div>
+                        </div>
+                        <div className="mt-4">
+                            <label
+                                className="mb-3 mt-5 block font-medium text-m text-gray-900"
+                                htmlFor="password"
+                            >
+                                Confirmar Contraseña
+                            </label>
+                            <div className="relative">
+                                <input
+                                    className="peer block w-full rounded-md border text-m border-gray-200 py-[9px] pl-10 outline-2 placeholder:text-gray-500"
                                     id="contrasena"
                                     type="password"
-                                    name="contrasena"
-                                    placeholder="Ingrese su nueva contraseña"
+                                    name="confirm_contrasena"
+                                    placeholder="Confirme su nueva contraseña"
                                     required
                                     minLength={3}
                                 />

@@ -1,13 +1,7 @@
 // pages/api/changePassword.ts
 import { PrismaClient } from '@prisma/client';
-
+import bcrypt from 'bcryptjs';
 const prisma = new PrismaClient();
-
-export default async function changePassword() {
-
-
-}
-
 
 
 /** Primer funcion =') nunca olvidar */
@@ -45,5 +39,30 @@ export async function getPasswordByDocument(documento: string) {
     } catch (error) {
         console.error('Failed to fetch user:', error);
         throw new Error('Failed to fetch user.');
+    }
+}
+
+export async function changePassword(
+    nueva_contrasena: string,
+    documento: string
+) {
+    try {
+        // Hash de la nueva contraseña antes de guardarla
+        const hashedPassword = await bcrypt.hash(nueva_contrasena, 10);
+
+        // Actualizar la contraseña hasheada en la base de datos
+        const user = await prisma.usuario.update({
+            where: { numero_documento: documento },
+            data: { contrasena: hashedPassword },
+        });
+
+        if (!user) {
+            throw new Error('User not found.');
+        }
+
+        console.log('Password updated successfully for user:', user);
+    } catch (error) {
+        console.error('Failed to update password:', error);
+        throw new Error('Failed to update password.');
     }
 }
