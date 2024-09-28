@@ -17,7 +17,7 @@ export default async function Table({
   const patients = await findPacientesByQuery({ 
     dni: dni || '', 
     apellido: apellido || '', 
-    tipoDocumento: tipoDocumento || TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD // Replace 'DEFAULT' with an appropriate default value from TipoDocumentoEnum
+    tipoDocumento: tipoDocumento || TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD 
   });
 
   return (
@@ -47,12 +47,12 @@ export default async function Table({
           <table className="hidden min-w-full text-gray-900 md:table">
             <thead className="rounded-lg text-left text-xl font-normal">
               <tr>
-                <th scope="col" className="px-4 py-5 font-medium sm:pl-6">Nombre</th>
-                <th scope="col" className="px-3 py-5 font-medium">Apellido</th>
-                <th scope="col" className="px-3 py-5 font-medium">Tipo De Documento</th>
-                <th scope="col" className="px-3 py-5 font-medium">Numero de Documento</th>
-                <th scope="col" className="px-3 py-5 font-medium">Numero de Telefono</th>
-                <th scope="col" className="px-3 py-5 font-medium">Ver</th>
+                <th scope="col" className="px-4 py-5 font-medium text-lg sm:pl-6">Nombre</th>
+                <th scope="col" className="px-3 py-5 font-medium text-lg ">Apellido</th>
+                <th scope="col" className="px-3 py-5 font-medium text-lg ">Tipo De Documento</th>
+                <th scope="col" className="px-3 py-5 font-medium text-lg ">Numero de Documento</th>
+                <th scope="col" className="px-3 py-5 font-medium text-lg ">Numero de Telefono</th>
+                <th scope="col" className="px-3 py-5 font-medium text-lg ">Ver</th>
                 <th scope="col" className="relative py-3 pl-6 pr-3">
                   <span className="sr-only">Editar</span>
                 </th>

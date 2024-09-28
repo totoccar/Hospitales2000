@@ -70,10 +70,10 @@ export default function SearchForm() {
                   onChange={(e) => setDni(e.target.value)}
                 />
               </div>
-              {searchType === 'dni' && (
+              {(
             <div className="w-48">
               <Label htmlFor="document-type" className="sr-only">Tipo de documento</Label>
-              <Select onValueChange={(value) => setTipoDocumento(value as TipoDocumentoEnum)}>
+              <Select disabled={searchType === 'apellido'} onValueChange={(value) => setTipoDocumento(value as TipoDocumentoEnum)}>
                 <SelectTrigger id="document-type">
                   <SelectValue placeholder="Tipo de documento" />
                 </SelectTrigger>
