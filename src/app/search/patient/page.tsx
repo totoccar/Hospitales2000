@@ -22,8 +22,9 @@ export default async function SearchPatient({searchParams,
   const count = 2
   return (
     <MaxWidthWrapper>
-    <div className="bg-white h-full rounded-lg shadow-md p-6 mt-5">
+    <div className="bg-gray-200 rounded-lg shadow-md p-6 mt-5">
         <h2 className="text-xl font-bold mb-4">Buscar Pacientes</h2>
+        <h3 className="text-xs">Puedes buscar pacientes por documento o por apellido</h3>
         <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
           <Search />
         </div>
