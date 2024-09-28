@@ -11,29 +11,28 @@ export async function findPacientesByQuery({ dni, apellido, tipoDocumento }: Sea
   try {
     const pacientes = await prisma.paciente.findMany({
       where: {
-        // Aplica filtro por apellido, tipo de documento y número de documento
         AND: [
           apellido ? {
             usuario: {
               apellido: {
                 contains: apellido,
-                mode: 'insensitive', // Búsqueda case-insensitive
+                mode: 'insensitive', 
               },
             },
-          } : {}, // Aplica filtro por Apellido si existe
+          } : {}, 
           dni && tipoDocumento ? {
             usuario: {
               tipo_documento: tipoDocumento,
               numero_documento: {
                 contains: dni,
-                mode: 'insensitive', // Búsqueda case-insensitive
+                mode: 'insensitive', 
               },
             },
-          } : {}, // Aplica filtro por tipo de documento y número de documento si existen
+          } : {}, 
         ]
       },
       include: {
-        usuario: true, // Incluye los datos relacionados del usuario
+        usuario: true, 
       },
     });
     
