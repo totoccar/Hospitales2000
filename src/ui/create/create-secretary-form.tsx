@@ -11,6 +11,15 @@ export default function CreateSecretaryForm() {
     event.preventDefault()
   }
 
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, pattern: RegExp) => {
+    const { value } = e.target
+    if (pattern.test(value) || value === '') {
+      e.target.value = value
+    } else {
+      e.target.value = value.slice(0, -1)
+    }
+  }
+
   return (
     <form onSubmit={handleSubmit} className="space-y-8 max-w-2xl mx-auto">
       <div className="space-y-2">
@@ -32,50 +41,90 @@ export default function CreateSecretaryForm() {
 
         <div className="space-y-2">
           <label htmlFor="documentNumber" className="block text-sm font-medium text-gray-700">Número de Documento</label>
-          <Input id="documentNumber" placeholder="Ingrese el número de documento" />
+          <Input id="documentNumber" 
+          placeholder="Ingrese el número de documento" 
+          onChange={(e) => handleInputChange(e, /^\d*$/)}
+          required
+          />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nombre de la Secretaria</label>
-          <Input id="name" placeholder="Ingrese el nombre de la secretaria" />
+          <Input id="name" 
+          placeholder="Ingrese el nombre de la secretaria" 
+          onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
+          required
+          />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Apellido de la Secretaria</label>
-          <Input id="lastName" placeholder="Ingrese el apellido de la secretaria" />
+          <Input id="lastName" 
+          placeholder="Ingrese el apellido de la secretaria" 
+          onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
+          required
+          />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">Número de Teléfono</label>
           <div className="flex space-x-2">
-            <Input id="cellphoneCountryCode" placeholder="+54" className="w-20" />
-            <Input id="cellphoneNumber" placeholder="Ingrese el número de teléfono" />
+            <Input id="cellphoneCountryCode" 
+            placeholder="+54" className="w-20" 
+            onChange={(e) => handleInputChange(e, /^\d*$/)}
+            required
+            />
+            <Input id="cellphoneNumber" 
+            placeholder="Ingrese el número de teléfono" 
+            onChange={(e) => handleInputChange(e, /^\d*$/)}
+            required
+            />
           </div>
         </div>
 
         <div className="space-y-2">
           <label htmlFor="streetName" className="block text-sm font-medium text-gray-700">Calle</label>
-          <Input id="streetName" placeholder="Ingrese el nombre de la calle" />
+          <Input id="streetName" 
+          placeholder="Ingrese el nombre de la calle" 
+          onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
+          required
+          />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="streetNumber" className="block text-sm font-medium text-gray-700">Número</label>
-          <Input id="streetNumber" placeholder="Ingrese el número de la calle" />
+          <Input id="streetNumber" 
+          placeholder="Ingrese el número de la calle" 
+          onChange={(e) => handleInputChange(e, /^\d*$/)}
+          required
+          />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700">Código Postal</label>
-          <Input id="postalCode" placeholder="Ingrese el código postal" />
+          <Input id="postalCode" 
+          placeholder="Ingrese el código postal" 
+          onChange={(e) => handleInputChange(e, /^\d*$/)}
+          required
+          />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="city" className="block text-sm font-medium text-gray-700">Ciudad</label>
-          <Input id="city" placeholder="Ingrese la ciudad" />
+          <Input id="city" 
+          placeholder="Ingrese la ciudad" 
+          onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
+          required
+          />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="state" className="block text-sm font-medium text-gray-700">Provincia</label>
-          <Input id="state" placeholder="Ingrese la provincia" />
+          <Input id="state" 
+          placeholder="Ingrese la provincia" 
+          onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
+          required
+          />
         </div>
 
         <div className="space-y-2">
