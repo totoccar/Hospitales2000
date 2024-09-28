@@ -1,7 +1,21 @@
 'use server';
 
-import { getPassword, changePassword } from "./changePassword";
+import { getPassword, changePassword, getUserIdByEmail } from "./changePassword";
 import bcrypt from 'bcryptjs';
+
+
+export async function authenticateEmail(
+    email: string,
+): Promise<boolean> {
+
+    const userId = await getUserIdByEmail(email);
+
+    if (userId) {
+        return true;  // Retorna true si el correo electrónico coincide con algun usuario
+    } else {
+        return false;  // Retorna false si el correo electrónico no coincide
+    }
+}
 
 
 export async function authenticatePassword(
@@ -26,7 +40,6 @@ export async function authenticatePassword(
     }
 
 }
-
 
 /*Falta hash*/
 export async function changePasswordAPI(

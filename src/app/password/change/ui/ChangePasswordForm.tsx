@@ -5,7 +5,7 @@ import {
     ExclamationCircleIcon,
     KeyIcon,
 } from '@heroicons/react/24/outline';
-import { authenticatePassword, changePasswordAPI } from '../api/actions';
+import { authenticatePassword, changePasswordAPI } from '../../api/actions';
 
 export default function ChangePasswordForm() {
     // Usamos useState para manejar el estado del mensaje de error

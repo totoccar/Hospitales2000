@@ -3,48 +3,35 @@ import React, { useState } from 'react';
 import {
     AtSymbolIcon,
     ExclamationCircleIcon,
-    KeyIcon,
 } from '@heroicons/react/24/outline';
+import { authenticateEmail } from '../../api/actions';
 
 export default function ChangePasswordForm() {
     // Usamos useState para manejar el estado del mensaje de error
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isPending, setIsPending] = useState(false);
 
-    const nombre_user = "Antonio Carlos";
-    const documento_user = "87654321"
-
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+
 
         const formData = new FormData(event.currentTarget);
         setIsPending(true);
 
-        const passwordMatch = await authenticatePassword(
-            nombre_user,
-            formData.get('contrasena_actual') as string)
+        const user_email = formData.get('email') as string;
 
-        if (!passwordMatch) {
-            setErrorMessage('La contraseña actual es incorrecta');
-            setIsPending(false);
-        } else {
+        try {
+            const emailMatch = await authenticateEmail(user_email);
 
-            setIsPending(false);
-
-
-
-            if (formData.get('nueva_contrasena') !== formData.get('confirm_contrasena')) {
-                setErrorMessage('Las contraseñas no coinciden');
+            if (!emailMatch) {
+                setErrorMessage('Credenciales incorrectas');
             } else {
-                changePasswordAPI(formData.get('nueva_contrasena') as string, documento_user);
-                setErrorMessage("god");
+                setErrorMessage("god se encontro el usuario");
             }
+
+        } catch (error) { console.log(error); } finally {
+            setIsPending(false);
         }
-
-
-
-
-
     };
 
     return (
@@ -68,7 +55,7 @@ export default function ChangePasswordForm() {
                                     className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-m outline-2 placeholder:text-gray-500"
                                     id="correo"
                                     type="email"
-                                    name="correo"
+                                    name="email"
                                     placeholder="Correo Electronico"
                                     required
                                 />
