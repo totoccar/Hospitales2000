@@ -1,7 +1,9 @@
-import React from 'react'
+import CreatePatientForm  from '@/ui/create/create-patient-form';
 
-export default function CreatePatient() {
+export default function CreatePatientPage() {
   return (
-    <div>CreatePatient Page</div>
+    <div className="container mx-auto py-10">
+      <CreatePatientForm />
+    </div>
   )
 }
