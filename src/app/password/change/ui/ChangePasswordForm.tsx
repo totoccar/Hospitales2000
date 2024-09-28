@@ -1,11 +1,14 @@
 'use client';
 import React, { useState } from 'react';
 import {
-    AtSymbolIcon,
+    LockClosedIcon,
     ExclamationCircleIcon,
     KeyIcon,
 } from '@heroicons/react/24/outline';
 import { authenticatePassword, changePasswordAPI } from '../../api/actions';
+
+
+
 
 export default function ChangePasswordForm() {
     // Usamos useState para manejar el estado del mensaje de error
@@ -57,6 +60,18 @@ export default function ChangePasswordForm() {
                     <h1 className="text-center mb-3 font-bold text-3xl text-[#025951]">
                         Cambiar Contraseña
                     </h1>
+
+                    <div className='flex justify-center mx-auto border border-red-500 rounded-md p-2'>
+
+
+                        {errorMessage && (
+                            <>
+                                <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
+                                <p className="ml-2 flex items-center text-sm text-red-500">{errorMessage}</p>
+                            </>
+                        )}
+                    </div>
+
                     <div className="w-full">
                         {/* Campo de contraseña actual */}
                         <div>
@@ -75,7 +90,8 @@ export default function ChangePasswordForm() {
                                     placeholder="Ingrese su contraseña actual"
                                     required
                                 />
-                                <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+                                <LockClosedIcon
+                                    className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
                             </div>
                         </div>
                         {/* Campo de nueva contraseña */}
@@ -132,16 +148,11 @@ export default function ChangePasswordForm() {
                         </a>
                     </div>
                     <div
-                        className="flex h-8 items-end space-x-1"
+                        className="flex h-4 items-end space-x-1"
                         aria-live="polite"
                         aria-atomic="true"
                     ></div>
-                    {errorMessage && (
-                        <>
-                            <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
-                            <p className="text-sm text-red-500">{errorMessage}</p>
-                        </>
-                    )}
+
                 </div>
             </form>
         </div>
