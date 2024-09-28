@@ -14,7 +14,8 @@ export default function ChangePasswordForm() {
     // Usamos useState para manejar el estado del mensaje de error
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isPending, setIsPending] = useState(false);
-
+    const [successMessage, setSuccessMessage] = useState<string | null>(null);
+    const [isDisabled, setIsDisabled] = useState(false);  // Nuevo estado para deshabilitar el formulario
 
     /* Constantes para hardcodear la BDD, lo ideal es buscar por ID*/
     const nombre_user = "Antonio Carlos";
@@ -35,6 +36,7 @@ export default function ChangePasswordForm() {
             setIsPending(false);
         } else {
 
+            setErrorMessage(null);
             setIsPending(false);
 
 
@@ -43,7 +45,8 @@ export default function ChangePasswordForm() {
                 setErrorMessage('Las contraseñas no coinciden');
             } else {
                 changePasswordAPI(formData.get('nueva_contrasena') as string, documento_user);
-                setErrorMessage("god");
+                setSuccessMessage("La contraseña se ha cambiado correctamente.");
+                setIsDisabled(true);
             }
         }
 
@@ -61,16 +64,26 @@ export default function ChangePasswordForm() {
                         Cambiar Contraseña
                     </h1>
 
-                    <div className='flex justify-center mx-auto border border-red-500 rounded-md p-2'>
 
 
-                        {errorMessage && (
-                            <>
-                                <ExclamationCircleIcon className="h-5 w-5 text-red-500" />
-                                <p className="ml-2 flex items-center text-sm text-red-500">{errorMessage}</p>
-                            </>
-                        )}
-                    </div>
+
+                    {
+                        errorMessage && (
+                            <div className="flex items-center bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                                <ExclamationCircleIcon className="h-5 w-5 text-red-500 mr-2" />
+                                <span className="block sm:inline text-sm">{errorMessage}</span>
+                            </div>
+                        )
+                    }
+
+                    {
+                        successMessage && (
+                            <div className="flex items-center bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                                <KeyIcon className="h-8 w-8 text-green-500 mr-4" />
+                                <span className="block sm:inline text-sm">{successMessage}</span>
+                            </div>
+                        )
+                    }
 
                     <div className="w-full">
                         {/* Campo de contraseña actual */}
@@ -83,12 +96,13 @@ export default function ChangePasswordForm() {
                             </label>
                             <div className="relative">
                                 <input
-                                    className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-m outline-2 placeholder:text-gray-500"
+                                    className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-m outline-2 placeholder:text-gray-500 disabled:bg-gray-100 disabled:text-gray-500 disabled:border-gray-200"
                                     id="contrasena_actual"
                                     type="password"
                                     name="contrasena_actual"
                                     placeholder="Ingrese su contraseña actual"
                                     required
+                                    disabled={isDisabled}
                                 />
                                 <LockClosedIcon
                                     className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
@@ -104,15 +118,16 @@ export default function ChangePasswordForm() {
                             </label>
                             <div className="relative">
                                 <input
-                                    className="peer block w-full rounded-md border text-m border-gray-200 py-[9px] pl-10 outline-2 placeholder:text-gray-500"
+                                    className="peer block w-full rounded-md border text-m border-gray-200 py-[9px] pl-10 outline-2 placeholder:text-gray-500 disabled:bg-gray-100 disabled:text-gray-500 disabled:border-gray-200"
                                     id="confirm_contrasena"
                                     type="password"
                                     name="nueva_contrasena"
                                     placeholder="Ingrese su nueva contraseña"
                                     required
                                     minLength={3}
+                                    disabled={isDisabled}
                                 />
-                                <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+                                <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900  " />
                             </div>
                         </div>
                         <div className="mt-4">
@@ -124,13 +139,14 @@ export default function ChangePasswordForm() {
                             </label>
                             <div className="relative">
                                 <input
-                                    className="peer block w-full rounded-md border text-m border-gray-200 py-[9px] pl-10 outline-2 placeholder:text-gray-500"
+                                    className="peer block w-full rounded-md border text-m border-gray-200 py-[9px] pl-10 outline-2 placeholder:text-gray-500 disabled:bg-gray-100 disabled:text-gray-500 disabled:border-gray-200"
                                     id="contrasena"
                                     type="password"
                                     name="confirm_contrasena"
                                     placeholder="Confirme su nueva contraseña"
                                     required
                                     minLength={3}
+                                    disabled={isDisabled}
                                 />
                                 <KeyIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
                             </div>
@@ -139,7 +155,7 @@ export default function ChangePasswordForm() {
                     </div>
                     {/* Botón de cambio de contraseña centrado */}
                     <div className="flex justify-center mt-6">
-                        <LoginButton isPending={isPending} />
+                        <LoginButton isDisabled={isDisabled} isPending={isPending} />
                     </div>
                     {/* Enlace de 'Olvidaste tu contraseña?' */}
                     <div className="text-center mt-4">
@@ -159,17 +175,18 @@ export default function ChangePasswordForm() {
     );
 };
 
-function LoginButton({ isPending }: { isPending: boolean }) {
+function LoginButton({ isPending, isDisabled }: { isPending: boolean, isDisabled: boolean }) {
     return (
         <button
             type="submit"
-            disabled={isPending}
-            className={`rounded-md p-2 bg-[#025951] hover:bg-[#04D99D] text-white font-bold mt-4 w-full ${isPending ? 'cursor-not-allowed opacity-50' : ''
+            disabled={isPending || isDisabled}
+            className={`rounded-md p-2 bg-[#025951] hover:bg-[#04D99D] text-white font-bold mt-4 w-full ${isPending || isDisabled ? 'cursor-not-allowed opacity-50' : ''
                 }`}
             aria-label="Cambiar Contraseña"
         >
-            {isPending ? 'Cargando...' : 'Cambiar Contraseña'}
+            {isPending ? 'Cargando...' : isDisabled ? 'Contraseña Cambiada' : 'Cambiar Contraseña'}
         </button>
     );
 }
+
 
