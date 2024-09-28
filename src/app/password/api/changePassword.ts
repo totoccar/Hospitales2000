@@ -66,3 +66,24 @@ export async function changePassword(
         throw new Error('Failed to update password.');
     }
 }
+
+export async function getUserIdByEmail(email: string) {
+    try {
+        const user = await prisma.usuario.findFirst({
+            where: {
+                correo_electronico: email,
+            },
+        });
+
+        if (!user) {
+            console.log('User not found');
+            return null;
+        }
+
+        console.log("El usuario de mail es: " + user.nombre + " " + user.apellido); // Muestra el usuario en la consola
+        return user.id; // Devuelve el id del usuario
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        return null;
+    }
+}
