@@ -50,7 +50,7 @@ export async function changePassword(
         // Hash de la nueva contraseña antes de guardarla
         const hashedPassword = await bcrypt.hash(nueva_contrasena, 10);
 
-        // Actualizar la contraseña hasheada en la base de datos
+
         const user = await prisma.usuario.update({
             where: { numero_documento: documento },
             data: { contrasena: hashedPassword },
