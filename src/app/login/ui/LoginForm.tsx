@@ -1,15 +1,14 @@
 'use client';
 import React, { useState } from 'react';
 import {
-  AtSymbolIcon,
   ExclamationCircleIcon,
   KeyIcon,
+  IdentificationIcon,
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import { authenticate } from '../../lib/actions';
 
 export default function LoginForm() {
-  // Usamos useState para manejar el estado del mensaje de error
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isPending, setIsPending] = useState(false);
 
@@ -17,7 +16,7 @@ export default function LoginForm() {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
-    setIsPending(true);  // Indicamos que la solicitud está en curso
+    setIsPending(true); 
 
     try {
       const error = await authenticate(undefined, formData);
@@ -26,7 +25,7 @@ export default function LoginForm() {
     } catch (error) {
       setErrorMessage('Algo salió mal.');
     } finally {
-      setIsPending(false);  // Finaliza el estado pendiente
+      setIsPending(false); 
     }
   };
 
@@ -58,7 +57,7 @@ export default function LoginForm() {
                   placeholder="Ingresa tu número de documento"
                   required
                 />
-                <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+                <IdentificationIcon className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
               </div>
             </div>
             {/* Campo de contraseña */}
@@ -86,22 +85,23 @@ export default function LoginForm() {
             <div className="mt-4">
               <label
                 className="mb-3 mt-5 block font-medium text-m text-gray-900"
-                htmlFor="opciones"
+                htmlFor="tipo_documento"
               >
-                Selecciona una opción
+                Selecciona el tipo de documento
               </label>
               <div className="relative">
                 <select
                   className="block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-m outline-2"
-                  id="opciones"
-                  name="opciones"
+                  id="tipo_documento"
+                  name="tipo_documento" 
                   required
                 >
-                  <option value="Cedula_de_identidad">Cedula_de_identidad</option>
-                  <option value="DNI">DNI</option>
-                  <option value="Libreta_civica">Libreta_civica</option>
-                  <option value="Libreta_de_enrolamiento">Libreta_de_enrolamiento</option>
-                  <option value="Pasaporte">Pasaporte</option>
+                  
+                  <option value="CEDULA_IDENTIDAD">Cédula de identidad</option>
+                  <option value="DOCUMENTO_NACIONAL_IDENTIDAD">Documento Nacional de Identidad</option>
+                  <option value="LIBRETA_CIVICA">Libreta Cívica</option>
+                  <option value="LIBRETA_ENROLAMIENTO">Libreta de Enrolamiento</option>
+                  <option value="PASAPORTE">Pasaporte</option>
                 </select>
               </div>
             </div>
@@ -138,13 +138,21 @@ function LoginButton({ isPending }: { isPending: boolean }) {
     <button
       type="submit"
       disabled={isPending}
-      className={`bg-[#025951] hover:bg-[#04D99D] text-white font-bold mt-4 w-full ${
+      className={`relative flex items-center justify-center bg-[#025951] hover:bg-[#28b78ee7] text-white font-bold text-lg mt-4 w-full py-3 rounded-md transition duration-300 ease-in-out transform hover:scale-105 active:scale-95 ${
         isPending ? 'cursor-not-allowed opacity-50' : ''
       }`}
       aria-label="clic aqui para loguearse"
     >
-      {isPending ? 'Cargando...' : 'Log in'}{' '}
-      <ArrowRightIcon className="ml-auto h-5 w-5 text-gray-50" />
+      {isPending ? (
+        <span className="loader flex items-center justify-center">
+          Cargando...
+        </span>
+      ) : (
+        <>
+          Log in
+          <ArrowRightIcon className="ml-2 h-5 w-5 text-white" />
+        </>
+      )}
     </button>
   );
 }
