@@ -19,11 +19,11 @@ export async function authenticateEmail(
 
 
 export async function authenticatePassword(
-    nombre_user: string,
+    user_id: string,
     param_contrasena: string
 ): Promise<boolean> {
     try {
-        const password = await getPassword(nombre_user);
+        const password = await getPassword(user_id);
 
         const passwordMatch = await bcrypt.compare(param_contrasena, password);
 
