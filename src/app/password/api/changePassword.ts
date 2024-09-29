@@ -67,11 +67,11 @@ export async function changePassword(
     }
 }
 
-export async function getUserIdByEmail(email: string) {
+export async function getUserIdByDocument(documento: string) {
     try {
-        const user = await prisma.usuario.findFirst({
+        const user = await prisma.usuario.findUnique({
             where: {
-                correo_electronico: email,
+                numero_documento: documento,
             },
         });
 
@@ -80,8 +80,31 @@ export async function getUserIdByEmail(email: string) {
             return null;
         }
 
-        console.log("El usuario de mail es: " + user.nombre + " " + user.apellido); // Muestra el usuario en la consola
+        console.log("El usuario de documento" + documento + "  es: " + user.nombre + " " + user.apellido); // Muestra el usuario en la consola
         return user.id; // Devuelve el id del usuario
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        return null;
+    }
+}
+
+
+
+export async function getUserEmailByDocument(user_document: string) {
+    try {
+        const user = await prisma.usuario.findUnique({
+            where: {
+                numero_documento: user_document,
+            },
+        });
+
+        if (!user) {
+            console.log('User not found');
+            return null;
+        }
+
+        console.log("El usuario de documento" + user_document + "  es: " + user.nombre + " " + user.apellido + " d correo :" + user.correo_electronico);
+        return user.correo_electronico;
     } catch (error) {
         console.error('Error fetching user:', error);
         return null;

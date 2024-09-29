@@ -1,11 +1,12 @@
 'use client';
 import React, { useState } from 'react';
 import {
-    AtSymbolIcon,
+    IdentificationIcon,
     ExclamationCircleIcon,
     LinkIcon
 } from '@heroicons/react/24/outline';
-import { authenticateEmail } from '../../api/actions';
+import { authenticateDocument, authenticateEmail, getUserEmail } from '../../api/actions';
+import { getUserEmailByDocument } from '../../api/changePassword';
 
 export default function ChangePasswordForm() {
     // Usamos useState para manejar el estado del mensaje de error
@@ -14,6 +15,9 @@ export default function ChangePasswordForm() {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [isDisabled, setIsDisabled] = useState(false);
 
+
+
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
@@ -21,16 +25,18 @@ export default function ChangePasswordForm() {
         const formData = new FormData(event.currentTarget);
         setIsPending(true);
 
-        const user_email = formData.get('email') as string;
+        const user_document = formData.get('user_document') as string;
 
         try {
-            const emailMatch = await authenticateEmail(user_email);
+            const documentoMatch = await authenticateDocument(user_document);
 
-            if (!emailMatch) {
-                setErrorMessage('No se encontro el correo electronico');
+            if (!documentoMatch) {
+                setErrorMessage('No se encontro usuario con ese documento');
                 setIsPending(false);
             } else {
-                setSuccessMessage("Se envio el link de cambio de contraseña");
+
+                const user_email = await getUserEmail(user_document);
+                setSuccessMessage("Se envio el link de cambio de contraseña a la dirección: " + user_email as string);
                 setErrorMessage(null);
                 setIsDisabled(true);
             }
@@ -58,7 +64,7 @@ export default function ChangePasswordForm() {
                                 className="mx-auto block text-m font-medium text-gray-900"
                                 htmlFor="dni"
                             >
-                                Ingresa tu correo electrónico para que te enviemos el link de cambio de contraseña.
+                                Ingresa tu documento para que te enviemos el link de cambio de contraseña a tu correo electrónico.
                             </label>
 
                             {
@@ -79,19 +85,29 @@ export default function ChangePasswordForm() {
                                 )
                             }
 
+                            <div className="flex flex-row space-x-4 mt-4">
+                                {/* Select */}
+                                <select className="border border-gray-400 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
+                                    <option value="opcion1">Texto 1</option>
+                                    <option value="opcion2">Texto 2</option>
+                                    <option value="opcion3">Texto 3</option>
+                                </select>
 
-                            <div className="relative mt-4 ">
-                                <input
-                                    className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-m outline-2 placeholder:text-gray-500 disabled:bg-gray-100 disabled:text-gray-500 disabled:border-gray-200"
-                                    id="correo"
-                                    type="email"
-                                    name="email"
-                                    placeholder="Correo Electronico"
-                                    required
-                                    disabled={isDisabled}
-                                />
-                                <AtSymbolIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+                                {/* Input */}
+                                <div className="relative flex-grow">
+                                    <input
+                                        className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-m outline-2 placeholder:text-gray-500 disabled:bg-gray-100 disabled:text-gray-500 disabled:border-gray-200"
+                                        id="correo"
+                                        type="text"
+                                        name="user_document"
+                                        placeholder="Documento"
+                                        required
+                                        disabled={isDisabled}
+                                    />
+                                    <IdentificationIcon className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
+                                </div>
                             </div>
+
                         </div>
 
                     </div>
