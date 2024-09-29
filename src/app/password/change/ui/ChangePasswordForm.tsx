@@ -20,6 +20,7 @@ export default function ChangePasswordForm() {
     /* Constantes para hardcodear la BDD, lo ideal es buscar por ID*/
     const nombre_user = "Antonio Carlos";
     const documento_user = "87654321"
+    const user_id = "2c496f26-8a23-4b1c-92da-aff39d5fcb9d";
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -28,7 +29,7 @@ export default function ChangePasswordForm() {
         setIsPending(true);
 
         const passwordMatch = await authenticatePassword(
-            nombre_user,
+            user_id,
             formData.get('contrasena_actual') as string)
 
         if (!passwordMatch) {
@@ -44,7 +45,7 @@ export default function ChangePasswordForm() {
             if (formData.get('nueva_contrasena') !== formData.get('confirm_contrasena')) {
                 setErrorMessage('Las contraseñas no coinciden');
             } else {
-                changePasswordAPI(formData.get('nueva_contrasena') as string, documento_user);
+                changePasswordAPI(formData.get('nueva_contrasena') as string, user_id);
                 setSuccessMessage("La contraseña se ha cambiado correctamente.");
                 setIsDisabled(true);
             }

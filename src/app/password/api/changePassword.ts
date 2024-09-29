@@ -5,12 +5,12 @@ const prisma = new PrismaClient();
 
 
 /** Primer funcion =') nunca olvidar */
-export async function getPassword(nombre: string): Promise<string> {
+export async function getPassword(user_id: string): Promise<string> {
     try {
         const user = await prisma.usuario.findFirst({
-            where: { nombre: nombre },
+            where: { id: user_id },
         });
-        console.log(user);
+        console.log("Se obtuvo el usuario: ", user);
 
         if (!user) {
             throw new Error('User not found.');
@@ -44,7 +44,7 @@ export async function getPasswordByDocument(documento: string) {
 
 export async function changePassword(
     nueva_contrasena: string,
-    documento: string
+    user_id: string
 ) {
     try {
         // Hash de la nueva contraseña antes de guardarla
@@ -52,7 +52,7 @@ export async function changePassword(
 
 
         const user = await prisma.usuario.update({
-            where: { numero_documento: documento },
+            where: { id: user_id },
             data: { contrasena: hashedPassword },
         });
 
