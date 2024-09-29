@@ -1,14 +1,17 @@
 'use server';
 
-import { getPassword, changePassword, getUserIdByEmail } from "./changePassword";
+import {
+    getPassword, changePassword, getUserIdByDocument,
+    getUserEmailByDocument
+} from "./changePassword";
 import bcrypt from 'bcryptjs';
 
 
-export async function authenticateEmail(
-    email: string,
+export async function authenticateDocument(
+    documento: string,
 ): Promise<boolean> {
 
-    const userId = await getUserIdByEmail(email);
+    const userId = await getUserIdByDocument(documento);
 
     if (userId) {
         return true;  // Retorna true si el correo electrónico coincide con algun usuario
@@ -47,6 +50,16 @@ export async function changePasswordAPI(
     documento: string
 ): Promise<void> {
     await changePassword(param_nueva_contrasena, documento);
+}
+
+export async function getUserEmail(user_document: string): Promise<string> {
+    const user_email = await getUserEmailByDocument(user_document);
+
+    if (user_email) {
+        return user_email;  // Retorna el correo electrónico del usuario
+    } else {
+        return "";  // Retorna una cadena vacía si el usuario no existe
+    }
 }
 
 
