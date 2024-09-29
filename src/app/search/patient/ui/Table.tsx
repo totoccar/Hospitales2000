@@ -1,5 +1,5 @@
 import { findPacientesByQuery } from '@/lib/searchpatient';
-import { ViewPatient } from '@/ui/Buttons';
+import { ViewUser } from '@/ui/Buttons';
 import { TipoDocumentoEnum } from '@prisma/client';
 
 export default async function Table({
@@ -37,7 +37,7 @@ export default async function Table({
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div className="flex justify-end gap-2">
-                    <ViewPatient id={patient.usuario.id} />
+                    <ViewUser id={patient.usuario.id} />
                   </div>
                 </div>
               </div>
@@ -75,7 +75,7 @@ export default async function Table({
                   <td className="whitespace-nowrap px-3 py-3">{patient.numero_telefono}</td>
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex justify-end gap-3">
-                      <ViewPatient id={patient.usuario.id} />
+                      <ViewUser id={patient.usuario.id} />
                     </div>
                   </td>
                 </tr>
