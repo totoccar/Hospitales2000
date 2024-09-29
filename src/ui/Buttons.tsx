@@ -2,7 +2,7 @@
 import { PencilIcon } from 'lucide-react';
 import Link from 'next/link';
 
-export function ViewPatient({ id }: { id: string }) {
+export function ViewUser({ id }: { id: string }) {
   return (
     <Link
       href={`/admin/${id}/edit`}
