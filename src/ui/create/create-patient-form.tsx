@@ -1,10 +1,10 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { createPatient, PatientState } from '@/lib/actions'
-import { useActionState } from 'react'
+import { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { createPatient, PatientState } from '@/lib/actions';
+import { useActionState } from 'react';
 
 export default function CreatePatientForm() {
   const [dateOfBirth, setDateOfBirth] = useState('')
@@ -22,7 +22,7 @@ export default function CreatePatientForm() {
     }
   }
 
-  const initialState: PatientState = { message: null, errors: {} }
+  const initialState: PatientState = { message: null, errors: {} };
   //const [state, formAction] = useActionState(createPatient, initialState);
 
   return (
@@ -35,39 +35,50 @@ export default function CreatePatientForm() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <label htmlFor="documentType" className="block text-sm font-medium text-gray-700">Tipo de Documento</label>
-          <select id="documentType" className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-            <option value="Documento Nacional de Indentidad">Documento Nacional de Indentidad</option>
-            <option value="Cédula de Identidad">Cédula de Identidad</option>
-            <option value="Libreta Cívica">Libreta Cívica</option>
-            <option value="Libreta de Enrolamiento">Libreta de Enrolamiento</option>
-            <option value="Pasaporte">Pasaporte</option>
+          <select 
+            id="documentType"
+            name="tipo_documento" 
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            >
+            <option value="DOCUMENTO_NACIONAL_IDENTIDAD">Documento Nacional de Indentidad</option>
+            <option value="CEDULA_IDENTIDAD">Cédula de Identidad</option>
+            <option value="LIBRETA_CIVICA">Libreta Cívica</option>
+            <option value="LIBRETA_ENROLAMIENTO">Libreta de Enrolamiento</option>
+            <option value="PASAPORTE">Pasaporte</option>
           </select>
         </div>
-
+        
         <div className="space-y-2">
           <label htmlFor="documentNumber" className="block text-sm font-medium text-gray-700">Número de Documento</label>
-          <Input id="documentNumber" 
-          placeholder="Ingrese el número de documento" 
-          onChange={(e) => handleInputChange(e, /^\d*$/)}
-          required
+          <Input 
+            id="documentNumber"
+            name="numero_documento" 
+            placeholder="Ingrese el número de documento" 
+            onChange={(e) => handleInputChange(e, /^\d*$/)}
+            aria-describedby="create-error"
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nombre del Paciente</label>
-          <Input id="name" 
-          placeholder="Ingrese el nombre del paciente" 
-          onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
-          required
+          <Input 
+            id="name"
+            name="nombre" 
+            placeholder="Ingrese el nombre del paciente" 
+            onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Apellido del Paciente</label>
-          <Input id="lastName" 
-          placeholder="Ingrese el apellido del paciente" 
-          onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
-          required
+          <Input 
+            id="lastName" 
+            name="apellido"
+            placeholder="Ingrese el apellido del paciente" 
+            onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
+            required
           />
         </div>
 
@@ -75,6 +86,7 @@ export default function CreatePatientForm() {
           <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">Fecha de Nacimiento</label>
           <Input 
             id="dateOfBirth" 
+            name="fecha_nacimiento"
             type="date" 
             value={dateOfBirth} 
             onChange={(e) => setDateOfBirth(e.target.value)}
@@ -85,99 +97,127 @@ export default function CreatePatientForm() {
         <div className="space-y-2">
           <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">Número de Teléfono</label>
           <div className="flex space-x-2">
-            <Input id="cellphoneCountryCode" 
-            placeholder="+54" className="w-20" 
-            onChange={(e) => handleInputChange(e, /^\d*$/)}
-            required
-            />
-            <Input id="cellphoneNumber" 
-            placeholder="Ingrese el número de teléfono" 
-            onChange={(e) => handleInputChange(e, /^\d*$/)}
-            required
+            {/*<Input 
+              id="cellphoneCountryCode" 
+              placeholder="+54" className="w-20" 
+              onChange={(e) => handleInputChange(e, /^\d*$/)}
+              required
+            />*/}
+            <Input 
+              id="phoneNumber"
+              name="numero_telefono" 
+              placeholder="Ingrese el número de teléfono" 
+              onChange={(e) => handleInputChange(e, /^\d*$/)}
+              required
             />
           </div>
         </div>
 
         <div className="space-y-2">
           <label htmlFor="placeOfBirth" className="block text-sm font-medium text-gray-700">Lugar de Nacimiento</label>
-          <Input id="placeOfBirth" 
-          placeholder="Ingrese el lugar de nacimiento" 
-          onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
-          required
+          <Input 
+            id="placeOfBirth" 
+            name="lugar_nacimiento"
+            placeholder="Ingrese el lugar de nacimiento" 
+            onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="emergencyContact" className="block text-sm font-medium text-gray-700">Contacto de Emergencia</label>
           <div className="flex space-x-2">
-            <Input id="emergencyContactCountryCode" 
-            placeholder="+54" className="w-20" 
-            onChange={(e) => handleInputChange(e, /^\d*$/)}
-            required
-            />
-            <Input id="emergencyContactNumber" 
-            placeholder="Ingrese el número de teléfono" 
-            onChange={(e) => handleInputChange(e, /^\d*$/)}
-            required
+            {/*<Input 
+              id="emergencyContactCountryCode" 
+              placeholder="+54" className="w-20" 
+              onChange={(e) => handleInputChange(e, /^\d*$/)}
+              required
+            />*/}
+            <Input 
+              id="emergencyContactNumber" 
+              name="contacto_emergencia"
+              placeholder="Ingrese el número de teléfono" 
+              onChange={(e) => handleInputChange(e, /^\d*$/)}
+              required
             />
           </div>
         </div>
 
         <div className="space-y-2">
           <label htmlFor="streetName" className="block text-sm font-medium text-gray-700">Calle</label>
-          <Input id="streetName" 
-          placeholder="Ingrese el nombre de la calle" 
-          onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
-          required
+          <Input 
+            id="streetName" 
+            name="calle"
+            placeholder="Ingrese el nombre de la calle" 
+            onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="streetNumber" className="block text-sm font-medium text-gray-700">Número</label>
-          <Input id="streetNumber" 
-          placeholder="Ingrese el número de la calle" 
-          onChange={(e) => handleInputChange(e, /^\d*$/)}
-          required
+          <Input 
+            id="streetNumber" 
+            name="numero"
+            placeholder="Ingrese el número de la calle" 
+            onChange={(e) => handleInputChange(e, /^\d*$/)}
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700">Código Postal</label>
-          <Input id="postalCode" 
-          placeholder="Ingrese el código postal" 
-          onChange={(e) => handleInputChange(e, /^\d*$/)}
-          required
+          <Input 
+            id="postalCode" 
+            name="codigo_postal"
+            placeholder="Ingrese el código postal" 
+            onChange={(e) => handleInputChange(e, /^\d*$/)}
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="city" className="block text-sm font-medium text-gray-700">Ciudad</label>
-          <Input id="city" 
-          placeholder="Ingrese la ciudad" 
-          onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
-          required
+          <Input 
+            id="city" 
+            name="ciudad"
+            placeholder="Ingrese la ciudad" 
+            onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="state" className="block text-sm font-medium text-gray-700">Provincia</label>
-          <Input id="state" 
-          placeholder="Ingrese la provincia" 
-          onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
-          required
+          <Input 
+            id="state" 
+            name="provincia"
+            placeholder="Ingrese la provincia" 
+            onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">Correo electrónico</label>
-          <Input id="email" type="email" placeholder="Ingrese el correo electrónico" />
+          <Input 
+            id="email" 
+            name="correo_electronico"
+            type="email" 
+            placeholder="Ingrese el correo electrónico" 
+            required
+          />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="socialWork" className="block text-sm font-medium text-gray-700">Obra Social</label>
-          <select id="socialWork" className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-            <option value="Obra Social Privada">Obra Social Privada</option>
-            <option value="Obra Social Estatal">Obra Social Estatal</option>
+          <select 
+            id="socialWork" 
+            name="tipo_obra_social"
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+          >
+            <option value="OBRA_SOCIAL_PRIVADA">Obra Social Privada</option>
+            <option value="OBRA_SOCIAL_ESTATAL">Obra Social Estatal</option>
           </select>
         </div>
       </div>

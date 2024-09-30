@@ -3,6 +3,8 @@
 import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { createDoctor, DoctorState } from '@/lib/actions';
+import { useActionState } from 'react';
 
 export default function CreateDoctorForm() {
   const [dateOfBirth] = useState('')
@@ -20,6 +22,9 @@ export default function CreateDoctorForm() {
     }
   }
 
+  const initialState: DoctorState = { message: null, errors: {} };
+  //const [state, formAction] = useActionState(createDoctor, initialState);
+
   return (
     <form onSubmit={handleSubmit} className="space-y-8 max-w-2xl mx-auto">
       <div className="space-y-2">
@@ -30,7 +35,10 @@ export default function CreateDoctorForm() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="space-y-2">
           <label htmlFor="documentType" className="block text-sm font-medium text-gray-700">Tipo de Documento</label>
-          <select id="documentType" className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+          <select id="documentType" 
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            name="tipo_documento"
+            >
             <option value="Documento Nacional de Indentidad">Documento Nacional de Indentidad</option>
             <option value="Cédula de Identidad">Cédula de Identidad</option>
             <option value="Libreta Cívica">Libreta Cívica</option>
@@ -41,25 +49,33 @@ export default function CreateDoctorForm() {
 
         <div className="space-y-2">
           <label htmlFor="documentNumber" className="block text-sm font-medium text-gray-700">Número de Documento</label>
-          <Input id="documentNumber" 
-          placeholder="Ingrese el número de documento" 
-          onChange={(e) => handleInputChange(e, /^\d*$/)}
-          required
+          <Input 
+            id="documentNumber" 
+            name="numero_documento"
+            placeholder="Ingrese el número de documento" 
+            onChange={(e) => handleInputChange(e, /^\d*$/)}
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="name" className="block text-sm font-medium text-gray-700">Nombre del Médico</label>
-          <Input id="name" 
-          placeholder="Ingrese el nombre del médico" 
-          onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
-          required
+          <Input 
+            id="name" 
+            name="nombre"
+            placeholder="Ingrese el nombre del médico" 
+            onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="typeOfRegistration" className="block text-sm font-medium text-gray-700">Tipo de Matrícula</label>
-          <select id="typeOfRegistration" className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+          <select 
+            id="typeOfRegistration" 
+            name="tipo_matricula"
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            >
             <option value="Matrícula Provincial">Matrícula Provincial</option>
             <option value="Matrícula Nacional">Matrícula Nacional</option>
           </select>
@@ -67,103 +83,131 @@ export default function CreateDoctorForm() {
 
         <div className="space-y-2">
           <label htmlFor="lastName" className="block text-sm font-medium text-gray-700">Apellido del Médico</label>
-          <Input id="lastName" 
-          placeholder="Ingrese el apellido del médico" 
-          onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
-          required
+          <Input 
+            id="lastName"
+            name="apellido" 
+            placeholder="Ingrese el apellido del médico" 
+            onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="registrationNumber" className="block text-sm font-medium text-gray-700">Número de Matricula</label>
-          <Input id="registrationNumber" 
-          placeholder="Ingrese el número de matrícula" 
-          onChange={(e) => handleInputChange(e, /^\d*$/)}
-          required
+          <Input 
+            id="registrationNumber" 
+            name="numero_matricula"
+            placeholder="Ingrese el número de matrícula" 
+            onChange={(e) => handleInputChange(e, /^\d*$/)}
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">Número de Teléfono</label>
           <div className="flex space-x-2">
-            <Input id="cellphoneCountryCode" 
-            placeholder="+54" className="w-20" 
-            onChange={(e) => handleInputChange(e, /^\d*$/)}
-            required
-            />
-            <Input id="cellphoneNumber" 
-            placeholder="Ingrese el número de teléfono" 
-            onChange={(e) => handleInputChange(e, /^\d*$/)}
-            required
+            {/*<Input 
+              id="cellphoneCountryCode" 
+              placeholder="+54" className="w-20" 
+              onChange={(e) => handleInputChange(e, /^\d*$/)}
+              required
+            />*/}
+            <Input 
+              id="cellphoneNumber" 
+              name="numero_telefono"
+              placeholder="Ingrese el número de teléfono" 
+              onChange={(e) => handleInputChange(e, /^\d*$/)}
+              required
             />
           </div>
         </div>
 
         <div className="space-y-2">
           <label htmlFor="specialty" className="block text-sm font-medium text-gray-700">Especialidad</label>
-          <select id="specialty" className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-            <option value="Pediatría">Pediatría</option>
-            <option value="Radiología">Radiología</option>
-            <option value="Microbiología">Microbiología</option>
-            <option value="Farmacología">Farmacología</option>
-            <option value="Cirugía">Cirugía</option>
+          <select 
+            id="specialty" 
+            name="especialidad"
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            >
+            <option value="PEDIATRIA">Pediatría</option>
+            <option value="RADIOLOGIA">Radiología</option>
+            <option value="MICROBIOLOGIA">Microbiología</option>
+            <option value="FARMACOLOGIA">Farmacología</option>
+            <option value="CIRUGIA">Cirugía</option>
           </select>
         </div>
 
         <div className="space-y-2">
           <label htmlFor="streetName" className="block text-sm font-medium text-gray-700">Calle</label>
-          <Input id="streetName" 
-          placeholder="Ingrese el nombre de la calle" 
-          onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
-          required
+          <Input 
+            id="streetName" 
+            name="calle"
+            placeholder="Ingrese el nombre de la calle" 
+            onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="streetNumber" className="block text-sm font-medium text-gray-700">Número</label>
-          <Input id="streetNumber" 
-          placeholder="Ingrese el número de la calle" 
-          onChange={(e) => handleInputChange(e, /^\d*$/)}
-          required
+          <Input 
+            id="streetNumber" 
+            name="numero"
+            placeholder="Ingrese el número de la calle" 
+            onChange={(e) => handleInputChange(e, /^\d*$/)}
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="postalCode" className="block text-sm font-medium text-gray-700">Código Postal</label>
-          <Input id="postalCode" 
-          placeholder="Ingrese el código postal" 
-          onChange={(e) => handleInputChange(e, /^\d*$/)}
-          required
+          <Input 
+            id="postalCode" 
+            name="codigo_postal"
+            placeholder="Ingrese el código postal" 
+            onChange={(e) => handleInputChange(e, /^\d*$/)}
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="city" className="block text-sm font-medium text-gray-700">Ciudad</label>
-          <Input id="city" 
-          placeholder="Ingrese la ciudad" 
-          onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
-          required
+          <Input 
+            id="city" 
+            name="ciudad"
+            placeholder="Ingrese la ciudad" 
+            onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="state" className="block text-sm font-medium text-gray-700">Provincia</label>
-          <Input id="state" 
-          placeholder="Ingrese la provincia" 
-          onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
-          required
+          <Input 
+            id="state" 
+            name="provincia"
+            placeholder="Ingrese la provincia" 
+            onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
+            required
           />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="email" className="block text-sm font-medium text-gray-700">Correo electrónico</label>
-          <Input id="email" type="email" placeholder="Ingrese el correo electrónico" />
+          <Input 
+            id="email" 
+            name="correo_electronico"
+            type="email" 
+            placeholder="Ingrese el correo electrónico" 
+            required
+          />
         </div>
 
         <div className="space-y-2">
           <label htmlFor="additionalInfo" className="block text-sm font-medium text-gray-700">Descripción</label>
           <textarea
             id="additionalInfo"
+            name="descripcion"
             rows={4}
             className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             placeholder="Ingrese información adicional"
