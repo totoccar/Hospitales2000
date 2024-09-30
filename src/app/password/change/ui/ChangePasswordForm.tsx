@@ -17,7 +17,7 @@ export default function ChangePasswordForm() {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [isDisabled, setIsDisabled] = useState(false);  // Nuevo estado para deshabilitar el formulario
 
-    const user_id = "2c496f26-8a23-4b1c-92da-aff39d5fcb9d";
+    const user_id = "cde3fea9-b222-49e6-8e53-24cc1ec6d0ba";
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
