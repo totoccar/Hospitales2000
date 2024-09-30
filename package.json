@@ -21,8 +21,10 @@
     "lucide-react": "^0.446.0",
     "next": "14.2.13",
     "next-auth": "5.0.0-beta.21",
+    "nodemailer": "^6.9.15",
     "react": "^18",
     "react-dom": "^18",
+    "resend": "^4.0.0",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7"
   },
@@ -30,6 +32,7 @@
     "@prisma/client": "^5.20.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/node": "^20.16.9",
+    "@types/nodemailer": "^6.4.16",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "bcryptjs": "^2.4.3",

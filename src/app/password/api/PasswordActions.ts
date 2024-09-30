@@ -44,7 +44,6 @@ export async function authenticatePassword(
 
 }
 
-/*Falta hash*/
 export async function changePasswordAPI(
     param_nueva_contrasena: string,
     documento: string
@@ -62,4 +61,13 @@ export async function getUserEmail(user_document: string): Promise<string> {
     }
 }
 
+export async function getUserName(
+    user_document: string
+): Promise<string> {
+    const user_email = await getUserEmailByDocument(user_document);
 
+    if (user_email) {
+        return user_email;  // Retorna el correo electrónico del usuario    
+
+    } else return "null";
+}

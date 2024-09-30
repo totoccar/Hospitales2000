@@ -5,7 +5,7 @@ import {
     ExclamationCircleIcon,
     KeyIcon,
 } from '@heroicons/react/24/outline';
-import { authenticatePassword, changePasswordAPI } from '../../api/actions';
+import { authenticatePassword, changePasswordAPI } from '../../api/PasswordActions';
 
 
 
@@ -17,9 +17,6 @@ export default function ChangePasswordForm() {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [isDisabled, setIsDisabled] = useState(false);  // Nuevo estado para deshabilitar el formulario
 
-    /* Constantes para hardcodear la BDD, lo ideal es buscar por ID*/
-    const nombre_user = "Antonio Carlos";
-    const documento_user = "87654321"
     const user_id = "2c496f26-8a23-4b1c-92da-aff39d5fcb9d";
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {

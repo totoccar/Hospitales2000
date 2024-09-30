@@ -1,7 +1,8 @@
 // pages/api/changePassword.ts
-import { PrismaClient } from '@prisma/client';
+
+import prisma from '@/lib/db';
 import bcrypt from 'bcryptjs';
-const prisma = new PrismaClient();
+
 
 
 /** Primer funcion =') nunca olvidar */
@@ -105,6 +106,24 @@ export async function getUserEmailByDocument(user_document: string) {
 
         console.log("El usuario de documento" + user_document + "  es: " + user.nombre + " " + user.apellido + " d correo :" + user.correo_electronico);
         return user.correo_electronico;
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        return null;
+    }
+}
+
+export async function getUserNameByDocument(user_document: string) {
+    try {
+        const user = await prisma.usuario.findUnique({
+            where: {
+                numero_documento: user_document,
+            },
+        });
+
+        if (!user) {
+            console.log('User not found');
+            return null;
+        }
     } catch (error) {
         console.error('Error fetching user:', error);
         return null;

@@ -1,11 +1,10 @@
 'use client';
 import React, { useState } from 'react';
 import {
-    LockClosedIcon,
     ExclamationCircleIcon,
     KeyIcon,
 } from '@heroicons/react/24/outline';
-import { authenticatePassword, changePasswordAPI } from '../../api/actions';
+import { changePasswordAPI } from '../../api/PasswordActions';
 
 
 
@@ -19,6 +18,10 @@ export default function ChangePasswordForm() {
 
     /* Constantes para hardcodear la BDD, lo ideal es buscar por ID*/
     const user_id = "2c496f26-8a23-4b1c-92da-aff39d5fcb9d";
+
+
+
+
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -37,6 +40,8 @@ export default function ChangePasswordForm() {
             setErrorMessage(null);
             setIsPending(false);
             setIsDisabled(true);
+
+
         }
 
 
