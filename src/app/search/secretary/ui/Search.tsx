@@ -29,7 +29,7 @@ export default function SearchForm() {
       queryParams.append('apellido', apellido)
     }
 
-    router.push(`/search/patient?${queryParams.toString()}`)
+    router.push(`/search/secretary?${queryParams.toString()}`)
   }
 
   return (

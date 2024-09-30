@@ -7,7 +7,7 @@ interface SearchParams {
   tipoDocumento: TipoDocumentoEnum;
 }
 
-export async function findsecretariasByQuery({ dni, apellido, tipoDocumento }: SearchParams) {
+export async function findSecretariesByQuery({ dni, apellido, tipoDocumento }: SearchParams) {
   try {
     const secretarias = await prisma.secretaria.findMany({
       where: {
