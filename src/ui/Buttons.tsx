@@ -16,7 +16,7 @@ export function ViewPatient({ id }: { id: string }) {
 export function ViewDoctor({ id }: { id: string }) {
   return (
     <Link
-      href={`/view/patient/${id}`}
+      href={`/view/doctor/${id}`}
       className="rounded-md border p-2 hover:bg-gray-100"
     >
       <Eye  className="w-5" />
