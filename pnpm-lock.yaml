@@ -25,7 +25,7 @@ importers:
         version: 2.1.1
       hospitales2000:
         specifier: 'file:'
-        version: file:(@types/react@18.3.10)(tailwindcss@3.4.13(ts-node@10.9.2(@types/node@20.16.10)(typescript@5.6.2)))
+        version: file:(@types/react@18.3.10)(nodemailer@6.9.15)(tailwindcss@3.4.13(ts-node@10.9.2(@types/node@20.16.10)(typescript@5.6.2)))
       lucide-react:
         specifier: ^0.446.0
         version: 0.446.0(react@18.3.1)
@@ -3096,7 +3096,7 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  hospitales2000@file:(@types/react@18.3.10)(tailwindcss@3.4.13(ts-node@10.9.2(@types/node@20.16.10)(typescript@5.6.2))):
+  hospitales2000@file:(@types/react@18.3.10)(nodemailer@6.9.15)(tailwindcss@3.4.13(ts-node@10.9.2(@types/node@20.16.10)(typescript@5.6.2))):
     dependencies:
       '@heroicons/react': 2.1.5(react@18.3.1)
       '@radix-ui/react-slot': 1.1.0(@types/react@18.3.10)(react@18.3.1)
@@ -3106,7 +3106,6 @@ snapshots:
       lucide-react: 0.446.0(react@18.3.1)
       next: 14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       next-auth: 5.0.0-beta.21(next@14.2.13(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(nodemailer@6.9.15)(react@18.3.1)
-      nodemailer: 6.9.15
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
       resend: 4.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -3120,6 +3119,7 @@ snapshots:
       - '@simplewebauthn/server'
       - '@types/react'
       - babel-plugin-macros
+      - nodemailer
       - sass
       - tailwindcss
       - utf-8-validate
@@ -3442,7 +3442,8 @@ snapshots:
 
   node-gyp-build@4.8.2: {}
 
-  nodemailer@6.9.15: {}
+  nodemailer@6.9.15:
+    optional: true
 
   nopt@7.2.1:
     dependencies:
