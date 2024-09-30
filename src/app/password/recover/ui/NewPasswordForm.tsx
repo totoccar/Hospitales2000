@@ -29,9 +29,12 @@ export default function ChangePasswordForm() {
         /*Chequeo solo front*/
         if (formData.get('nueva_contrasena') !== formData.get('confirm_contrasena')) {
             setErrorMessage('Las contraseñas no coinciden');
+            setIsPending(false);
         } else {
             changePasswordAPI(formData.get('nueva_contrasena') as string, user_id);
             setSuccessMessage("La contraseña se ha cambiado correctamente.");
+
+            setErrorMessage(null);
             setIsPending(false);
             setIsDisabled(true);
         }
