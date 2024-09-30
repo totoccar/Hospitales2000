@@ -39,7 +39,7 @@ export default function CreatePatientForm() {
           <select 
             id="documentType"
             name="tipo_documento" 
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
             >
             <option value="DOCUMENTO_NACIONAL_IDENTIDAD">Documento Nacional de Indentidad</option>
             <option value="CEDULA_IDENTIDAD">Cédula de Identidad</option>
@@ -215,7 +215,7 @@ export default function CreatePatientForm() {
           <select 
             id="socialWork" 
             name="tipo_obra_social"
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
           >
             <option value="OBRA_SOCIAL_PRIVADA">Obra Social Privada</option>
             <option value="OBRA_SOCIAL_ESTATAL">Obra Social Estatal</option>
