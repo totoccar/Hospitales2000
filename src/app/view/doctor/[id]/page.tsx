@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { getEspecialidadById, getUbicacionById, getUsuarioById } from "@/lib/getMedicoById";
+import MaxWidthWrapper from "@/ui/MaxWidthWrapper";
 
 export default async function Component({ params }: { params: { id: string } }) {
 
@@ -20,7 +21,8 @@ export default async function Component({ params }: { params: { id: string } }) 
   );
 
   return (
-    <div className="w-full max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-md">
+    <MaxWidthWrapper>
+    <div className="w-full max-w-3xl mx-auto p-6 bg-fondo mt-5 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-center">Vista de datos personales del médico</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <DisplayField label="DNI" value={usuario.numero_documento} />
@@ -44,6 +46,7 @@ export default async function Component({ params }: { params: { id: string } }) 
       </div>
       <p className="text-sm text-gray-500 mt-4">Solo disponible para rol de administrador</p>
     </div>
+    </MaxWidthWrapper>
   );
 }
 
