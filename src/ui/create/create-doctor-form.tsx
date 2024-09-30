@@ -34,11 +34,11 @@ export default function CreateDoctorForm() {
             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
             name="tipo_documento"
             >
-            <option value="Documento Nacional de Indentidad">Documento Nacional de Indentidad</option>
-            <option value="Cédula de Identidad">Cédula de Identidad</option>
-            <option value="Libreta Cívica">Libreta Cívica</option>
-            <option value="Libreta de Enrolamiento">Libreta de Enrolamiento</option>
-            <option value="Pasaporte">Pasaporte</option>
+            <option value="DOCUMENTO_NACIONAL_IDENTIDAD">Documento Nacional de Indentidad</option>
+            <option value="CEDULA_IDENTIDAD">Cédula de Identidad</option>
+            <option value="LIBRETA_CIVICA">Libreta Cívica</option>
+            <option value="LIBRETA_ENROLAMIENTO">Libreta de Enrolamiento</option>
+            <option value="PASAPORTE">Pasaporte</option>
           </select>
         </div>
 
@@ -71,8 +71,8 @@ export default function CreateDoctorForm() {
             name="tipo_matricula"
             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
             >
-            <option value="Matrícula Provincial">Matrícula Provincial</option>
-            <option value="Matrícula Nacional">Matrícula Nacional</option>
+            <option value="provincial">Matrícula Provincial</option>
+            <option value="nacional">Matrícula Nacional</option>
           </select>
         </div>
 

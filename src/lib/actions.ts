@@ -3,12 +3,7 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-//import { PrismaClient } from "@prisma/client";
 import prisma from '@/lib/db'; //Should we use the prisma from db.ts?
-
-//Prisma client to insert into database.
-//const prisma = new PrismaClient();
-
 //TODO: Zip all common fields into one UserState, use it along with particular cases.
 //TODO: Change file name to create-user.ts.
 
@@ -50,7 +45,7 @@ const PatientFormSchema = z.object({
     patientLastName: z.string({
         invalid_type_error: 'Por favor ingrese el apellido.',
     }),
-    birthDate: z.date({
+    birthDate: z.string({
         invalid_type_error: 'Por favor seleccione una fecha de nacimiento.',
     }),
     birthPlace: z.string({
@@ -109,15 +104,21 @@ export async function createPatient(prevState: PatientState, formData: FormData)
     console.log(formData);
 
     if (!validatedFields.success) {
+        console.log("error on validatedFields.");
         return {
             errors: validatedFields.error.flatten().fieldErrors,
             message: 'Campos incompletos. Error al crear un paciente nuevo.',
         };
     }
 
+    console.log('validatedFields: ', validatedFields);
+
     const { typeId, numberId, patientName, patientLastName, birthDate, birthPlace, emergencyContact,
         phoneNumber, city, streetName, streetNumber, postalCode, cityState, email, socialWork
     } = validatedFields.data;
+
+    const [year, month, day] = birthDate.split('-').map(Number);
+    const parsedDate = new Date(day, month, year);
 
     try {
         const newUser = await prisma.usuario.create({
@@ -130,7 +131,7 @@ export async function createPatient(prevState: PatientState, formData: FormData)
                 contrasena: numberId, //At first, default password is numberId.
                 paciente: {
                     create: {
-                        fecha_nacimiento: birthDate,
+                        fecha_nacimiento: parsedDate,
                         lugar_nacimiento: birthPlace,
                         contacto_emergencia: emergencyContact,
                         numero_telefono: phoneNumber,
@@ -162,7 +163,7 @@ export async function createPatient(prevState: PatientState, formData: FormData)
         });
         console.log(newUser);
     }catch (error) {
-        console.log("error");
+        console.log("error on create.");
         return {
             message: 'Fallo en la base de datos: No se creó el paciente.',
         };
@@ -266,11 +267,14 @@ export async function createDoctor(prevState: DoctorState, formData: FormData) {
     console.log(formData);
 
     if (!validatedFields.success) {
+        console.log("error on validatedFields.");
         return {
             errors: validatedFields.error.flatten().fieldErrors,
             message: 'Campos incompletos. Error al crear un doctor nuevo.',
         };
     }
+
+    console.log('validatedFields: ', validatedFields);
 
     const { typeId, numberId, regType, regNumber, doctorName, doctorLastName,
         phoneNumber, city, streetName, streetNumber, postalCode, cityState, email, specialty, description
@@ -310,7 +314,7 @@ export async function createDoctor(prevState: DoctorState, formData: FormData) {
         });
         console.log(newUser);
     }catch (error) {
-        console.log("error");
+        console.log("error on creation.");
         return {
             message: 'Fallo en la base de datos: No se creó el doctor.',
         };
@@ -397,11 +401,14 @@ export async function createSecretary(prevState: SecretaryState, formData: FormD
     console.log(formData);
 
     if (!validatedFields.success) {
+        console.log("error on validatedFields.");
         return {
             errors: validatedFields.error.flatten().fieldErrors,
             message: 'Campos incompletos. Error al crear una secretaria nueva.',
         };
     }
+
+    console.log('validatedFields: ', validatedFields);
 
     const { typeId, numberId, secretaryName, secretaryLastName,
         phoneNumber, city, streetName, streetNumber, postalCode, cityState, email
@@ -434,7 +441,7 @@ export async function createSecretary(prevState: SecretaryState, formData: FormD
         });
         console.log(newUser);
     }catch (error) {
-        console.log("error");
+        console.log("error on creation.");
         return {
             message: 'Fallo en la base de datos: No se creó la secretaria.',
         };
