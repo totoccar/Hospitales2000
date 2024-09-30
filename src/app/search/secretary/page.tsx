@@ -22,7 +22,7 @@ export default async function SearchSecretary({searchParams,
   const count = 1
   return (
     <MaxWidthWrapper>
-    <div className="bg-gray-200 rounded-lg shadow-md p-6 mt-5">
+    <div className="bg-fondo rounded-lg shadow-md p-6 mt-5">
         <h2 className="text-xl font-bold mb-4">Buscar Secretarias</h2>
         <h3 className="text-xs">Puedes buscar Secretarias por documento o por apellido</h3>
         <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
