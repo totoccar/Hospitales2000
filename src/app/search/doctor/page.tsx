@@ -24,7 +24,7 @@ export default async function SearchDoctor({searchParams,
   const count = 1
   return (
     <MaxWidthWrapper>
-    <div className="bg-gray-200 rounded-lg shadow-md p-6 mt-5">
+    <div className="bg-fondo rounded-lg shadow-md p-6 mt-5">
         <h2 className="text-xl font-bold mb-4">Buscar Medicos</h2>
         <h3 className="text-xs">Puedes buscar Medicos por documento, apellido o n de matricula</h3>
         <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
