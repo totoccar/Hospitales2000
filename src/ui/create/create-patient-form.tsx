@@ -2,7 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { createPatient, obtenerObrasSociales, PatientState } from '@/lib/actions';
+import { createPatient, PatientState } from '@/lib/actions';
 import { useFormState } from 'react-dom';
 import Link from 'next/link';
 import PhoneInput, {
@@ -13,7 +13,7 @@ import PhoneInput, {
 } from "react-phone-number-input/input";
 import { ObraSocial } from "@prisma/client";
 
-export default function CreatePatientForm({obrasSociales}: {obrasSociales: ObraSocial[]}) {
+export default function CreatePatientForm({socialWorks}: {socialWorks: ObraSocial[]}) {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, pattern: RegExp) => {
     const { value } = e.target
@@ -199,15 +199,15 @@ export default function CreatePatientForm({obrasSociales}: {obrasSociales: ObraS
         <div className="space-y-2">
           <label htmlFor="socialWork" className="block text-sm font-medium text-gray-700">Obra Social</label>
           <select 
-          id="socialWork" 
-          name="tipo_obra_social"
-          className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-          {obrasSociales.map(obra => (
-            <option key={obra.id} value={obra.id}>
-              {obra.nombre}
-            </option>
-          ))}
-        </select>
+            id="socialWork" 
+            name="tipo_obra_social"
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+            {socialWorks.map(obra => (
+              <option key={obra.id} value={obra.id}>
+                {obra.nombre}
+              </option>
+            ))}
+          </select>
         </div>
       </div>
 

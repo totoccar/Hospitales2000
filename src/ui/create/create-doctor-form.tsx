@@ -5,8 +5,9 @@ import { Input } from "@/components/ui/input"
 import { createDoctor, DoctorState } from '@/lib/actions';
 import { useFormState } from 'react-dom';
 import Link from 'next/link';
+import { Especialidad } from "@prisma/client";
 
-export default function CreateDoctorForm() {
+export default function CreateDoctorForm({specialties}: {specialties: Especialidad[]}) {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, pattern: RegExp) => {
     const { value } = e.target
@@ -101,12 +102,6 @@ export default function CreateDoctorForm() {
         <div className="space-y-2">
           <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">Número de Teléfono</label>
           <div className="flex space-x-2">
-            {/*<Input 
-              id="cellphoneCountryCode" 
-              placeholder="+54" className="w-20" 
-              onChange={(e) => handleInputChange(e, /^\d*$/)}
-              required
-            />*/}
             <Input 
               id="cellphoneNumber" 
               name="numero_telefono"
@@ -120,15 +115,14 @@ export default function CreateDoctorForm() {
         <div className="space-y-2">
           <label htmlFor="specialty" className="block text-sm font-medium text-gray-700">Especialidad</label>
           <select 
-            id="specialty" 
-            name="especialidad"
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-            >
-            <option value="PEDIATRIA">Pediatría</option>
-            <option value="RADIOLOGIA">Radiología</option>
-            <option value="MICROBIOLOGIA">Microbiología</option>
-            <option value="FARMACOLOGIA">Farmacología</option>
-            <option value="CIRUGIA">Cirugía</option>
+            id="socialWork" 
+            name="tipo_obra_social"
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+            {specialties.map(especialidad => (
+              <option key={especialidad.id} value={especialidad.id}>
+                {especialidad.nombre}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -212,7 +206,7 @@ export default function CreateDoctorForm() {
 
       <div className="flex gap-4 w-full">
         <Button type="submit" className="flex-1">
-          Crear Paciente
+          Crear Doctor
         </Button>
         <Button asChild className="flex-1">
           <Link href="/search/doctor">

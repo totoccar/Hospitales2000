@@ -241,7 +241,7 @@ const DoctorFormSchema = z.object({
     email: z.string({
         invalid_type_error: 'Por favor ingrese el correo electrónico.',
     }),
-    specialty: z.enum(['PEDIATRIA', 'RADIOLOGIA', 'MICROBIOLOGIA', 'FARMACOLOGIA', 'CIRUGIA'], {
+    specialty: z.string({
         invalid_type_error: 'Por favor seleccione una especialidad.',
     }),
     description: z.string(),
@@ -299,8 +299,8 @@ export async function createDoctor(prevState: DoctorState, formData: FormData) {
                         numero_matricula: regNumber,
                         numero_telefono: phoneNumber,
                         especialidad: {
-                            create: {
-                                nombre: specialty,
+                            connect: {
+                                id: specialty,
                             }
                         },
                         ubicacion: {
@@ -455,18 +455,26 @@ export async function createSecretary(prevState: SecretaryState, formData: FormD
     redirect('/search/secretary'); //Redirects you to secretary search.
 }
 
-export async function obtenerObrasSociales() {
+export async function fetchSocialWorks() {
     try {
-      // Realiza la consulta para obtener todas las obras sociales
-      const obrasSociales = await prisma.obraSocial.findMany();
-  
-      // Devuelve el resultado
-      return obrasSociales;
+      const socialWorks = await prisma.obraSocial.findMany();
+      return socialWorks;
     } catch (error) {
-      console.error("Error al obtener obras sociales:", error);
-      throw new Error("No se pudieron obtener las obras sociales");
+      console.error("Error al obtener obras sociales: ", error);
+      throw new Error("No se pudieron obtener las obras sociales.");
     } finally {
-      // Cierra la conexión con Prisma
       await prisma.$disconnect();
     }
-  }
+}
+
+export async function fetchSpecialties() {
+    try {
+        const specialties = await prisma.especialidad.findMany();
+        return specialties;
+    }catch (error) {
+        console.error("Error al obtener especialidades: ", error);
+        throw new Error("No se pudieron obtener las especialidades.");
+    } finally {
+        await prisma.$disconnect();
+    }
+}
