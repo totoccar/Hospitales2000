@@ -44,5 +44,5 @@ Cada uno debe trabajar en la ruta que tiene asignada en el sheet de "Asignacion 
 Para cada US se va a crear una branch para trabajar sobre ella, y una vez terminada se realiza un pull request, luego el PM realizara un merge a la rama de development.
 
 ## Testss
-El Tester podra testear todas las US, dentro de la rama de development, para luego una vez testeado poder realizar un merge a la rama de master y deployar la aplicación.
+El Tester podra testear todas las US, dentro de la rama de development, para luego una vez testeado poder realizar un merge a la rama de master y depsloyar la aplicación.
 
