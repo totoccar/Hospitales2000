@@ -8,7 +8,7 @@ import bcrypt from 'bcryptjs';
 /** Primer funcion =') nunca olvidar */
 export async function getPassword(user_id: string): Promise<string> {
     try {
-        const user = await prisma.usuario.findFirst({
+        const user = await prisma.usuario.findUnique({
             where: { id: user_id },
         });
         console.log("Se obtuvo el usuario: ", user);
