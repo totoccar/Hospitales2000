@@ -35,8 +35,6 @@ export async function findSecretariesByQuery({ dni, apellido, tipoDocumento }: S
         usuario: true, 
       },
     });
-    
-    console.log('secretarias encontradas:', secretarias);
     return secretarias;
   } catch (error) {
     console.error('Error finding secretarias:', error);

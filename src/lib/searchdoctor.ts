@@ -18,7 +18,6 @@ export async function findDoctorsByQuery({
     const medicos = await prisma.medico.findMany({
       where: {
         AND: [
-          // Filtro por apellido, si se proporciona
           apellido
             ? {
                 usuario: {
@@ -29,7 +28,6 @@ export async function findDoctorsByQuery({
                 },
               }
             : {},
-          // Filtro por dni y tipo de documento, si se proporcionan ambos
           dni && tipoDocumento
             ? {
                 usuario: {
@@ -41,7 +39,6 @@ export async function findDoctorsByQuery({
                 },
               }
             : {},
-          // Filtro por número de matrícula, si se proporciona
           numero_matricula
             ? {
                 numero_matricula: {
@@ -52,15 +49,10 @@ export async function findDoctorsByQuery({
             : {},
         ],
       },
-      // Incluir datos de la relación con Usuario
       include: {
-        usuario: true, // Asegúrate de que `usuario` esté bien relacionado en el esquema
+        usuario: true,
       },
     });
-    console.log("Apellido: ", apellido);
-    console.log("DNI: ", dni);
-    console.log("Tipo de documento: ", tipoDocumento);
-    console.log("Número de matrícula: ", numero_matricula);
     return medicos;
   } catch (error) {
     console.error("Error al buscar médicos:", error);
