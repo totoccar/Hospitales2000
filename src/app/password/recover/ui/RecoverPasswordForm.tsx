@@ -5,7 +5,7 @@ import {
     ExclamationCircleIcon,
     LinkIcon
 } from '@heroicons/react/24/outline';
-import { authenticateDocument, getUserEmail, getUserName } from '../../api/PasswordActions';
+import { authenticateDocument, getUserEmail } from '../../api/PasswordActions';
 
 
 export default function ChangePasswordForm() {
