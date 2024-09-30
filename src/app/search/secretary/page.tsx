@@ -8,13 +8,13 @@ import { TipoDocumentoEnum } from '@prisma/client';
 export default async function SearchSecretary({searchParams,
 }: {
   searchParams?: {
-    DNI?: string;
+    dni?: string;
     apellido?: string;
     tipoDocumento?: TipoDocumentoEnum;
     page?: string;
   };
 }) {
-  const currentDNI = searchParams?.DNI || '';
+  const currentDNI = searchParams?.dni || '';
   const currentApellido = searchParams?.apellido || '';
   const currentTipoDocumento = searchParams?.tipoDocumento || TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD;
   const currentPage = Number(searchParams?.page) || 1;

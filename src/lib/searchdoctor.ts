@@ -57,7 +57,10 @@ export async function findDoctorsByQuery({
         usuario: true, // Asegúrate de que `usuario` esté bien relacionado en el esquema
       },
     });
-
+    console.log("Apellido: ", apellido);
+    console.log("DNI: ", dni);
+    console.log("Tipo de documento: ", tipoDocumento);
+    console.log("Número de matrícula: ", numero_matricula);
     return medicos;
   } catch (error) {
     console.error("Error al buscar médicos:", error);

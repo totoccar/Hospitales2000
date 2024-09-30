@@ -8,14 +8,14 @@ import { TipoDocumentoEnum } from '@prisma/client';
 export default async function SearchDoctor({searchParams,
 }: {
   searchParams?: {
-    DNI?: string;
+    dni?: string;
     apellido?: string;
     numero_matricula?: string;
     tipoDocumento?: TipoDocumentoEnum;
     page?: string;
   };
 }) {
-  const currentDNI = searchParams?.DNI || '';
+  const currentDNI = searchParams?.dni || '';
   const currentApellido = searchParams?.apellido || '';
   const currentMatricula = searchParams?.numero_matricula || '';
   const currentTipoDocumento = searchParams?.tipoDocumento || TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD;

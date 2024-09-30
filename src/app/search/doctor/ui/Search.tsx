@@ -43,16 +43,16 @@ export default function SearchForm() {
             <div className="flex items-center space-x-4 mb-2">
               <RadioGroup defaultValue="dni" onValueChange={setSearchType} className="flex space-x-4">
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="dni" id="dni" />
-                  <Label htmlFor="dni">DNI</Label>
-                </div>
-                <div className="flex items-center space-x-2">
                   <RadioGroupItem value="apellido" id="apellido" />
                   <Label htmlFor="apellido">Apellido</Label>
                 </div>
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="matricula" id="numero_matricula" />
                   <Label htmlFor="numero_matricula">Numero de matricula</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="dni" id="dni" />
+                  <Label htmlFor="dni">DNI</Label>
                 </div>
               </RadioGroup>
             </div>
@@ -87,7 +87,7 @@ export default function SearchForm() {
                 <Input
                   id="dni-input"
                   placeholder="DNI"
-                  disabled={searchType === 'apellido'}
+                  disabled={searchType === 'apellido' || searchType === 'matricula'}
                   value={dni}
                   onChange={(e) => {
                   const value = e.target.value;
