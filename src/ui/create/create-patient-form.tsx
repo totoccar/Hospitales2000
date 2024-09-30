@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createPatient, PatientState } from '@/lib/actions';
-import { useActionState } from 'react';
+import { useFormState } from 'react-dom';
 import Link from 'next/link';
 
 export default function CreatePatientForm() {
@@ -24,10 +24,10 @@ export default function CreatePatientForm() {
   }
 
   const initialState: PatientState = { message: null, errors: {} };
-  //const [state, formAction] = useActionState(createPatient, initialState);
+  const [state, formAction] = useFormState(createPatient, initialState);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-2xl mx-auto">
+    <form action={formAction} className="space-y-8 max-w-2xl mx-auto">
       <div className="space-y-2">
         <h2 className="text-2xl font-bold">Crear Paciente</h2>
         <p className="text-gray-500">Ingrese la información del paciente.</p>
