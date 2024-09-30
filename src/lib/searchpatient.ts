@@ -8,6 +8,9 @@ interface SearchParams {
 }
 
 export async function findPacientesByQuery({ dni, apellido, tipoDocumento }: SearchParams) {
+  console.log('apellido:', apellido);
+  console.log('dni:', dni);
+  console.log('tipoDocumento:', tipoDocumento);
   try {
     const pacientes = await prisma.paciente.findMany({
       where: {
@@ -36,7 +39,7 @@ export async function findPacientesByQuery({ dni, apellido, tipoDocumento }: Sea
       },
     });
     
-    console.log('Pacientes encontrados:', pacientes);
+
     return pacientes;
   } catch (error) {
     console.error('Error finding pacientes:', error);
