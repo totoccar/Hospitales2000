@@ -1,17 +1,11 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model Ubicacion {
@@ -21,50 +15,50 @@ model Ubicacion {
   codigo_postal String
   ciudad        String
   provincia     String
+  medico        Medico?
   paciente      Paciente?
   secretaria    Secretaria?
-  medico        Medico?
 }
 
 model Secretaria {
-  usuario         Usuario   @relation(fields: [usuario_id], references: [id])
   usuario_id      String    @id
   numero_telefono String
-  ubicacion       Ubicacion @relation(fields: [ubicacion_id], references: [id])
   ubicacion_id    String    @unique
+  ubicacion       Ubicacion @relation(fields: [ubicacion_id], references: [id])
+  usuario         Usuario   @relation(fields: [usuario_id], references: [id])
 }
 
 model Medico {
-  usuario          Usuario           @relation(fields: [usuario_id], references: [id])
   usuario_id       String            @id
   tipo_matricula   TipoMatriculaEnum
   numero_matricula String            @unique
   numero_telefono  String
-  ubicacion        Ubicacion         @relation(fields: [ubicacion_id], references: [id])
   ubicacion_id     String            @unique
-  especialidad     Especialidad      @relation(fields: [especialidad_id], references: [id]) // Relación con Especialidad
   especialidad_id  String
   descripcion      String?
+  especialidad     Especialidad      @relation(fields: [especialidad_id], references: [id])
+  ubicacion        Ubicacion         @relation(fields: [ubicacion_id], references: [id])
+  usuario          Usuario           @relation(fields: [usuario_id], references: [id])
 }
 
 model Paciente {
-  usuario             Usuario     @relation(fields: [usuario_id], references: [id])
   usuario_id          String      @id
   fecha_nacimiento    DateTime
   lugar_nacimiento    String
   contacto_emergencia String
   numero_telefono     String
-  ubicacion           Ubicacion   @relation(fields: [ubicacion_id], references: [id])
   ubicacion_id        String      @unique
-  obra_social         ObraSocial  @relation(fields: [obra_social_id], references: [id])
   obra_social_id      String
-  ficha_medica        FichaMedica @relation(fields: [ficha_medica_id], references: [id])
   ficha_medica_id     String      @unique
+  ficha_medica        FichaMedica @relation(fields: [ficha_medica_id], references: [id])
+  obra_social         ObraSocial  @relation(fields: [obra_social_id], references: [id])
+  ubicacion           Ubicacion   @relation(fields: [ubicacion_id], references: [id])
+  usuario             Usuario     @relation(fields: [usuario_id], references: [id])
 }
 
 model Admin {
-  usuario    Usuario @relation(fields: [usuario_id], references: [id])
   usuario_id String  @id
+  usuario    Usuario @relation(fields: [usuario_id], references: [id])
 }
 
 model Usuario {
@@ -75,32 +69,19 @@ model Usuario {
   apellido           String
   correo_electronico String
   contrasena         String
-  secretaria         Secretaria?
+  admin              Admin?
   medico             Medico?
   paciente           Paciente?
-  admin              Admin?
-}
-
-enum TipoDocumentoEnum {
-  CEDULA_IDENTIDAD
-  DOCUMENTO_NACIONAL_IDENTIDAD
-  LIBRETA_CIVICA
-  LIBRETA_ENROLAMIENTO
-  PASAPORTE
+  secretaria         Secretaria?
 }
 
 model FichaMedica {
   id                     String    @id @default(uuid())
-  paciente               Paciente?
   alergias               String
   diagnostico            String
   tratamientos           String
   medicamentos_recetados String
-}
-
-enum TipoMatriculaEnum {
-  nacional
-  provincial
+  paciente               Paciente?
 }
 
 model Especialidad {
@@ -113,4 +94,17 @@ model ObraSocial {
   id       String     @id @default(uuid())
   nombre   String     @unique
   paciente Paciente[]
+}
+
+enum TipoDocumentoEnum {
+  CEDULA_IDENTIDAD
+  DOCUMENTO_NACIONAL_IDENTIDAD
+  LIBRETA_CIVICA
+  LIBRETA_ENROLAMIENTO
+  PASAPORTE
+}
+
+enum TipoMatriculaEnum {
+  nacional
+  provincial
 }
