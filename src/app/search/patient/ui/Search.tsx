@@ -51,25 +51,35 @@ export default function SearchForm() {
             </div>
             <div className="flex space-x-4">
             <div className="flex-1">
-                <Label htmlFor="apellido-input" className="sr-only">Apellido</Label>
-                <Input
-                  id="apellido-input"
-                  placeholder="Apellido"
-                  disabled={searchType === 'dni'}
-                  value={apellido}
-                  onChange={(e) => setApellido(e.target.value)}
-                />
+              <Label htmlFor="apellido-input" className="sr-only">Apellido</Label>
+              <Input
+                id="apellido-input"
+                placeholder="Apellido"
+                disabled={searchType === 'dni'}
+                value={apellido}
+                onChange={(e) => {
+                const value = e.target.value;
+                if (/^[a-zA-Z\s]{0,20}$/.test(value)) {
+                  setApellido(value);
+                }
+                }}
+              />
               </div>
-              <div className="flex-1">
+                <div className="flex-1">
                 <Label htmlFor="dni-input" className="sr-only">DNI</Label>
                 <Input
                   id="dni-input"
                   placeholder="DNI"
                   disabled={searchType === 'apellido'}
                   value={dni}
-                  onChange={(e) => setDni(e.target.value)}
+                  onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d{0,9}$/.test(value)) {
+                    setDni(value);
+                  }
+                  }}
                 />
-              </div>
+                </div>
               {(
             <div className="w-48">
               <Label htmlFor="document-type" className="sr-only">Tipo de documento</Label>
