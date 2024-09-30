@@ -46,7 +46,6 @@ export default async function Table({
             ))}
           </div>
 
-          {/* Table View */}
           <table className="hidden min-w-full text-gray-900 md:table">
             <thead className="rounded-lg text-left text-xl font-normal">
               <tr>
