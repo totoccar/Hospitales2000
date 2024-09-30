@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { createSecretary, SecretaryState } from '@/lib/actions';
-import { useActionState } from 'react';
+import { useFormState } from 'react-dom';
 import Link from 'next/link';
 
 export default function CreateSecretaryForm() {
@@ -24,10 +24,10 @@ export default function CreateSecretaryForm() {
   }
 
   const initialState: SecretaryState = { message: null, errors: {} };
-  //const [state, formAction] = useActionState(createSecretary, initialState);
+  const [state, formAction] = useFormState(createSecretary, initialState);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-2xl mx-auto">
+    <form action={formAction} className="space-y-8 max-w-2xl mx-auto">
       <div className="space-y-2">
         <h2 className="text-2xl font-bold">Crear Secretaria</h2>
         <p className="text-gray-500">Ingrese la información de la secretaria.</p>
