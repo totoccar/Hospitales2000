@@ -1,13 +1,12 @@
 'use client';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import {
     IdentificationIcon,
     ExclamationCircleIcon,
     LinkIcon
 } from '@heroicons/react/24/outline';
-import { authenticateDocument, authenticateEmail, getUserEmail, getUserName } from '../../api/PasswordActions';
-import { getUserEmailByDocument } from '../../api/changePassword';
-import nodemailer from 'next-auth/providers/nodemailer';
+import { authenticateDocument, getUserEmail, getUserName } from '../../api/PasswordActions';
+
 
 export default function ChangePasswordForm() {
     // Usamos useState para manejar el estado del mensaje de error
