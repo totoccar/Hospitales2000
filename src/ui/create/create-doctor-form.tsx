@@ -37,7 +37,7 @@ export default function CreateDoctorForm() {
         <div className="space-y-2">
           <label htmlFor="documentType" className="block text-sm font-medium text-gray-700">Tipo de Documento</label>
           <select id="documentType" 
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
             name="tipo_documento"
             >
             <option value="Documento Nacional de Indentidad">Documento Nacional de Indentidad</option>
@@ -75,7 +75,7 @@ export default function CreateDoctorForm() {
           <select 
             id="typeOfRegistration" 
             name="tipo_matricula"
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
             >
             <option value="Matrícula Provincial">Matrícula Provincial</option>
             <option value="Matrícula Nacional">Matrícula Nacional</option>
@@ -128,7 +128,7 @@ export default function CreateDoctorForm() {
           <select 
             id="specialty" 
             name="especialidad"
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
             >
             <option value="PEDIATRIA">Pediatría</option>
             <option value="RADIOLOGIA">Radiología</option>
