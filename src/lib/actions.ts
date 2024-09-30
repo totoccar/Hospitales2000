@@ -10,6 +10,7 @@ import prisma from '@/lib/db'; //Should we use the prisma from db.ts?
 //const prisma = new PrismaClient();
 
 //TODO: Zip all common fields into one UserState, use it along with particular cases.
+//TODO: Change file name to create-user.ts.
 
 //-----------------------------------------------CREATE PATIENT FORM-----------------------------------------------
 export type PatientState = {
@@ -166,8 +167,6 @@ export async function createPatient(prevState: PatientState, formData: FormData)
             message: 'Fallo en la base de datos: No se creó el paciente.',
         };
     }
-
-    
 
     revalidatePath('/search/patient'); //Updates the patient search.
     redirect('/search/patient'); //Redirects you to patient search.
