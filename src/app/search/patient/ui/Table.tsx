@@ -1,5 +1,5 @@
 import { findPacientesByQuery } from '@/lib/searchpatient';
-import { ViewUser } from '@/ui/Buttons';
+import { ViewUser,ViewMedicalRecord } from '@/ui/Buttons';
 import { TipoDocumentoEnum } from '@prisma/client';
 
 export default async function Table({
@@ -47,15 +47,13 @@ export default async function Table({
           <table className="hidden min-w-full text-gray-900 md:table">
             <thead className="rounded-lg text-left text-xl font-normal">
               <tr>
-                <th scope="col" className="px-4 py-5 font-medium text-lg sm:pl-6">Nombre</th>
-                <th scope="col" className="px-3 py-5 font-medium text-lg ">Apellido</th>
-                <th scope="col" className="px-3 py-5 font-medium text-lg ">Tipo De Documento</th>
-                <th scope="col" className="px-3 py-5 font-medium text-lg ">Numero de Documento</th>
-                <th scope="col" className="px-3 py-5 font-medium text-lg ">Numero de Telefono</th>
-                <th scope="col" className="px-3 py-5 font-medium text-lg ">Ver</th>
-                <th scope="col" className="relative py-3 pl-6 pr-3">
-                  <span className="sr-only">Editar</span>
-                </th>
+                <th scope="col" className="px-4 py-5 font-medium text-sm sm:pl-6">Nombre</th>
+                <th scope="col" className="px-3 py-5 font-medium text-sm ">Apellido</th>
+                <th scope="col" className="px-3 py-5 font-medium text-sm ">Tipo De Documento</th>
+                <th scope="col" className="px-3 py-5 font-medium text-sm ">N° de Documento</th>
+                <th scope="col" className="px-3 py-5 font-medium text-sm ">N° de Telefono</th>
+                <th scope="col" className="px-3 py-5 font-medium text-sm ">Ver Datos Personales</th>
+                <th scope="col" className="px-3 py-5 font-medium text-sm ">Ver Ficha medica</th>
               </tr>
             </thead>
             <tbody className="bg-white">
@@ -73,9 +71,14 @@ export default async function Table({
                   <td className="whitespace-nowrap px-3 py-3">{patient.usuario.tipo_documento}</td>
                   <td className="whitespace-nowrap px-3 py-3">{patient.usuario.numero_documento}</td>
                   <td className="whitespace-nowrap px-3 py-3">{patient.numero_telefono}</td>
-                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
-                    <div className="flex justify-end gap-3">
+                  <td className="whitespace-nowrap py-3 pr-3">
+                    <div className="flex justify-center ">
                       <ViewUser id={patient.usuario.id} />
+                    </div>
+                  </td>
+                  <td className="whitespace-nowrap py-3 pr-3">
+                    <div className="flex justify-center ">
+                      <ViewMedicalRecord disabled={true} id={patient.usuario.id} />
                     </div>
                   </td>
                 </tr>
