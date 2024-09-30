@@ -40,12 +40,12 @@ export default function SearchForm() {
             <div className="flex items-center space-x-4 mb-2">
               <RadioGroup defaultValue="dni" onValueChange={setSearchType} className="flex space-x-4">
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="dni" id="dni" />
-                  <Label htmlFor="dni">DNI</Label>
-                </div>
-                <div className="flex items-center space-x-2">
                   <RadioGroupItem value="apellido" id="apellido" />
                   <Label htmlFor="apellido">Apellido</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <RadioGroupItem value="dni" id="dni" />
+                  <Label htmlFor="dni">DNI</Label>
                 </div>
               </RadioGroup>
             </div>
