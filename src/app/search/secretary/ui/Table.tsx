@@ -56,14 +56,15 @@ export default async function Table({
               </tr>
             </thead>
             <tbody className="bg-white">
-              {secretaries?.map((secretary) => (
-                <tr
+                {secretaries?.length > 0 ? (
+                secretaries.map((secretary) => (
+                  <tr
                   key={secretary.usuario.id}
                   className="w-full border-b py-3 text-md last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
-                >
+                  >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex items-center gap-3">
-                      <p>{secretary.usuario.nombre}</p>
+                    <p>{secretary.usuario.nombre}</p>
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">{secretary.usuario.apellido}</td>
@@ -75,8 +76,15 @@ export default async function Table({
                     <ViewUser id={secretary.usuario.id} />
                     </div>
                   </td>
+                  </tr>
+                ))
+                ) : (
+                <tr>
+                  <td colSpan={6} className="py-3 text-center text-gray-500">
+                  No hay secretarias para mostrar con los filtros solicitados
+                  </td>
                 </tr>
-              ))}
+                )}
             </tbody>
           </table>
         </div>
