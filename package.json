@@ -1,9 +1,6 @@
 {
   "name": "hospitales2000",
   "version": "0.1.0",
-  "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
-  },
   "private": true,
   "scripts": {
     "dev": "next dev",
