@@ -1,12 +1,14 @@
 {
   "name": "hospitales2000",
   "version": "0.1.0",
-  "private": true,
+  "private": true,  
+  
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@radix-ui/react-label": "^2.1.0",
