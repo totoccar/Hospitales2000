@@ -4,6 +4,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import prisma from '@/lib/db'; //Should we use the prisma from db.ts?
+import { hash } from "bcryptjs";
 //TODO: Zip all common fields into one UserState, use it along with particular cases.
 //TODO: Change file name to create-user.ts.
 
@@ -120,6 +121,8 @@ export async function createPatient(prevState: PatientState, formData: FormData)
     const [year, month, day] = birthDate.split('-').map(Number);
     const parsedDate = new Date(day, month, year);
 
+    const hashedPassword = await hash(numberId, 10);
+
     try {
         const newUser = await prisma.usuario.create({
             data: {
@@ -128,7 +131,7 @@ export async function createPatient(prevState: PatientState, formData: FormData)
                 nombre: patientName,
                 apellido: patientLastName,
                 correo_electronico: email,
-                contrasena: numberId, //At first, default password is numberId.
+                contrasena: hashedPassword, //At first, default password is numberId.
                 paciente: {
                     create: {
                         fecha_nacimiento: parsedDate,
@@ -164,6 +167,7 @@ export async function createPatient(prevState: PatientState, formData: FormData)
         console.log(newUser);
     }catch (error) {
         console.log("error on create.");
+        console.log(error);
         return {
             message: 'Fallo en la base de datos: No se creó el paciente.',
         };
@@ -450,3 +454,19 @@ export async function createSecretary(prevState: SecretaryState, formData: FormD
     revalidatePath('/search/secretary'); //Updates the secretary search.
     redirect('/search/secretary'); //Redirects you to secretary search.
 }
+
+export async function obtenerObrasSociales() {
+    try {
+      // Realiza la consulta para obtener todas las obras sociales
+      const obrasSociales = await prisma.obraSocial.findMany();
+  
+      // Devuelve el resultado
+      return obrasSociales;
+    } catch (error) {
+      console.error("Error al obtener obras sociales:", error);
+      throw new Error("No se pudieron obtener las obras sociales");
+    } finally {
+      // Cierra la conexión con Prisma
+      await prisma.$disconnect();
+    }
+  }
