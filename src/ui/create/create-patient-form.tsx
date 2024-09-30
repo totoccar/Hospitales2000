@@ -96,12 +96,6 @@ export default function CreatePatientForm({obrasSociales}: {obrasSociales: ObraS
         <div className="space-y-2">
           <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">Número de Teléfono</label>
           <div className="flex space-x-2">
-            {/*<Input 
-              id="cellphoneCountryCode" 
-              placeholder="+54" className="w-20" 
-              onChange={(e) => handleInputChange(e, /^\d*$/)}
-              required
-            />*/}
             <Input 
               id="phoneNumber"
               name="numero_telefono" 
@@ -126,12 +120,6 @@ export default function CreatePatientForm({obrasSociales}: {obrasSociales: ObraS
         <div className="space-y-2">
           <label htmlFor="emergencyContact" className="block text-sm font-medium text-gray-700">Contacto de Emergencia</label>
           <div className="flex space-x-2">
-            {/*<Input 
-              id="emergencyContactCountryCode" 
-              placeholder="+54" className="w-20" 
-              onChange={(e) => handleInputChange(e, /^\d*$/)}
-              required
-            />*/}
             <Input 
               id="emergencyContactNumber" 
               name="contacto_emergencia"
@@ -214,7 +202,6 @@ export default function CreatePatientForm({obrasSociales}: {obrasSociales: ObraS
           id="socialWork" 
           name="tipo_obra_social"
           className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-          <option value="">Selecciona una obra social</option>
           {obrasSociales.map(obra => (
             <option key={obra.id} value={obra.id}>
               {obra.nombre}

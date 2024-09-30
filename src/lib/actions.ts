@@ -76,7 +76,7 @@ const PatientFormSchema = z.object({
     email: z.string({
         invalid_type_error: 'Por favor ingrese el correo electrónico.',
     }),
-    socialWork: z.enum(['OBRA_SOCIAL_PRIVADA', 'OBRA_SOCIAL_ESTATAL'], {
+    socialWork: z.string({
         invalid_type_error: 'Por favor seleccione una obra social.',
     }),
 });
@@ -147,8 +147,8 @@ export async function createPatient(prevState: PatientState, formData: FormData)
                             }
                         },
                         obra_social: {
-                            create: {
-                                nombre: socialWork,
+                            connect: {
+                                id: socialWork
                             }
                         },
                         ubicacion: {
