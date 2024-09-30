@@ -51,7 +51,7 @@ export default function SearchForm() {
                   <Label htmlFor="apellido">Apellido</Label>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="numero_matricula" id="numero_matricula" />
+                  <RadioGroupItem value="matricula" id="numero_matricula" />
                   <Label htmlFor="numero_matricula">Numero de matricula</Label>
                 </div>
               </RadioGroup>
@@ -90,7 +90,7 @@ export default function SearchForm() {
               {(
             <div className="w-48">
               <Label htmlFor="document-type" className="sr-only">Tipo de documento</Label>
-              <Select disabled={searchType === 'apellido'} onValueChange={(value) => setTipoDocumento(value as TipoDocumentoEnum)}>
+              <Select disabled={searchType === 'apellido' || searchType === 'matricula'} onValueChange={(value) => setTipoDocumento(value as TipoDocumentoEnum)}>
                 <SelectTrigger id="document-type">
                   <SelectValue placeholder="Tipo de documento" />
                 </SelectTrigger>
