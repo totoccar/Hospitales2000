@@ -1,4 +1,4 @@
-import { findPacientesByQuery } from '@/lib/searchpatient';
+import { findSecretariesByQuery } from '@/lib/searchsecretaria';
 import { ViewUser } from '@/ui/Buttons';
 import { TipoDocumentoEnum } from '@prisma/client';
 
@@ -14,7 +14,7 @@ export default async function Table({
   tipoDocumento?: TipoDocumentoEnum;
   currentPage: number;
 }) {
-  const patients = await findPacientesByQuery({ 
+  const secretaries = await findSecretariesByQuery({ 
     dni: dni || '', 
     apellido: apellido || '', 
     tipoDocumento: tipoDocumento || TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD 
@@ -25,19 +25,19 @@ export default async function Table({
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">
-            {patients?.map((patient) => (
-              <div key={patient.usuario.id} className="mb-2 w-full rounded-md bg-white p-4">
+            {secretaries?.map((secretary) => (
+              <div key={secretary.usuario.id} className="mb-2 w-full rounded-md bg-white p-4">
                 <div className="flex items-center justify-between border-b pb-4">
                   <div>
                     <div className="mb-2 flex items-center">
-                      <p>{patient.usuario.nombre}</p>
+                      <p>{secretary.usuario.nombre}</p>
                     </div>
-                    <p className="text-xl text-gray-500">{patient.usuario.apellido}</p>
+                    <p className="text-xl text-gray-500">{secretary.usuario.apellido}</p>
                   </div>
                 </div>
                 <div className="flex w-full items-center justify-between pt-4">
                   <div className="flex justify-end gap-2">
-                    <ViewUser id={patient.usuario.id} />
+                    <ViewUser id={secretary.usuario.id} />
                   </div>
                 </div>
               </div>
@@ -47,35 +47,32 @@ export default async function Table({
           <table className="hidden min-w-full text-gray-900 md:table">
             <thead className="rounded-lg text-left text-xl font-normal">
               <tr>
-                <th scope="col" className="px-4 py-5 font-medium text-lg sm:pl-6">Nombre</th>
-                <th scope="col" className="px-3 py-5 font-medium text-lg ">Apellido</th>
-                <th scope="col" className="px-3 py-5 font-medium text-lg ">Tipo De Documento</th>
-                <th scope="col" className="px-3 py-5 font-medium text-lg ">Numero de Documento</th>
-                <th scope="col" className="px-3 py-5 font-medium text-lg ">Numero de Telefono</th>
-                <th scope="col" className="px-3 py-5 font-medium text-lg ">Ver</th>
-                <th scope="col" className="relative py-3 pl-6 pr-3">
-                  <span className="sr-only">Editar</span>
-                </th>
+                <th scope="col" className="px-4 py-5 font-medium text-sm sm:pl-6">Nombre</th>
+                <th scope="col" className="px-3 py-5 font-medium text-sm ">Apellido</th>
+                <th scope="col" className="px-3 py-5 font-medium text-sm ">Tipo De Documento</th>
+                <th scope="col" className="px-3 py-5 font-medium text-sm ">N° de Documento</th>
+                <th scope="col" className="px-3 py-5 font-medium text-sm ">N° de Telefono</th>
+                <th scope="col" className="px-3 py-5 font-medium text-sm ">Ver Datos Personales</th>
               </tr>
             </thead>
             <tbody className="bg-white">
-              {patients?.map((patient) => (
+              {secretaries?.map((secretary) => (
                 <tr
-                  key={patient.usuario.id}
+                  key={secretary.usuario.id}
                   className="w-full border-b py-3 text-md last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                 >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex items-center gap-3">
-                      <p>{patient.usuario.nombre}</p>
+                      <p>{secretary.usuario.nombre}</p>
                     </div>
                   </td>
-                  <td className="whitespace-nowrap px-3 py-3">{patient.usuario.apellido}</td>
-                  <td className="whitespace-nowrap px-3 py-3">{patient.usuario.tipo_documento}</td>
-                  <td className="whitespace-nowrap px-3 py-3">{patient.usuario.numero_documento}</td>
-                  <td className="whitespace-nowrap px-3 py-3">{patient.numero_telefono}</td>
-                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
-                    <div className="flex justify-end gap-3">
-                      <ViewUser id={patient.usuario.id} />
+                  <td className="whitespace-nowrap px-3 py-3">{secretary.usuario.apellido}</td>
+                  <td className="whitespace-nowrap px-3 py-3">{secretary.usuario.tipo_documento}</td>
+                  <td className="whitespace-nowrap px-3 py-3">{secretary.usuario.numero_documento}</td>
+                  <td className="whitespace-nowrap px-3 py-3">{secretary.numero_telefono}</td>
+                  <td className="whitespace-nowrap py-3 pr-3">
+                    <div className="flex justify-center">
+                    <ViewUser id={secretary.usuario.id} />
                     </div>
                   </td>
                 </tr>

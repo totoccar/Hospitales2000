@@ -19,7 +19,7 @@ export default async function SearchSecretary({searchParams,
   const currentTipoDocumento = searchParams?.tipoDocumento || TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD;
   const currentPage = Number(searchParams?.page) || 1;
 
-  const count = 2
+  const count = 1
   return (
     <MaxWidthWrapper>
     <div className="bg-gray-200 rounded-lg shadow-md p-6 mt-5">
