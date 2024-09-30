@@ -4,10 +4,6 @@ import { getUsuarioByFichaMedicaId, getObraSocialById, getFichaMedicaByPacienteI
 } from "@/lib/fichaMedicaService";
 
 export default async function Component({ params }: { params: { id: string } }) {
- /*const id = params.id as string;
-
-  const usuario = await getUsuarioByFichaMedicaId(id);
-  */
   const id = params.id as string;
 
   // Obtenemos el usuario y el paciente
