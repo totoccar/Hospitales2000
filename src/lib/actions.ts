@@ -116,42 +116,42 @@ export async function createPatient(prevState: PatientState, formData: FormData)
     } = validatedFields.data;
 
     try {
-        await prisma.paciente.create({
+        await prisma.usuario.create({
             data: {
-                usuario: {
+                tipo_documento: typeId,
+                numero_documento: numberId,
+                nombre: patientName,
+                apellido: patientLastName,
+                correo_electronico: email,
+                contrasena: numberId, //At first, default password is numberId.
+                paciente: {
                     create: {
-                        tipo_documento: typeId,
-                        numero_documento: numberId,
-                        nombre: patientName,
-                        apellido: patientLastName,
-                        correo_electronico: email,
-                        contrasena: numberId,
-                    }
-                },
-                fecha_nacimiento: birthDate,
-                lugar_nacimiento: birthPlace,
-                contacto_emergencia: emergencyContact,
-                numero_telefono: phoneNumber,
-                ubicacion: {
-                    create: {
-                        calle: streetName,
-                        numero: streetNumber,
-                        codigo_postal: postalCode,
-                        ciudad: city,
-                        provincia: cityState,
-                    }
-                },
-                obra_social: {
-                    create: {
-                        nombre: socialWork,
-                    }
-                },
-                ficha_medica: {
-                    create: {
-                        alergias: " ",
-                        diagnostico: " ",
-                        tratamientos: " ",
-                        medicamentos_recetados: " "
+                        fecha_nacimiento: birthDate,
+                        lugar_nacimiento: birthPlace,
+                        contacto_emergencia: emergencyContact,
+                        numero_telefono: phoneNumber,
+                        ficha_medica: {
+                            create: {
+                                alergias: " ",
+                                diagnostico: " ",
+                                tratamientos: " ",
+                                medicamentos_recetados: " "
+                            }
+                        },
+                        obra_social: {
+                            create: {
+                                nombre: socialWork,
+                            }
+                        },
+                        ubicacion: {
+                            create: {
+                                calle: streetName,
+                                numero: streetNumber,
+                                codigo_postal: postalCode,
+                                ciudad: city,
+                                provincia: cityState,
+                            }
+                        },
                     }
                 },
             }
@@ -269,36 +269,35 @@ export async function createDoctor(prevState: DoctorState, formData: FormData) {
     } = validatedFields.data; 
 
     try {
-        await prisma.medico.create({
+        await prisma.usuario.create({
             data: {
-                usuario: {
+                tipo_documento: typeId,
+                numero_documento: numberId,
+                nombre: doctorName,
+                apellido: doctorLastName,
+                correo_electronico: email,
+                contrasena: numberId, //At first, default password is numberId.
+                medico: {
                     create: {
-                        tipo_documento: typeId,
-                        numero_documento: numberId,
-                        nombre: doctorName,
-                        apellido: doctorLastName,
-                        correo_electronico: email,
-                        contrasena: numberId,
+                        tipo_matricula: regType,
+                        numero_matricula: regNumber,
+                        numero_telefono: phoneNumber,
+                        especialidad: {
+                            create: {
+                                nombre: specialty,
+                            }
+                        },
+                        ubicacion: {
+                            create: {
+                                calle: streetName,
+                                numero: streetNumber,
+                                codigo_postal: postalCode,
+                                ciudad: city,
+                                provincia: cityState,
+                            }
+                        },
                     }
                 },
-                tipo_matricula: regType,
-                numero_matricula: regNumber,
-                numero_telefono: phoneNumber,
-                ubicacion: {
-                    create: {
-                        calle: streetName,
-                        numero: streetNumber,
-                        codigo_postal: postalCode,
-                        ciudad: city,
-                        provincia: cityState,
-                    }
-                },
-                especialidad: {
-                    create: {
-                        nombre: specialty,
-                    }
-                },
-                descripcion: description,
             }
         });
     }catch (error) {
@@ -397,28 +396,28 @@ export async function createSecretary(prevState: SecretaryState, formData: FormD
     } = validatedFields.data; 
 
     try {
-        await prisma.secretaria.create({
+        await prisma.usuario.create({
             data: {
-                usuario: {
+                tipo_documento: typeId,
+                numero_documento: numberId,
+                nombre: secretaryName,
+                apellido: secretaryLastName,
+                correo_electronico: email,
+                contrasena: numberId, //At first, default password is numberId.
+                secretaria: {
                     create: {
-                        tipo_documento: typeId,
-                        numero_documento: numberId,
-                        nombre: secretaryName,
-                        apellido: secretaryLastName,
-                        correo_electronico: email,
-                        contrasena: numberId,
+                        numero_telefono: phoneNumber,
+                        ubicacion: {
+                            create: {
+                                calle: streetName,
+                                numero: streetNumber,
+                                codigo_postal: postalCode,
+                                ciudad: city,
+                                provincia: cityState,
+                            }
+                        },
                     }
-                },
-                numero_telefono: phoneNumber,
-                ubicacion: {
-                    create: {
-                        calle: streetName,
-                        numero: streetNumber,
-                        codigo_postal: postalCode,
-                        ciudad: city,
-                        provincia: cityState,
-                    }
-                },
+                }
             }
         });
     }catch (error) {
