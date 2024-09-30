@@ -40,43 +40,43 @@ const PatientFormSchema = z.object({
         }
     ),
     numberId: z.string({
-        invalid_type_error: 'Por favor ingrese su número de documento.',
+        invalid_type_error: 'Por favor ingrese el número de documento.',
     }),
     patientName: z.string({
-        invalid_type_error: 'Por favor ingrese su nombre.',
+        invalid_type_error: 'Por favor ingrese el nombre.',
     }),
     patientLastName: z.string({
-        invalid_type_error: 'Por favor ingrese su apellido.',
+        invalid_type_error: 'Por favor ingrese el apellido.',
     }),
     birthDate: z.date({
         invalid_type_error: 'Por favor seleccione una fecha de nacimiento.',
     }),
     birthPlace: z.string({
-        invalid_type_error: 'Por favor ingrese su ciudad de nacimiento.',
+        invalid_type_error: 'Por favor ingrese la ciudad de nacimiento.',
     }),
     emergencyContact: z.string({
         invalid_type_error: 'Por favor, ingrese un número de contacto de emergencia.',
     }),
     phoneNumber: z.string({
-        invalid_type_error: 'Por favor ingrese su número de teléfono.',
+        invalid_type_error: 'Por favor ingrese el número de teléfono.',
     }),
     city: z.string({
-        invalid_type_error: 'Por favor ingrese su ciudad.',
+        invalid_type_error: 'Por favor ingrese la ciudad.',
     }),
     streetName: z.string({
-        invalid_type_error: 'Por favor ingrese el nombre de su dirección.'
+        invalid_type_error: 'Por favor ingrese el nombre de la dirección.'
     }),
     streetNumber: z.string({
-        invalid_type_error: 'Por favor ingrese el número de su dirección.',
+        invalid_type_error: 'Por favor ingrese el número de la dirección.',
     }),
     postalCode: z.string({
-        invalid_type_error: 'Por favor su código postal.',
+        invalid_type_error: 'Por favor el código postal.',
     }),
     cityState: z.string({
-        invalid_type_error: 'Por favor ingrese su provincia.',
+        invalid_type_error: 'Por favor ingrese la provincia.',
     }),
     email: z.string({
-        invalid_type_error: 'Por favor ingrese su correo electrónico.',
+        invalid_type_error: 'Por favor ingrese el correo electrónico.',
     }),
     socialWork: z.enum(['OBRA_SOCIAL_PRIVADA', 'OBRA_SOCIAL_ESTATAL'], {
         invalid_type_error: 'Por favor seleccione una obra social.',
@@ -195,43 +195,43 @@ const DoctorFormSchema = z.object({
         }
     ),
     numberId: z.string({
-        invalid_type_error: 'Por favor ingrese su número de documento.',
+        invalid_type_error: 'Por favor ingrese el número de documento.',
     }),
     regType: z.enum(['nacional', 'provincial'], {
         invalid_type_error: 'Por favor seleccione una fecha de nacimiento.',
     }),
     regNumber: z.string({
-        invalid_type_error: 'Por favor ingrese su ciudad de nacimiento.',
+        invalid_type_error: 'Por favor ingrese la ciudad de nacimiento.',
     }),
     doctorName: z.string({
-        invalid_type_error: 'Por favor ingrese su nombre.',
+        invalid_type_error: 'Por favor ingrese el nombre.',
     }),
     doctorLastName: z.string({
-        invalid_type_error: 'Por favor ingrese su apellido.',
+        invalid_type_error: 'Por favor ingrese el apellido.',
     }),
     phoneNumber: z.string({
-        invalid_type_error: 'Por favor ingrese su número de teléfono.',
+        invalid_type_error: 'Por favor ingrese el número de teléfono.',
     }),
     city: z.string({
-        invalid_type_error: 'Por favor ingrese su ciudad.',
+        invalid_type_error: 'Por favor ingrese la ciudad.',
     }),
     streetName: z.string({
-        invalid_type_error: 'Por favor ingrese el nombre de su dirección.'
+        invalid_type_error: 'Por favor ingrese el nombre de la dirección.'
     }),
     streetNumber: z.string({
-        invalid_type_error: 'Por favor ingrese el número de su dirección.',
+        invalid_type_error: 'Por favor ingrese el número de la dirección.',
     }),
     postalCode: z.string({
-        invalid_type_error: 'Por favor su código postal.',
+        invalid_type_error: 'Por favor ingrese el código postal.',
     }),
     cityState: z.string({
-        invalid_type_error: 'Por favor ingrese su provincia.',
+        invalid_type_error: 'Por favor ingrese la provincia.',
     }),
     email: z.string({
-        invalid_type_error: 'Por favor ingrese su correo electrónico.',
+        invalid_type_error: 'Por favor ingrese el correo electrónico.',
     }),
     specialty: z.enum(['PEDIATRIA', 'RADIOLOGIA', 'MICROBIOLOGIA', 'FARMACOLOGIA', 'CIRUGIA'], {
-        invalid_type_error: 'Por favor seleccione una obra social.',
+        invalid_type_error: 'Por favor seleccione una especialidad.',
     }),
     description: z.string(),
 });
@@ -302,7 +302,7 @@ export async function createDoctor(prevState: DoctorState, formData: FormData) {
         });
     }catch (error) {
         return {
-            message: 'Fallo en la base de datos: No se creó el paciente.',
+            message: 'Fallo en la base de datos: No se creó el doctor.',
         };
     }
 
@@ -336,34 +336,34 @@ const SecretaryFormSchema = z.object({
         }
     ),
     numberId: z.string({
-        invalid_type_error: 'Por favor ingrese su número de documento.',
+        invalid_type_error: 'Por favor ingrese el número de documento.',
     }),
     secretaryName: z.string({
-        invalid_type_error: 'Por favor ingrese su nombre.',
+        invalid_type_error: 'Por favor ingrese el nombre.',
     }),
     secretaryLastName: z.string({
-        invalid_type_error: 'Por favor ingrese su apellido.',
+        invalid_type_error: 'Por favor ingrese el apellido.',
     }),
     phoneNumber: z.string({
-        invalid_type_error: 'Por favor ingrese su número de teléfono.',
+        invalid_type_error: 'Por favor ingrese el número de teléfono.',
     }),
     city: z.string({
-        invalid_type_error: 'Por favor ingrese su ciudad.',
+        invalid_type_error: 'Por favor ingrese la ciudad.',
     }),
     streetName: z.string({
-        invalid_type_error: 'Por favor ingrese el nombre de su dirección.'
+        invalid_type_error: 'Por favor ingrese el nombre de la dirección.'
     }),
     streetNumber: z.string({
-        invalid_type_error: 'Por favor ingrese el número de su dirección.',
+        invalid_type_error: 'Por favor ingrese el número de la dirección.',
     }),
     postalCode: z.string({
-        invalid_type_error: 'Por favor su código postal.',
+        invalid_type_error: 'Por favor ingrese el código postal.',
     }),
     cityState: z.string({
-        invalid_type_error: 'Por favor ingrese su provincia.',
+        invalid_type_error: 'Por favor ingrese la provincia.',
     }),
     email: z.string({
-        invalid_type_error: 'Por favor ingrese su correo electrónico.',
+        invalid_type_error: 'Por favor ingrese el correo electrónico.',
     }),
 });
 
@@ -387,7 +387,7 @@ export async function createSecretary(prevState: SecretaryState, formData: FormD
     if (!validatedFields.success) {
         return {
             errors: validatedFields.error.flatten().fieldErrors,
-            message: 'Campos incompletos. Error al crear un doctor nuevo.',
+            message: 'Campos incompletos. Error al crear una secretaria nueva.',
         };
     }
 
@@ -422,7 +422,7 @@ export async function createSecretary(prevState: SecretaryState, formData: FormD
         });
     }catch (error) {
         return {
-            message: 'Fallo en la base de datos: No se creó el paciente.',
+            message: 'Fallo en la base de datos: No se creó la secretaria.',
         };
     }
 
