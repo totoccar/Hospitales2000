@@ -50,7 +50,6 @@ export default function CreatePatientForm() {
             name="numero_documento" 
             placeholder="Ingrese el número de documento" 
             onChange={(e) => handleInputChange(e, /^\d*$/)}
-            aria-describedby="create-error"
             required
           />
         </div>
