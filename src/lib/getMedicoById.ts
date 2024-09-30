@@ -1,47 +1,46 @@
-
-
 import prisma from "./db";
 
 export async function getUsuarioById(usuarioId: string) {
-  console.log("usuario: ", usuarioId);
   try {
     const usuario = await prisma.usuario.findUnique({
       where: { id: usuarioId },
       include: {
-        paciente: true,  // Solo traer los datos del paciente si existen
+        medico: true, // Get the data for doctors
       },
     });
 
-    if (!usuario?.paciente) {
-      throw new Error('El usuario no es un paciente o no existe.');
+    if (!usuario?.medico) {
+      throw new Error('El usuario no es un médico o no existe.');
     }
 
-    return usuario;  // Retorna los datos del paciente
+    return usuario;  // Return the doctor data
   } catch (error) {
-    console.error('Error al obtener el paciente:', error);
+    console.error('Error al obtener el médico:', error);
     throw error;
   } finally {
     await prisma.$disconnect();
   }
 }
-export async function getObraSocialById(obraSocialId: string) {
+
+export async function getEspecialidadById(especialidadId: string) {
   try {
-    const obraSocial = await prisma.obraSocial.findUnique({
-      where: { id: obraSocialId },
+    const especialidad = await prisma.especialidad.findUnique({
+      where: { id: especialidadId },
     });
 
-    if (!obraSocial) {
-      throw new Error('Obra social no encontrada');
+    if (!especialidad) {
+      throw new Error('Especialidad no encontrada');
     }
 
-    return obraSocial.nombre;  // Retorna la obra social si existe
+    return especialidad.nombre;  // Return the specialty if it exists
   } catch (error) {
-    console.error('Error al obtener la obra social:', error);
+    console.error('Error al obtener la especialidad:', error);
     throw error;
   } finally {
     await prisma.$disconnect();
   }
 }
+
 export async function getUbicacionById(ubicacionId: string) {
   try {
     const ubicacion = await prisma.ubicacion.findUnique({
@@ -52,7 +51,7 @@ export async function getUbicacionById(ubicacionId: string) {
       throw new Error('Ubicación no encontrada');
     }
 
-    return ubicacion; // Retorna la ubicación si existe
+    return ubicacion;  // Return the location if it exists
   } catch (error) {
     console.error('Error al obtener la ubicación:', error);
     throw error;
