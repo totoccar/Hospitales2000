@@ -1,12 +1,13 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import {
     IdentificationIcon,
     ExclamationCircleIcon,
     LinkIcon
 } from '@heroicons/react/24/outline';
-import { authenticateDocument, authenticateEmail, getUserEmail } from '../../api/actions';
+import { authenticateDocument, authenticateEmail, getUserEmail, getUserName } from '../../api/PasswordActions';
 import { getUserEmailByDocument } from '../../api/changePassword';
+import nodemailer from 'next-auth/providers/nodemailer';
 
 export default function ChangePasswordForm() {
     // Usamos useState para manejar el estado del mensaje de error
@@ -14,7 +15,6 @@ export default function ChangePasswordForm() {
     const [isPending, setIsPending] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [isDisabled, setIsDisabled] = useState(false);
-
 
 
 
@@ -27,6 +27,7 @@ export default function ChangePasswordForm() {
 
         const user_document = formData.get('user_document') as string;
 
+
         try {
             const documentoMatch = await authenticateDocument(user_document);
 
@@ -36,9 +37,11 @@ export default function ChangePasswordForm() {
             } else {
 
                 const user_email = await getUserEmail(user_document);
+                const user_name = await getUserName(user_document);
                 setSuccessMessage("Se envio el link de cambio de contraseña a la dirección: " + user_email as string);
                 setErrorMessage(null);
                 setIsDisabled(true);
+                sendPasswordRecoveryEmail(user_email, user_name);
             }
 
         } catch (error) { console.log(error); } finally {
@@ -144,5 +147,24 @@ function LoginButton({ isPending, isDisabled }: { isPending: boolean, isDisabled
             {isPending ? 'Buscando...' : isDisabled ? 'Mail Enviado' : 'Recuperar Cuenta'}
         </button>
     );
+}
+
+function sendPasswordRecoveryEmail(user_email: string, user_name: string) {
+
+    const html = `
+    <p>Hi, ${user_name},</p>
+    <p>Here's your password recovery link</p>
+    <a href="https://libertas-vert.vercel.app/reset-password/${userAvailable._id}">Reset password here</a>
+    <p>Best regards, Libertas</p>
+  `;
+
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.GOOGLE_ACCOUNT_USER,
+            pass: process.env.GOOGLE_ACCOUNT_PASS,
+        },
+    });
+    throw new Error('Function not implemented.');
 }
 
