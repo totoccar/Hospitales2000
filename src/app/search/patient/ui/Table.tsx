@@ -57,14 +57,21 @@ export default async function Table({
               </tr>
             </thead>
             <tbody className="bg-white">
-              {patients?.map((patient) => (
-                <tr
+                {patients?.length === 0 ? (
+                <tr>
+                  <td colSpan={7} className="text-center py-3">
+                  No hay pacientes para mostrar con esos filtros
+                  </td>
+                </tr>
+                ) : (
+                patients?.map((patient) => (
+                  <tr
                   key={patient.usuario.id}
                   className="w-full border-b py-3 text-md last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
-                >
+                  >
                   <td className="whitespace-nowrap py-3 pl-6 pr-3">
                     <div className="flex items-center gap-3">
-                      <p>{patient.usuario.nombre}</p>
+                    <p>{patient.usuario.nombre}</p>
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">{patient.usuario.apellido}</td>
@@ -73,16 +80,17 @@ export default async function Table({
                   <td className="whitespace-nowrap px-3 py-3">{patient.numero_telefono}</td>
                   <td className="whitespace-nowrap py-3 pr-3">
                     <div className="flex justify-center ">
-                      <ViewUser id={patient.usuario.id} />
+                    <ViewUser id={patient.usuario.id} />
                     </div>
                   </td>
                   <td className="whitespace-nowrap py-3 pr-3">
                     <div className="flex justify-center ">
-                      <ViewMedicalRecord disabled={true} id={patient.usuario.id} />
+                    <ViewMedicalRecord disabled={true} id={patient.usuario.id} />
                     </div>
                   </td>
-                </tr>
-              ))}
+                  </tr>
+                ))
+                )}
             </tbody>
           </table>
         </div>
