@@ -1,27 +1,31 @@
 {
   "name": "hospitales2000",
   "version": "0.1.0",
-  "prisma": {
-    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
-  },
-  "private": true,
+  "private": true,  
+  
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@radix-ui/react-label": "^2.1.0",
+    "@radix-ui/react-radio-group": "^1.2.0",
+    "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@vercel/postgres": "^0.10.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "hospitales2000": "file:",
     "lucide-react": "^0.446.0",
     "next": "14.2.13",
     "react": "^18",
     "react-dom": "^18",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "use-debounce": "^10.0.3"
   },
   "devDependencies": {
     "@prisma/client": "^5.20.0",
