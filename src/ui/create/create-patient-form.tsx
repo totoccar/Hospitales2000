@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createPatient, PatientState } from '@/lib/actions';
@@ -8,11 +7,6 @@ import { useFormState } from 'react-dom';
 import Link from 'next/link';
 
 export default function CreatePatientForm() {
-  const [dateOfBirth, setDateOfBirth] = useState('')
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-  }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>, pattern: RegExp) => {
     const { value } = e.target
@@ -89,8 +83,6 @@ export default function CreatePatientForm() {
             id="dateOfBirth" 
             name="fecha_nacimiento"
             type="date" 
-            value={dateOfBirth} 
-            onChange={(e) => setDateOfBirth(e.target.value)}
             required
           />
         </div>
