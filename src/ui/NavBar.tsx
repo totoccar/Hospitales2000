@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from 'react'
-import { Menu, X, Hospital, Home, Stethoscope, Users, Phone } from 'lucide-react'
+import { Menu, X, Hospital, Home,Search  } from 'lucide-react'
 import Link from 'next/link'
 
 export default function Navbar() {
@@ -9,9 +9,9 @@ export default function Navbar() {
 
   const navItems = [
     { name: 'Inicio', href: '/', icon: Home },
-    { name: 'Buscar', href: '/search/doctor', icon: Stethoscope },
-    { name: 'Vista', href: '/doctores', icon: Users },
-    { name: 'Contacto', href: '/contacto', icon: Phone },
+    { name: 'Buscar Paciente', href: '/search/patient', icon: Search },
+    { name: 'Buscar Medico', href: '/search/doctor', icon: Search },
+    { name: 'Buscar Secretaria', href: '/search/secretary', icon: Search },
   ]
 
   return (
