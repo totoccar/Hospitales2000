@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { createPatient, PatientState } from '@/lib/actions';
 import { useActionState } from 'react';
+import Link from 'next/link';
 
 export default function CreatePatientForm() {
   const [dateOfBirth, setDateOfBirth] = useState('')
@@ -222,7 +223,16 @@ export default function CreatePatientForm() {
         </div>
       </div>
 
-      <Button type="submit" className="w-full">Crear Paciente</Button>
+      <div className="flex gap-4 w-full">
+        <Button type="submit" className="flex-1">
+          Crear Paciente
+        </Button>
+        <Button asChild className="flex-1">
+          <Link href="/search/patient">
+            Cancel
+          </Link>
+        </Button>
+      </div>
     </form>
   )
 }

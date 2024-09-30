@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { createDoctor, DoctorState } from '@/lib/actions';
 import { useActionState } from 'react';
+import Link from 'next/link';
 
 export default function CreateDoctorForm() {
   const [dateOfBirth] = useState('')
@@ -215,7 +216,16 @@ export default function CreateDoctorForm() {
         </div>
       </div>
 
-      <Button type="submit" className="w-full">Crear Médico</Button>
+      <div className="flex gap-4 w-full">
+        <Button type="submit" className="flex-1">
+          Crear Paciente
+        </Button>
+        <Button asChild className="flex-1">
+          <Link href="/search/doctor">
+            Cancel
+          </Link>
+        </Button>
+      </div>
     </form>
   )
 }
