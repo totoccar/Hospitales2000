@@ -164,7 +164,7 @@ export default function CreateSecretaryForm() {
 
       <div className="flex gap-4 w-full">
         <Button type="submit" className="flex-1">
-          Crear Paciente
+          Crear Secretaria
         </Button>
         <Button asChild className="flex-1">
           <Link href="/search/secretary">

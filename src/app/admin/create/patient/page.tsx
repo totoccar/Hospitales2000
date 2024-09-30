@@ -1,12 +1,12 @@
-import { obtenerObrasSociales } from '@/lib/actions';
+import { fetchSocialWorks } from '@/lib/actions';
 import CreatePatientForm from '@/ui/create/create-patient-form';
 
 export default async function CreatePatientPage() {
-  const obrasSociales = await obtenerObrasSociales();
+  const socialWorks = await fetchSocialWorks();
   return (
     <main>
       <div className="container mx-auto py-10">
-        <CreatePatientForm obrasSociales={obrasSociales}/>
+        <CreatePatientForm socialWorks={socialWorks}/>
       </div>
     </main>
   )
