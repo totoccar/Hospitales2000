@@ -3,10 +3,11 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { PrismaClient } from "@prisma/client";
+//import { PrismaClient } from "@prisma/client";
+import prisma from '@/lib/db'; //Should we use the prisma from db.ts?
 
 //Prisma client to insert into database.
-const prisma = new PrismaClient();
+//const prisma = new PrismaClient();
 
 //TODO: Zip all common fields into one UserState, use it along with particular cases.
 
@@ -104,6 +105,8 @@ export async function createPatient(prevState: PatientState, formData: FormData)
         socialWork: formData.get('tipo_obra_social'),
     });
 
+    console.log(formData);
+
     if (!validatedFields.success) {
         return {
             errors: validatedFields.error.flatten().fieldErrors,
@@ -116,7 +119,7 @@ export async function createPatient(prevState: PatientState, formData: FormData)
     } = validatedFields.data;
 
     try {
-        await prisma.usuario.create({
+        const newUser = await prisma.usuario.create({
             data: {
                 tipo_documento: typeId,
                 numero_documento: numberId,
@@ -156,11 +159,15 @@ export async function createPatient(prevState: PatientState, formData: FormData)
                 },
             }
         });
+        console.log(newUser);
     }catch (error) {
+        console.log("error");
         return {
             message: 'Fallo en la base de datos: No se creó el paciente.',
         };
     }
+
+    
 
     revalidatePath('/search/patient'); //Updates the patient search.
     redirect('/search/patient'); //Redirects you to patient search.
@@ -257,6 +264,8 @@ export async function createDoctor(prevState: DoctorState, formData: FormData) {
         description: formData.get('descripcion'),
     });
 
+    console.log(formData);
+
     if (!validatedFields.success) {
         return {
             errors: validatedFields.error.flatten().fieldErrors,
@@ -269,7 +278,7 @@ export async function createDoctor(prevState: DoctorState, formData: FormData) {
     } = validatedFields.data; 
 
     try {
-        await prisma.usuario.create({
+        const newUser = await prisma.usuario.create({
             data: {
                 tipo_documento: typeId,
                 numero_documento: numberId,
@@ -300,12 +309,14 @@ export async function createDoctor(prevState: DoctorState, formData: FormData) {
                 },
             }
         });
+        console.log(newUser);
     }catch (error) {
+        console.log("error");
         return {
             message: 'Fallo en la base de datos: No se creó el doctor.',
         };
     }
-
+    
     revalidatePath('/search/doctor'); //Updates the doctor search.
     redirect('/search/doctor'); //Redirects you to doctor search.
 }
@@ -384,6 +395,8 @@ export async function createSecretary(prevState: SecretaryState, formData: FormD
         email: formData.get('correo_electronico'),
     });
 
+    console.log(formData);
+
     if (!validatedFields.success) {
         return {
             errors: validatedFields.error.flatten().fieldErrors,
@@ -396,7 +409,7 @@ export async function createSecretary(prevState: SecretaryState, formData: FormD
     } = validatedFields.data; 
 
     try {
-        await prisma.usuario.create({
+        const newUser = await prisma.usuario.create({
             data: {
                 tipo_documento: typeId,
                 numero_documento: numberId,
@@ -420,7 +433,9 @@ export async function createSecretary(prevState: SecretaryState, formData: FormD
                 }
             }
         });
+        console.log(newUser);
     }catch (error) {
+        console.log("error");
         return {
             message: 'Fallo en la base de datos: No se creó la secretaria.',
         };
