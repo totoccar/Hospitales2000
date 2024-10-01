@@ -18,7 +18,7 @@ export default async function SearchDoctor({searchParams,
   const currentDNI = searchParams?.dni || '';
   const currentApellido = searchParams?.apellido || '';
   const currentMatricula = searchParams?.numero_matricula || '';
-  const currentTipoDocumento = searchParams?.tipoDocumento || TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD;
+  const currentTipoDocumento = searchParams?.tipoDocumento || TipoDocumentoEnum.CEDULA_IDENTIDAD;
   const currentPage = Number(searchParams?.page) || 1;
 
   const count = 1
