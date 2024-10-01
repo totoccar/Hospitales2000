@@ -1,6 +1,6 @@
-import { findSecretariesByQuery } from '@/lib/searchsecretaria';
-import { obtenerIniciales } from '@/lib/utils';
-import { ViewSecretary } from '@/ui/Buttons';
+import { findSecretariesByQuery } from '@/src/lib/searchsecretaria';
+import { obtenerIniciales } from '@/src/lib/utils';
+import { ViewSecretary } from '@/src/ui/Buttons';
 import { TipoDocumentoEnum } from '@prisma/client';
 
 export default async function Table({

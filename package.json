@@ -12,7 +12,6 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.1.5",
-    "@vercel/postgres": "^0.10.0",
     "bcrypt": "^5.1.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-radio-group": "^1.2.0",
@@ -27,7 +26,7 @@
     "next-auth": "^5.0.0-beta.21",
     "react": "^18",
     "react-dom": "^18",
-    "zod": "^3.23.8"
+    "zod": "^3.23.8",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
     "use-debounce": "^10.0.3"

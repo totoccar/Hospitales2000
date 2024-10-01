@@ -1,7 +1,6 @@
+import { Button } from "@/src/components/ui/button";
+import { getObraSocialById, getUbicacionById, getUsuarioById } from "@/src/lib/getUsuarioById";
 
-import { Button } from "@/components/ui/button";
-
-import {getObraSocialById, getUbicacionById, getUsuarioById} from "@/lib/getUsuarioById";
 
 export default async function Component({ params }: { params: { id: string } }) {
 
