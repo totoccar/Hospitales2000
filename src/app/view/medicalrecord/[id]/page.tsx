@@ -39,11 +39,11 @@ export default async function Component({ params }: { params: { id: string } }) 
       
       <div className="flex justify-between space-x-4 mt-6">
         <div className="flex-grow">
-          <Button variant="outline">Editar</Button>
+          <Button disabled={true} variant="outline">Editar</Button>
         </div>
         <div className="flex space-x-4">
-          <Button variant="outline">Guardar </Button>
-          <Button variant="destructive">Cancelar</Button>
+          <Button disabled={true} variant="outline">Guardar </Button>
+          <Button disabled={true} variant="destructive">Cancelar</Button>
         </div>
       </div>
       <p className="text-sm text-gray-500 mt-4">Solo disponible para rol de Medico</p>
