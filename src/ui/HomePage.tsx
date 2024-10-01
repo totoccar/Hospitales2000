@@ -3,12 +3,13 @@ import { UserRound, FileText, Search } from "lucide-react"
 import { Input } from "../components/ui/input"
 import { Button } from "../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
+import Link from "next/link"
 
 export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1">
-        <section className="w-full py-8 md:py-20 lg:py-28 xl:py-38">
+        <section className="w-full py-8 md:pt-20 lg:pt-24 xl:pt-34">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
@@ -22,16 +23,19 @@ export default function HomePage() {
                   Administre médicos, pacientes y fichas médicas de manera sencilla y eficaz.
                 </p>
               </div>
-              <div className="w-full max-w-sm space-y-2">
-                <form className="flex space-x-2">
-                  <Input className="max-w-lg flex-1 border-primario" placeholder="Buscar paciente, médico o ficha" type="text" />
-                  <Button type="submit" className="bg-primario">
-                    <Search className="h-4 w-4 mr-2" />
-                    Buscar
-                  </Button>
-                </form>
-              </div>
+              
             </div>
+            <div className="grid grid-flow-col gap-4 mt-8">
+            <Button className="bg-primario">
+              <Link href="/admin/create/patient">Registrar Paciente</Link>
+            </Button>
+            <Button className="bg-primario">
+              <Link href="/admin/create/doctor">Registrar Medico</Link>
+            </Button>
+            <Button className="bg-primario">
+              <Link href="/admin/create/secretary">Registrar Secretaria</Link>
+            </Button>
+              </div>
           </div>
         </section>
         <section className="w-full py-12 md:py-24 lg:py-32 rounded-xl bg-fondo2">
