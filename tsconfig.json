@@ -27,7 +27,7 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "env.d.ts"  // Asegúrate de incluir el archivo de tipos para las variables de entorno
+    "env.d.ts"  
   ],
   "exclude": ["node_modules"]
 }
