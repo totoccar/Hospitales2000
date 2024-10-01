@@ -1,11 +1,11 @@
 'use client';
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { createDoctor, DoctorState } from '@/lib/actions';
 import { useFormState } from 'react-dom';
 import Link from 'next/link';
 import { Especialidad } from "@prisma/client";
+import { createDoctor, DoctorState } from '@/src/lib/createUsers';
+import { Input } from '@/src/components/ui/input';
+import { Button } from '@/src/components/ui/button';
 
 export default function CreateDoctorForm({specialties}: {specialties: Especialidad[]}) {
 
@@ -213,10 +213,10 @@ export default function CreateDoctorForm({specialties}: {specialties: Especialid
       </div>
 
       <div className="flex gap-4 w-full">
-        <Button type="submit" className="flex-1">
+        <Button type="submit" className="flex-1 bg-primario">
           Crear Doctor
         </Button>
-        <Button asChild className="flex-1">
+        <Button asChild className="flex-1 bg-primario">
           <Link href="/search/doctor">
             Cancel
           </Link>

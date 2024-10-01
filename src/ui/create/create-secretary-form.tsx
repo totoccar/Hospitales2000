@@ -1,10 +1,10 @@
 'use client';
 
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { createSecretary, SecretaryState } from '@/lib/actions';
 import { useFormState } from 'react-dom';
 import Link from 'next/link';
+import { createSecretary, SecretaryState } from '@/src/lib/createUsers';
+import { Input } from '@/src/components/ui/input';
+import { Button } from '@/src/components/ui/button';
 
 export default function CreateSecretaryForm() {
 

@@ -3,8 +3,8 @@
 import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import prisma from '@/lib/db'; //Should we use the prisma from db.ts?
 import { hash } from "bcryptjs";
+import prisma from "./db";
 //TODO: Zip all common fields into one UserState, use it along with particular cases.
 //TODO: Change file name to create-user.ts.
 
@@ -281,8 +281,7 @@ export async function createDoctor(prevState: DoctorState, formData: FormData) {
     console.log('validatedFields: ', validatedFields);
 
     const { typeId, numberId, regType, regNumber, doctorName, doctorLastName,
-        phoneNumber, city, streetName, streetNumber, postalCode, cityState, email, specialty, description
-    } = validatedFields.data; 
+        phoneNumber, city, streetName, streetNumber, postalCode, cityState, email, specialty    } = validatedFields.data; 
 
     const hashedPassword = await hash(numberId, 10);
 
@@ -319,6 +318,7 @@ export async function createDoctor(prevState: DoctorState, formData: FormData) {
             }
         });
         console.log(newUser);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     }catch (error) {
         console.log("error on creation.");
         return {
@@ -448,6 +448,7 @@ export async function createSecretary(prevState: SecretaryState, formData: FormD
             }
         });
         console.log(newUser);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     }catch (error) {
         console.log("error on creation.");
         return {

@@ -1,4 +1,4 @@
-import CreateSecretaryForm from "@/ui/create/create-secretary-form";
+import CreateSecretaryForm from "@/src/ui/create/create-secretary-form";
 
 export default function CreateSecretaryPage() {
   return (
