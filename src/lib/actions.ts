@@ -74,7 +74,7 @@ const PatientFormSchema = z.object({
         invalid_type_error: 'Por favor ingrese la provincia.',
     }),
     email: z.string().email({
-        message: 'Por favor ingrese el email',
+        message: 'Por favor ingrese un mail válido.',
     }),
     socialWork: z.string({
         invalid_type_error: 'Por favor seleccione una obra social.',
@@ -239,7 +239,7 @@ const DoctorFormSchema = z.object({
         invalid_type_error: 'Por favor ingrese la provincia.',
     }),
     email: z.string().email({
-        message: 'Por favor ingrese el email',
+        message: 'Por favor ingrese un mail válido.',
     }),
     specialty: z.string({
         invalid_type_error: 'Por favor seleccione una especialidad.',
@@ -381,7 +381,7 @@ const SecretaryFormSchema = z.object({
         invalid_type_error: 'Por favor ingrese la provincia.',
     }),
     email: z.string().email({
-        message: 'Por favor ingrese el email',
+        message: 'Por favor ingrese un mail válido.',
     }),
 });
 

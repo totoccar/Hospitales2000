@@ -192,8 +192,17 @@ export default function CreatePatientForm({socialWorks}: {socialWorks: ObraSocia
             name="correo_electronico"
             type="email" 
             placeholder="Ingrese el correo electrónico" 
+            aria-describedby="customer-error"
             required
           />
+          <div id="customer-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.email &&
+              state.errors.email.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+            ))}
+          </div>
         </div>
 
         <div className="space-y-2">
