@@ -14,7 +14,7 @@ export default function SearchForm() {
   const [dni, setDni] = useState('')
   const [apellido, setApellido] = useState('')
 
-  const [tipoDocumento, setTipoDocumento] = useState<TipoDocumentoEnum>(TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD)
+  const [tipoDocumento, setTipoDocumento] = useState<TipoDocumentoEnum>(TipoDocumentoEnum.CEDULA_IDENTIDAD)
 
   const router = useRouter()
 
@@ -83,7 +83,7 @@ export default function SearchForm() {
               {(
             <div className="w-48">
               <Label htmlFor="document-type" className="sr-only">Tipo de documento</Label>
-              <Select disabled={searchType === 'apellido'} onValueChange={(value) => setTipoDocumento(value as TipoDocumentoEnum)}>
+              <Select disabled={searchType === 'apellido'} onValueChange={(value) => setTipoDocumento(value as TipoDocumentoEnum)} defaultValue={TipoDocumentoEnum.CEDULA_IDENTIDAD}>
                 <SelectTrigger id="document-type">
                   <SelectValue placeholder="Tipo de documento" />
                 </SelectTrigger>
