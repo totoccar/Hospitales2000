@@ -115,8 +115,8 @@ export default function CreateDoctorForm({specialties}: {specialties: Especialid
         <div className="space-y-2">
           <label htmlFor="specialty" className="block text-sm font-medium text-gray-700">Especialidad</label>
           <select 
-            id="socialWork" 
-            name="tipo_obra_social"
+            id="specialty" 
+            name="especialidad"
             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
             {specialties.map(especialidad => (
               <option key={especialidad.id} value={especialidad.id}>
