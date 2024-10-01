@@ -1,5 +1,6 @@
-import { fetchSocialWorks } from '@/lib/actions';
-import CreatePatientForm from '@/ui/create/create-patient-form';
+import { fetchSocialWorks } from "@/src/lib/createUsers";
+import CreatePatientForm from "@/src/ui/create/create-patient-form";
+
 
 export default async function CreatePatientPage() {
   const socialWorks = await fetchSocialWorks();

@@ -1,17 +1,11 @@
 'use client';
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { createPatient, PatientState } from '@/lib/actions';
-import { useFormState } from 'react-dom';
-import Link from 'next/link';
-import PhoneInput, {
-  formatPhoneNumber,
-  formatPhoneNumberIntl,
-  isPossiblePhoneNumber,
-  isValidPhoneNumber
-} from "react-phone-number-input/input";
+import { Button } from "@/src/components/ui/button";
+import { Input } from "@/src/components/ui/input";
+import { createPatient, PatientState } from "@/src/lib/createUsers";
 import { ObraSocial } from "@prisma/client";
+import Link from "next/link";
+import { useFormState } from "react-dom";
 
 export default function CreatePatientForm({socialWorks}: {socialWorks: ObraSocial[]}) {
 
@@ -220,10 +214,10 @@ export default function CreatePatientForm({socialWorks}: {socialWorks: ObraSocia
       </div>
 
       <div className="flex gap-4 w-full">
-        <Button type="submit" className="flex-1">
+        <Button type="submit" className="flex-1  bg-primario">
           Crear Paciente
         </Button>
-        <Button asChild className="flex-1">
+        <Button asChild className="flex-1 bg-primario">
           <Link href="/search/patient">
             Cancel
           </Link>
