@@ -1,3 +1,4 @@
+import { TipoDocumentoEnum } from "@prisma/client";
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 
@@ -37,3 +38,18 @@ export const generatePagination = (currentPage: number, totalPages: number) => {
     totalPages,
   ];
 };
+
+export function obtenerIniciales(tipoDocumento: TipoDocumentoEnum): string {
+  // Convertimos el valor del enum en su correspondiente nombre (string)
+  const tipoDocumentoStr = TipoDocumentoEnum[tipoDocumento];
+  
+  if (tipoDocumentoStr === "PASAPORTE")
+    return "PAS";
+  // Dividimos el string en palabras por los guiones bajos
+  const palabras = tipoDocumentoStr.split('_');
+  
+  // Tomamos la primera letra de cada palabra y la convertimos a mayúscula
+  const iniciales = palabras.map(palabra => palabra.charAt(0)).join('');
+  
+  return iniciales;
+}
