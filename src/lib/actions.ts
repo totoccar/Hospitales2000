@@ -121,7 +121,7 @@ export async function createPatient(prevState: PatientState, formData: FormData)
     const hashedPassword = await hash(numberId, 10);
 
     const [year, month, day] = (birthDate.split('T')[0]).split('-').map(Number);
-    const parsedDate = new Date(day, month - 1, year);
+    const parsedDate = new Date(day, month - 1, year).toISOString().split('T')[0];
 
     try {
         const newUser = await prisma.usuario.create({
