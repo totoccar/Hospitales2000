@@ -130,6 +130,9 @@ export async function createPatient(prevState: PatientState, formData: FormData)
         };
     }
 
+    const [year, month, day] = birthDate.split('-').map(Number);
+    const parsedDate = new Date(day, month, year);
+
     try {
         const newUser = await prisma.usuario.create({
             data: {
@@ -141,7 +144,7 @@ export async function createPatient(prevState: PatientState, formData: FormData)
                 contrasena: hashedPassword, //At first, default password is numberId.
                 paciente: {
                     create: {
-                        fecha_nacimiento: birthDate,
+                        fecha_nacimiento: parsedDate,
                         lugar_nacimiento: birthPlace,
                         contacto_emergencia: emergencyContact,
                         numero_telefono: phoneNumber,
