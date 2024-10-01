@@ -46,8 +46,7 @@ const PatientFormSchema = z.object({
     patientLastName: z.string({
         invalid_type_error: 'Por favor ingrese el apellido.',
     }),
-    birthDate: z.date().min(new Date('1900-01-01'), { message: 'La fecha ingresada es inválida' }) 
-    && z.date().max(new Date(), { message: 'La fecha ingresada es inválida' }),
+    birthDate: z.date().min(new Date('1900-01-01'), { message: 'La fecha ingresada es inválida' }).max(new Date(), { message: 'La fecha ingresada es inválida' }),
     // birthDate: z.string({
     //     invalid_type_error: 'Por favor seleccione una fecha de nacimiento.',
     // }),
