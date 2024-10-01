@@ -1,4 +1,5 @@
 import { findSecretariesByQuery } from '@/lib/searchsecretaria';
+import { obtenerIniciales } from '@/lib/utils';
 import { ViewSecretary } from '@/ui/Buttons';
 import { TipoDocumentoEnum } from '@prisma/client';
 
@@ -52,7 +53,7 @@ export default async function Table({
                 <th scope="col" className="px-3 py-5 font-medium text-sm ">Tipo De Documento</th>
                 <th scope="col" className="px-3 py-5 font-medium text-sm ">N° de Documento</th>
                 <th scope="col" className="px-3 py-5 font-medium text-sm ">N° de Telefono</th>
-                <th scope="col" className="px-3 py-5 font-medium text-sm ">Ver Datos Personales</th>
+                <th scope="col" className="px-3 py-5 font-medium text-sm text-center ">Ver Datos Personales</th>
               </tr>
             </thead>
             <tbody className="bg-white">
@@ -68,7 +69,7 @@ export default async function Table({
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">{secretary.usuario.apellido}</td>
-                  <td className="whitespace-nowrap px-3 py-3">{secretary.usuario.tipo_documento}</td>
+                  <td className="whitespace-nowrap px-3 py-3">{obtenerIniciales(secretary.usuario.tipo_documento)}</td>
                   <td className="whitespace-nowrap px-3 py-3">{secretary.usuario.numero_documento}</td>
                   <td className="whitespace-nowrap px-3 py-3">{secretary.numero_telefono}</td>
                   <td className="whitespace-nowrap py-3 pr-3">
