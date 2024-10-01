@@ -1,10 +1,9 @@
 'use client';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { generatePagination } from '@/lib/utils';
-
 import { usePathname, useSearchParams } from 'next/navigation';
 import { ArrowLeftIcon, ArrowRightIcon } from 'lucide-react';
+import { generatePagination } from '@/src/lib/utils';
  
 export default function Pagination({ totalPages }: { totalPages: number }) {
   const pathname = usePathname();
@@ -19,7 +18,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
   const allPages = generatePagination(currentPage, totalPages);
 
   return (
-    <>
+    <div>
 
       { <div className="inline-flex">
         <PaginationArrow
@@ -55,7 +54,7 @@ export default function Pagination({ totalPages }: { totalPages: number }) {
           isDisabled={currentPage >= totalPages}
         />
       </div> }
-    </>
+      </div>
   );
 }
 

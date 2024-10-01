@@ -1,6 +1,7 @@
-import { findPacientesByQuery } from '@/lib/searchpatient';
-import { obtenerIniciales } from '@/lib/utils';
-import { ViewPatient,ViewMedicalRecord } from '@/ui/Buttons';
+
+import { findPacientesByQuery } from '@/src/lib/searchpatient';
+import { obtenerIniciales } from '@/src/lib/utils';
+import { ViewMedicalRecord, ViewPatient } from '@/src/ui/Buttons';
 import { TipoDocumentoEnum } from '@prisma/client';
 
 export default async function Table({

@@ -1,5 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { getUsuarioByFichaMedicaId, getObraSocialById,getFichaMedicaById} from "@/lib/fichaMedicaService";
+import { Button } from "@/src/components/ui/button";
+import { getFichaMedicaById, getObraSocialById, getUsuarioByFichaMedicaId } from "@/src/lib/fichaMedicaService";
+
 
 export default async function Component({ params }: { params: { id: string } }) {
   const id = params.id as string;

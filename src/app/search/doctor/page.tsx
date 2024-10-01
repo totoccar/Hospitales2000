@@ -2,8 +2,8 @@ import React from 'react'
 import Search from '../doctor/ui/Search'
 import Table from '../doctor/ui/Table'
 import Pagination from '../ui/Pagination'
-import MaxWidthWrapper from '@/ui/MaxWidthWrapper';
 import { TipoDocumentoEnum } from '@prisma/client';
+import MaxWidthWrapper from '@/src/ui/MaxWidthWrapper';
 
 export default async function SearchDoctor({searchParams,
 }: {

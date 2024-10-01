@@ -1,6 +1,7 @@
-import { Button } from "@/components/ui/button";
-import { getEspecialidadById, getUbicacionById, getUsuarioById } from "@/lib/getMedicoById";
-import MaxWidthWrapper from "@/ui/MaxWidthWrapper";
+import { Button } from "@/src/components/ui/button";
+import { getEspecialidadById, getUbicacionById, getUsuarioById } from "@/src/lib/getMedicoById";
+import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
+
 
 export default async function Component({ params }: { params: { id: string } }) {
 

@@ -2,8 +2,8 @@ import React from 'react'
 import Search from './ui/Search'
 import Table from './ui/Table'
 import Pagination from '../ui/Pagination'
-import MaxWidthWrapper from '@/ui/MaxWidthWrapper';
 import { TipoDocumentoEnum } from '@prisma/client';
+import MaxWidthWrapper from '@/src/ui/MaxWidthWrapper';
 
 export default async function SearchPatient({searchParams,
 }: {
