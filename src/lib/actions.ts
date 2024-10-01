@@ -47,9 +47,8 @@ const PatientFormSchema = z.object({
         invalid_type_error: 'Por favor ingrese el apellido.',
     }),
     birthDate: z.string({
-        invalid_type_error: 'Por favor ingrese la fecha de nacimiento.',
+        invalid_type_error: 'Por favor ingrese la ciudad de nacimiento.',
     }),
-    //birthDate: z.date().min(new Date('1900-01-01'), { message: 'La fecha ingresada es inválida' }).max(new Date(new Date().getDate() + 1), { message: 'La fecha ingresada es inválida' }),
     birthPlace: z.string({
         invalid_type_error: 'Por favor ingrese la ciudad de nacimiento.',
     }),
@@ -120,15 +119,6 @@ export async function createPatient(prevState: PatientState, formData: FormData)
     } = validatedFields.data;
 
     const hashedPassword = await hash(numberId, 10);
-    const date = new Date(birthDate);
-    const minDate = new Date('1900-01-01');
-    const maxDate = new Date(new Date().getDate() + 1);
-    if (maxDate <= date || date <= minDate) {
-        console.log("error on date validation");
-        return {
-            message: 'Error: fecha inválida',
-        };
-    }
 
     const [year, month, day] = birthDate.split('-').map(Number);
     const parsedDate = new Date(day, month, year);
