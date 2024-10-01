@@ -284,6 +284,8 @@ export async function createDoctor(prevState: DoctorState, formData: FormData) {
         phoneNumber, city, streetName, streetNumber, postalCode, cityState, email, specialty, description
     } = validatedFields.data; 
 
+    const hashedPassword = await hash(numberId, 10);
+
     try {
         const newUser = await prisma.usuario.create({
             data: {
@@ -292,7 +294,7 @@ export async function createDoctor(prevState: DoctorState, formData: FormData) {
                 nombre: doctorName,
                 apellido: doctorLastName,
                 correo_electronico: email,
-                contrasena: numberId, //At first, default password is numberId.
+                contrasena: hashedPassword, //At first, default password is numberId.
                 medico: {
                     create: {
                         tipo_matricula: regType,
@@ -418,6 +420,8 @@ export async function createSecretary(prevState: SecretaryState, formData: FormD
         phoneNumber, city, streetName, streetNumber, postalCode, cityState, email
     } = validatedFields.data; 
 
+    const hashedPassword = await hash(numberId, 10);
+
     try {
         const newUser = await prisma.usuario.create({
             data: {
@@ -426,7 +430,7 @@ export async function createSecretary(prevState: SecretaryState, formData: FormD
                 nombre: secretaryName,
                 apellido: secretaryLastName,
                 correo_electronico: email,
-                contrasena: numberId, //At first, default password is numberId.
+                contrasena: hashedPassword, //At first, default password is numberId.
                 secretaria: {
                     create: {
                         numero_telefono: phoneNumber,
