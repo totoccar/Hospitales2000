@@ -120,7 +120,7 @@ export async function createPatient(prevState: PatientState, formData: FormData)
 
     const hashedPassword = await hash(numberId, 10);
 
-    const [year, month, day] = birthDate.split('T')[0].split('-').map(Number);
+    const [year, month, day] = (birthDate.split('T')[0]).split('-').map(Number);
     const parsedDate = new Date(day, month, year);
 
     try {
