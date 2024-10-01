@@ -1,7 +1,11 @@
 import { signOut } from '@/auth';
 import { PowerIcon } from 'lucide-react';
+import HomePage from "@/ui/HomePage";
+import MaxWidthWrapper from "@/ui/MaxWidthWrapper";
+                  
 export default function Home() {
   return (
+    <MaxWidthWrapper>
     <div className="grid items-center justify-items-center h-screen bg-fondo">
         <h1 className="font-bold text-3xl text-acentos">PASAR TODO EL FORM AL NAVBAR</h1>
       <form
@@ -16,5 +20,7 @@ export default function Home() {
           </button>
         </form>
     </div>
+    <HomePage/>
+    </MaxWidthWrapper>
   );
 }

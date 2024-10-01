@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  output   = "./generated/client"
 }
 
 datasource db {
@@ -8,24 +9,24 @@ datasource db {
   directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
-model Admin {
-  usuario_id String  @id
-  Usuario    Usuario @relation(fields: [usuario_id], references: [id])
+model Ubicacion {
+  id            String      @id @default(uuid())
+  calle         String
+  numero        String
+  codigo_postal String
+  ciudad        String
+  provincia     String
+  medico        Medico?
+  paciente      Paciente?
+  secretaria    Secretaria?
 }
 
-model Especialidad {
-  id     String   @id
-  nombre String   @unique
-  Medico Medico[]
-}
-
-model FichaMedica {
-  id                     String    @id
-  alergias               String
-  diagnostico            String
-  tratamientos           String
-  medicamentos_recetados String
-  Paciente               Paciente?
+model Secretaria {
+  usuario_id      String    @id
+  numero_telefono String
+  ubicacion_id    String    @unique
+  ubicacion       Ubicacion @relation(fields: [ubicacion_id], references: [id])
+  usuario         Usuario   @relation(fields: [usuario_id], references: [id])
 }
 
 model Medico {
@@ -36,15 +37,9 @@ model Medico {
   ubicacion_id     String            @unique
   especialidad_id  String
   descripcion      String?
-  Especialidad     Especialidad      @relation(fields: [especialidad_id], references: [id])
-  Ubicacion        Ubicacion         @relation(fields: [ubicacion_id], references: [id])
-  Usuario          Usuario           @relation(fields: [usuario_id], references: [id])
-}
-
-model ObraSocial {
-  id       String     @id
-  nombre   String     @unique
-  Paciente Paciente[]
+  especialidad     Especialidad      @relation(fields: [especialidad_id], references: [id])
+  ubicacion        Ubicacion         @relation(fields: [ubicacion_id], references: [id])
+  usuario          Usuario           @relation(fields: [usuario_id], references: [id])
 }
 
 model Paciente {
@@ -56,44 +51,50 @@ model Paciente {
   ubicacion_id        String      @unique
   obra_social_id      String
   ficha_medica_id     String      @unique
-  FichaMedica         FichaMedica @relation(fields: [ficha_medica_id], references: [id])
-  ObraSocial          ObraSocial  @relation(fields: [obra_social_id], references: [id])
-  Ubicacion           Ubicacion   @relation(fields: [ubicacion_id], references: [id])
-  Usuario             Usuario     @relation(fields: [usuario_id], references: [id])
+  ficha_medica        FichaMedica @relation(fields: [ficha_medica_id], references: [id])
+  obra_social         ObraSocial  @relation(fields: [obra_social_id], references: [id])
+  ubicacion           Ubicacion   @relation(fields: [ubicacion_id], references: [id])
+  usuario             Usuario     @relation(fields: [usuario_id], references: [id])
 }
 
-model Secretaria {
-  usuario_id      String    @id
-  numero_telefono String
-  ubicacion_id    String    @unique
-  Ubicacion       Ubicacion @relation(fields: [ubicacion_id], references: [id])
-  Usuario         Usuario   @relation(fields: [usuario_id], references: [id])
-}
-
-model Ubicacion {
-  id            String      @id
-  calle         String
-  numero        String
-  codigo_postal String
-  ciudad        String
-  provincia     String
-  Medico        Medico?
-  Paciente      Paciente?
-  Secretaria    Secretaria?
+model Admin {
+  usuario_id String  @id
+  usuario    Usuario @relation(fields: [usuario_id], references: [id])
 }
 
 model Usuario {
-  id                 String            @id
+  id                 String            @id @default(uuid())
   tipo_documento     TipoDocumentoEnum
   numero_documento   String            @unique
   nombre             String
   apellido           String
   correo_electronico String
   contrasena         String
-  Admin              Admin?
-  Medico             Medico?
-  Paciente           Paciente?
-  Secretaria         Secretaria?
+  admin              Admin?
+  medico             Medico?
+  paciente           Paciente?
+  secretaria         Secretaria?
+}
+
+model FichaMedica {
+  id                     String    @id @default(uuid())
+  alergias               String
+  diagnostico            String
+  tratamientos           String
+  medicamentos_recetados String
+  paciente               Paciente?
+}
+
+model Especialidad {
+  id     String   @id @default(uuid())
+  nombre String   @unique
+  medico Medico[]
+}
+
+model ObraSocial {
+  id       String     @id @default(uuid())
+  nombre   String     @unique
+  paciente Paciente[]
 }
 
 enum TipoDocumentoEnum {
