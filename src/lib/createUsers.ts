@@ -293,7 +293,7 @@ export async function createDoctor(prevState: DoctorState, formData: FormData) {
                 nombre: doctorName,
                 apellido: doctorLastName,
                 correo_electronico: email,
-                contrasena: hashedPassword, //At first, default password is numberId.
+                contrasena: hashedPassword, 
                 medico: {
                     create: {
                         tipo_matricula: regType,
@@ -318,7 +318,6 @@ export async function createDoctor(prevState: DoctorState, formData: FormData) {
             }
         });
         console.log(newUser);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     }catch (error) {
         console.log("error on creation.");
         return {
@@ -448,7 +447,6 @@ export async function createSecretary(prevState: SecretaryState, formData: FormD
             }
         });
         console.log(newUser);
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     }catch (error) {
         console.log("error on creation.");
         return {
@@ -456,8 +454,8 @@ export async function createSecretary(prevState: SecretaryState, formData: FormD
         };
     }
 
-    revalidatePath('/search/secretary'); //Updates the secretary search.
-    redirect('/search/secretary'); //Redirects you to secretary search.
+    revalidatePath('/search/secretary');
+    redirect('/search/secretary'); 
 }
 
 export async function fetchSocialWorks() {

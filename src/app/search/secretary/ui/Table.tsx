@@ -7,7 +7,6 @@ export default async function Table({
   dni,
   apellido,
   tipoDocumento,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   currentPage,
 }: {
   dni?: string;
