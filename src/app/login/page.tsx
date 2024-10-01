@@ -1,7 +1,11 @@
-export default function Login() {
-    return (
-        <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-            Login Page
-        </div>
-    );
+import LoginForm from "./ui/LoginForm";
+
+export default function LoginPage() {
+  return (
+    <main className="flex flex-col items-center justify-center min-h-screen bg-zinc-50  ">
+      <div className="mx-auto w-full max-w-[400px] flex flex-col space-y-2.5">
+        <LoginForm />
+      </div>
+    </main>
+  );
 }
