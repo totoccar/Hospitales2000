@@ -188,6 +188,7 @@ export default function CreateDoctorForm({specialties}: {specialties: Especialid
             name="correo_electronico"
             type="email" 
             placeholder="Ingrese el correo electrónico" 
+            aria-describedby="customer-error"
             required
           />
           <div id="customer-error" aria-live="polite" aria-atomic="true">
