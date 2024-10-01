@@ -132,7 +132,6 @@ export default function CreateDoctorForm({specialties}: {specialties: Especialid
             id="streetName" 
             name="calle"
             placeholder="Ingrese el nombre de la calle" 
-            onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
             required
           />
         </div>
