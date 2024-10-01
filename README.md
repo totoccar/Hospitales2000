@@ -23,7 +23,7 @@ Dentro de Visual Studio Code en la terminal (Ctrl + ñ):
 npm install
 ```
 
-## Iniciar la aplicacion
+## Iniciar la aplicación
 
 Dentro de la terminal de VSCode:
 
