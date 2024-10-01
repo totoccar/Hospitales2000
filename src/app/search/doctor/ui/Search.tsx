@@ -15,7 +15,7 @@ export default function SearchForm() {
   const [apellido, setApellido] = useState('')
   const [numero_matricula, setNumeroMatricula] = useState('')
 
-  const [tipoDocumento, setTipoDocumento] = useState<TipoDocumentoEnum>(TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD)
+  const [tipoDocumento, setTipoDocumento] = useState<TipoDocumentoEnum>(TipoDocumentoEnum.CEDULA_IDENTIDAD)
 
   const router = useRouter()
 
@@ -100,7 +100,7 @@ export default function SearchForm() {
               {(
             <div className="w-48">
               <Label htmlFor="document-type" className="sr-only">Tipo de documento</Label>
-              <Select disabled={searchType === 'apellido' || searchType === 'matricula'} onValueChange={(value) => setTipoDocumento(value as TipoDocumentoEnum)}>
+              <Select disabled={searchType === 'apellido' || searchType === 'matricula'} onValueChange={(value) => setTipoDocumento(value as TipoDocumentoEnum)} defaultValue={TipoDocumentoEnum.CEDULA_IDENTIDAD} >
                 <SelectTrigger id="document-type">
                   <SelectValue placeholder="Tipo de documento" />
                 </SelectTrigger>
@@ -114,6 +114,8 @@ export default function SearchForm() {
           )}
             </div>
           </div>
+
+
 
           <Button type="submit" className='bg-primario' size="icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
