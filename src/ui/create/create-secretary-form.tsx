@@ -101,7 +101,6 @@ export default function CreateSecretaryForm() {
             id="streetName"
             name="calle" 
             placeholder="Ingrese el nombre de la calle" 
-            onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
             required
           />
         </div>

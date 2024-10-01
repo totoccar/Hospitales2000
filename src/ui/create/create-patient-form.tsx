@@ -136,7 +136,6 @@ export default function CreatePatientForm({socialWorks}: {socialWorks: ObraSocia
             id="streetName" 
             name="calle"
             placeholder="Ingrese el nombre de la calle" 
-            onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
             required
           />
         </div>
