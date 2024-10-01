@@ -1,36 +1,36 @@
 {
   "name": "hospitales2000",
   "version": "0.1.0",
-  "private": true,  
-  
+  "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "npx prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall": "prisma generate"
+    "postinstall": "npx prisma generate"
   },
   "dependencies": {
     "@heroicons/react": "^2.1.5",
-    "bcrypt": "^5.1.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-radio-group": "^1.2.0",
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@vercel/postgres": "^0.10.0",
+    "bcrypt": "^5.1.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "hospitales2000": "file:",
     "lucide-react": "^0.446.0",
     "next": "14.2.13",
     "next-auth": "^5.0.0-beta.21",
+    "postinstall": "^0.11.0",
     "react": "^18",
     "react-dom": "^18",
     "react-phone-number-input": "^3.4.8",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7",
-    "zod": "^3.23.8",
-    "use-debounce": "^10.0.3"
+    "use-debounce": "^10.0.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@prisma/client": "^5.20.0",
