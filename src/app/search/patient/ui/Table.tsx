@@ -86,7 +86,7 @@ export default async function Table({
                   </td>
                   <td className="whitespace-nowrap py-3 pr-3">
                     <div className="flex justify-center ">
-                    <ViewMedicalRecord disabled={true} id={patient.usuario.id} />
+                    <ViewMedicalRecord disabled={false} id={patient.ficha_medica_id} />
                     </div>
                   </td>
                   </tr>
