@@ -1,6 +1,5 @@
 import prisma from "./db";
 
-// Función para obtener al usuario y paciente por ficha médica ID
 export async function getUsuarioByFichaMedicaId(fichaMedicaId: string) {
     try {
       const fichaMedica = await prisma.fichaMedica.findUnique({
@@ -8,8 +7,8 @@ export async function getUsuarioByFichaMedicaId(fichaMedicaId: string) {
         include: {
           paciente: {
             include: {
-              usuario: true,  // Incluir datos del usuario relacionado
-              obra_social: true,  // Incluir la obra social del paciente
+              usuario: true,  
+              obra_social: true, 
             },
           },
         },
@@ -20,8 +19,8 @@ export async function getUsuarioByFichaMedicaId(fichaMedicaId: string) {
       }
   
       return {
-        usuario: fichaMedica.paciente.usuario,  // Retornamos el usuario
-        paciente: fichaMedica.paciente,  // Retornamos el paciente
+        usuario: fichaMedica.paciente.usuario, 
+        paciente: fichaMedica.paciente, 
       };
     } catch (error) {
       console.error('Error al obtener el usuario por ficha médica ID:', error);
@@ -31,6 +30,25 @@ export async function getUsuarioByFichaMedicaId(fichaMedicaId: string) {
     }
   }
   
+export async function getFichaMedicaById(fichaMedicaId: string) {
+  try {
+    // Busca la ficha médica basada en su id
+    const fichaMedica = await prisma.fichaMedica.findUnique({
+      where: { id: fichaMedicaId }, // Busca por el ID de la ficha médica
+    });
+
+    if (!fichaMedica) {
+      throw new Error('Ficha médica no encontrada');
+    }
+
+    return fichaMedica; // Retornamos la ficha médica encontrada
+  } catch (error) {
+    console.error(error);
+    throw new Error('Error al obtener la ficha médica');
+  } finally {
+    await prisma.$disconnect(); // Cierra la conexión
+  }
+}
 
 export async function getObraSocialById(obraSocialId: string) {
   try {
@@ -42,7 +60,7 @@ export async function getObraSocialById(obraSocialId: string) {
       throw new Error('Obra social no encontrada');
     }
 
-    return obraSocial.nombre;  // Retorna la obra social si existe
+    return obraSocial.nombre; 
   } catch (error) {
     console.error('Error al obtener la obra social:', error);
     throw error;
@@ -63,7 +81,7 @@ export async function getFichaMedicaByPacienteIdAlergia(pacienteId: string) {
         throw new Error('Ficha médica no encontrada');
       }
   
-      return fichaMedica.alergias;  // Retorna la ficha médica si existe
+      return fichaMedica.alergias; 
     } catch (error) {
       console.error('Error al obtener la ficha médica:', error);
       throw error;
@@ -84,7 +102,7 @@ export async function getFichaMedicaByPacienteIdAlergia(pacienteId: string) {
         throw new Error('Ficha médica no encontrada');
       }
   
-      return fichaMedica.diagnostico;  // Retorna la ficha médica si existe
+      return fichaMedica.diagnostico;
     } catch (error) {
       console.error('Error al obtener la ficha médica:', error);
       throw error;
@@ -104,7 +122,7 @@ export async function getFichaMedicaByPacienteIdAlergia(pacienteId: string) {
         throw new Error('Ficha médica no encontrada');
       }
   
-      return fichaMedica.tratamientos;  // Retorna la ficha médica si existe
+      return fichaMedica.tratamientos; 
     } catch (error) {
       console.error('Error al obtener la ficha médica:', error);
       throw error;
@@ -124,7 +142,7 @@ export async function getFichaMedicaByPacienteIdAlergia(pacienteId: string) {
         throw new Error('Ficha médica no encontrada');
       }
   
-      return fichaMedica.medicamentos_recetados;  // Retorna la ficha médica si existe
+      return fichaMedica.medicamentos_recetados;
     } catch (error) {
       console.error('Error al obtener la ficha médica:', error);
       throw error;
