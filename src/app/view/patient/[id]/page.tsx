@@ -44,8 +44,8 @@ export default async function Component({ params }: { params: { id: string } }) 
         
       </div>
       <div className="flex justify-end space-x-4 mt-6">
-        <Button variant="outline">Editar</Button>
-        <Button variant="destructive">Eliminar</Button>
+        <Button disabled={true} variant="outline">Editar</Button>
+        <Button disabled={true} variant="destructive">Eliminar</Button>
       </div>
       <p className="text-sm text-gray-500 mt-4">Solo disponible para rol de secretaria</p>
     </div>
