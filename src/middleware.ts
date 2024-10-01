@@ -1,4 +1,3 @@
-// middleware.ts
 import { NextResponse } from 'next/server';
 import { NextRequest } from 'next/server';
 import { getToken } from 'next-auth/jwt';
@@ -8,7 +7,6 @@ export async function middleware(req: NextRequest) {
 
   const { pathname } = req.nextUrl;
 
-  // Rutas que no requieren autenticación
   const publicRoutes = ['/login', '/api/auth'];
 
   // Si la ruta es pública y el usuario ya está autenticado, redirigir al home
