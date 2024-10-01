@@ -1,4 +1,5 @@
 import { findPacientesByQuery } from '@/lib/searchpatient';
+import { obtenerIniciales } from '@/lib/utils';
 import { ViewPatient,ViewMedicalRecord } from '@/ui/Buttons';
 import { TipoDocumentoEnum } from '@prisma/client';
 
@@ -75,7 +76,7 @@ export default async function Table({
                     </div>
                   </td>
                   <td className="whitespace-nowrap px-3 py-3">{patient.usuario.apellido}</td>
-                  <td className="whitespace-nowrap px-3 py-3">{patient.usuario.tipo_documento}</td>
+                  <td className="whitespace-nowrap px-3 py-3">{obtenerIniciales(patient.usuario.tipo_documento)}</td>
                   <td className="whitespace-nowrap px-3 py-3">{patient.usuario.numero_documento}</td>
                   <td className="whitespace-nowrap px-3 py-3">{patient.numero_telefono}</td>
                   <td className="whitespace-nowrap py-3 pr-3">
