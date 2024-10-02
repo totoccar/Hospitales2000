@@ -25,7 +25,7 @@ export default function HomePage() {
               </div>
               
             </div>
-            <div className="grid grid-flow-col gap-2 md:gap-4 mt-8">
+            <div className="grid md:grid-flow-col gap-2 md:gap-4 mt-8">
             <Button className="bg-primario">
               <Link href="/admin/create/patient">Registrar Paciente</Link>
             </Button>
