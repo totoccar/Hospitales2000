@@ -22,7 +22,7 @@ export default function CreatePatientForm({socialWorks}: {socialWorks: ObraSocia
   const [state, formAction] = useFormState(createPatient, initialState);
 
   return (
-    <form action={formAction} className="space-y-8 max-w-2xl mx-auto">
+    <form action={formAction} className="space-y-8 max-w-3xl rounded-md xs:p-1 p-2 bg-fondo md:p-4 mx-auto">
       <div className="space-y-2">
         <h2 className="text-2xl font-bold">Crear Paciente</h2>
         <p className="text-gray-500">Ingrese la información del paciente.</p>
