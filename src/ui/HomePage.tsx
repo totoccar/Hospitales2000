@@ -25,17 +25,17 @@ export default function HomePage() {
               </div>
               
             </div>
-            <div className="grid grid-flow-col gap-4 mt-8">
-            <Button className="bg-primario">
-              <Link href="/admin/create/patient">Registrar Paciente</Link>
-            </Button>
-            <Button className="bg-primario">
-              <Link href="/admin/create/doctor">Registrar Medico</Link>
-            </Button>
-            <Button className="bg-primario">
-              <Link href="/admin/create/secretary">Registrar Secretaria</Link>
-            </Button>
-              </div>
+            <div className="grid grid-cols-1 gap-2 mt-8 md:grid-cols-3 md:gap-4">
+              <Link href="/admin/create/patient" passHref>
+                <Button className="bg-primario w-full">Registrar Paciente</Button>
+              </Link>
+              <Link href="/admin/create/doctor" passHref>
+                <Button className="bg-primario w-full">Registrar Medico</Button>
+              </Link>
+              <Link href="/admin/create/secretary" passHref>
+                <Button className="bg-primario w-full">Registrar Secretaria</Button>
+              </Link>
+            </div>
           </div>
         </section>
         <section className="w-full py-12 md:py-24 lg:py-32 rounded-xl bg-fondo2">
@@ -84,7 +84,7 @@ export default function HomePage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground mb-4">Administre la información y horarios de los médicos.</p>
-                  <Button className="w-full bg-primario">
+                  <Button disabled={true} className="w-full bg-primario">
                     <UserRound className="mr-2 h-4 w-4" /> Ir a Médicos
                   </Button>
                 </CardContent>
@@ -95,7 +95,7 @@ export default function HomePage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground mb-4">Administre los registros y citas de los pacientes.</p>
-                  <Button className="w-full bg-primario">
+                  <Button disabled={true} className="w-full bg-primario">
                     <UserRound className="mr-2 h-4 w-4" /> Ir a Pacientes
                   </Button>
                 </CardContent>
@@ -106,7 +106,7 @@ export default function HomePage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground mb-4">Acceda y gestione las fichas médicas de los pacientes.</p>
-                  <Button className="w-full bg-primario">
+                  <Button disabled={true} className="w-full bg-primario">
                     <FileText className="mr-2 h-4 w-4" /> Ver Fichas Médicas
                   </Button>
                 </CardContent>
