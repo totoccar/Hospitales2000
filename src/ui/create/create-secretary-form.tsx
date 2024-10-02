@@ -21,7 +21,7 @@ export default function CreateSecretaryForm() {
   const [state, formAction] = useFormState(createSecretary, initialState);
 
   return (
-    <form action={formAction} className="space-y-8 max-w-2xl mx-auto">
+    <form action={formAction} className="space-y-8 max-w-3xl rounded-md xs:p-1 p-2 bg-fondo md:p-4 mx-auto">
       <div className="space-y-2">
         <h2 className="text-2xl font-bold">Crear Secretaria</h2>
         <p className="text-gray-500">Ingrese la información de la secretaria.</p>
@@ -171,10 +171,10 @@ export default function CreateSecretaryForm() {
       </div>
 
       <div className="flex gap-4 w-full">
-        <Button type="submit" className="flex-1">
+        <Button type="submit" className="flex-1 bg-primario">
           Crear Secretaria
         </Button>
-        <Button asChild className="flex-1">
+        <Button asChild className="flex-1 bg-primario">
           <Link href="/search/secretary">
             Cancel
           </Link>

@@ -26,7 +26,6 @@ export default async function Table({
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
-          {/* Mobile View */}
           <div className="md:hidden">
             {doctors?.map((doctor) => (
               <div key={doctor.usuario.id} className="mb-2 w-full rounded-md bg-white p-4">
