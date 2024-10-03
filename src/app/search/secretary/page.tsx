@@ -4,6 +4,7 @@ import Table from '../secretary/ui/Table'
 import Pagination from '../ui/Pagination'
 import { TipoDocumentoEnum } from '@prisma/client';
 import MaxWidthWrapper from '@/src/ui/MaxWidthWrapper';
+import { getAmountSecretariesByQuery } from '@/src/lib/searchsecretaria';
 
 export default async function SearchSecretary({searchParams,
 }: {
@@ -19,7 +20,12 @@ export default async function SearchSecretary({searchParams,
   const currentTipoDocumento = searchParams?.tipoDocumento || TipoDocumentoEnum.CEDULA_IDENTIDAD;
   const currentPage = Number(searchParams?.page) || 1;
 
-  const count = 1
+  const count = await getAmountSecretariesByQuery({
+    dni: currentDNI,
+    apellido: currentApellido,
+    tipoDocumento: currentTipoDocumento,
+    currentPage: currentPage
+  });
   return (
     <MaxWidthWrapper>
     <div className="bg-fondo rounded-lg shadow-md p-6 mt-5">

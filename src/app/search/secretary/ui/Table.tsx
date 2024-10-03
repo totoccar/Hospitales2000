@@ -17,7 +17,8 @@ export default async function Table({
   const secretaries = await findSecretariesByQuery({ 
     dni: dni || '', 
     apellido: apellido || '', 
-    tipoDocumento: tipoDocumento || TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD 
+    tipoDocumento: tipoDocumento || TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD,
+    currentPage
   });
 
   return (

@@ -8,6 +8,7 @@ export default async function Table({
   apellido,
   numero_matricula,
   tipoDocumento,
+  currentPage,
 }: {
   dni?: string;
   apellido?: string;
@@ -20,6 +21,7 @@ export default async function Table({
     apellido: apellido || '',
     tipoDocumento: tipoDocumento || TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD,
     numero_matricula: numero_matricula || '',
+    currentPage,
   });
 
   return (
