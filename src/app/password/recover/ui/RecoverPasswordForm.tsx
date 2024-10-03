@@ -14,7 +14,7 @@ export default function ChangePasswordForm() {
     const [isPending, setIsPending] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [isDisabled, setIsDisabled] = useState(false);
-
+    const [selectedDocument, setSelectedDocument] = useState("tipo");
 
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -37,9 +37,13 @@ export default function ChangePasswordForm() {
 
                 const user_email = await getUserEmail(user_document);
                 //const user_name = await getUserName(user_document);
-                setSuccessMessage("Se envio el link de cambio de contraseña a la dirección: " + user_email as string);
-                setErrorMessage(null);
-                setIsDisabled(true);
+                if (user_email) {
+                    setSuccessMessage("Se envio el link de cambio de contraseña a la dirección: " + user_email as string);
+                    setErrorMessage(null);
+                    setIsDisabled(true);
+                } else {
+                    setErrorMessage('Ocurrio un error al obtener el correo');
+                }
                 // sendPasswordRecoveryEmail(user_email, user_name);
             }
 
@@ -90,9 +94,11 @@ export default function ChangePasswordForm() {
                             <div className="flex flex-row space-x-4 mt-4">
                                 {/* Select */}
                                 <select className="border border-gray-400 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                    <option value="opcion1">Texto 1</option>
-                                    <option value="opcion2">Texto 2</option>
-                                    <option value="opcion3">Texto 3</option>
+                                    <option value="DOCUMENTO_NACIONAL_IDENTIDAD">Documento Nacional de Indentidad</option>
+                                    <option value="CEDULA_IDENTIDAD">Cédula de Identidad</option>
+                                    <option value="LIBRETA_CIVICA">Libreta Cívica</option>
+                                    <option value="LIBRETA_ENROLAMIENTO">Libreta de Enrolamiento</option>
+                                    <option value="PASAPORTE">Pasaporte</option>
                                 </select>
 
                                 {/* Input */}
@@ -100,7 +106,7 @@ export default function ChangePasswordForm() {
                                     <input
                                         className="peer block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-m outline-2 placeholder:text-gray-500 disabled:bg-gray-100 disabled:text-gray-500 disabled:border-gray-200"
                                         id="correo"
-                                        type="text"
+                                        type="number"
                                         name="user_document"
                                         placeholder="Documento"
                                         required
