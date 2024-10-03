@@ -5,17 +5,16 @@ import {
     ExclamationCircleIcon,
     KeyIcon,
 } from '@heroicons/react/24/outline';
-import { authenticatePassword, changePasswordAPI } from '../../api/PasswordActions';
+import { authenticatePassword, changePasswordAPI } from '@/src/lib/passwordActions';
 
 
 
 
 export default function ChangePasswordForm() {
-    // Usamos useState para manejar el estado del mensaje de error
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isPending, setIsPending] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
-    const [isDisabled, setIsDisabled] = useState(false);  // Nuevo estado para deshabilitar el formulario
+    const [isDisabled, setIsDisabled] = useState(false);
 
     const user_id = "cde3fea9-b222-49e6-8e53-24cc1ec6d0ba";
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -35,9 +34,6 @@ export default function ChangePasswordForm() {
 
             setErrorMessage(null);
             setIsPending(false);
-
-
-            /*Chequeo solo front*/
             if (formData.get('nueva_contrasena') !== formData.get('confirm_contrasena')) {
                 setErrorMessage('Las contraseñas no coinciden');
             } else {
@@ -46,11 +42,6 @@ export default function ChangePasswordForm() {
                 setIsDisabled(true);
             }
         }
-
-
-
-
-
     };
 
     return (
@@ -60,10 +51,6 @@ export default function ChangePasswordForm() {
                     <h1 className="text-center mb-3 font-bold text-3xl text-[#025951]">
                         Cambiar Contraseña
                     </h1>
-
-
-
-
                     {
                         errorMessage && (
                             <div className="flex items-center bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
@@ -81,9 +68,7 @@ export default function ChangePasswordForm() {
                             </div>
                         )
                     }
-
                     <div className="w-full">
-                        {/* Campo de contraseña actual */}
                         <div>
                             <label
                                 className="mb-3 mt-5 block text-m font-medium text-gray-900"
@@ -105,7 +90,6 @@ export default function ChangePasswordForm() {
                                     className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-500 peer-focus:text-gray-900" />
                             </div>
                         </div>
-                        {/* Campo de nueva contraseña */}
                         <div className="mt-4">
                             <label
                                 className="mb-3 mt-5 block font-medium text-m text-gray-900"
@@ -150,11 +134,9 @@ export default function ChangePasswordForm() {
                         </div>
 
                     </div>
-                    {/* Botón de cambio de contraseña centrado */}
                     <div className="flex justify-center mt-6">
                         <LoginButton isDisabled={isDisabled} isPending={isPending} />
                     </div>
-                    {/* Enlace de 'Olvidaste tu contraseña?' */}
                     <div className="text-center mt-4">
                         <a href="/" className="text-sm text-gray-500 hover:underline">
                             Volver al Inicio
@@ -185,5 +167,3 @@ function LoginButton({ isPending, isDisabled }: { isPending: boolean, isDisabled
         </button>
     );
 }
-
-

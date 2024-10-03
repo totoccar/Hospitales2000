@@ -6,7 +6,7 @@
 2. Una vez terminada, hago un PULL REQUEST hacia la rama de development.
 3. Luego de que se revise y este OK el cambio, se le hara un MERGE.
 
-Comision 1  -Proyectos de Sistemas de Software.
+- Comision 1 - Proyectos de Sistemas de Software
 
 ## Clonar Proyecto
 
@@ -23,7 +23,7 @@ Dentro de Visual Studio Code en la terminal (Ctrl + ñ):
 npm install
 ```
 
-## Iniciar la aplicacion
+## Iniciar la aplicación
 
 Dentro de la terminal de VSCode:
 
@@ -45,3 +45,4 @@ Para cada US se va a crear una branch para trabajar sobre ella, y una vez termin
 
 ## Tests
 El Tester podra testear todas las US, dentro de la rama de development, para luego una vez testeado poder realizar un merge a la rama de master y deployar la aplicación.
+

@@ -1,17 +1,18 @@
 "use client"
 
 import { useState } from 'react'
-import { Menu, X, Hospital, Home, Stethoscope, Users, Phone } from 'lucide-react'
+import { Menu, X, Hospital, Home,Search, PowerIcon  } from 'lucide-react'
 import Link from 'next/link'
+import cerrarSesion from '../lib/session'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
 
   const navItems = [
     { name: 'Inicio', href: '/', icon: Home },
-    { name: 'Buscar', href: '/search/doctor', icon: Stethoscope },
-    { name: 'Vista', href: '/doctores', icon: Users },
-    { name: 'Contacto', href: '/contacto', icon: Phone },
+    { name: 'Buscar Paciente', href: '/search/patient', icon: Search },
+    { name: 'Buscar Medico', href: '/search/doctor', icon: Search },
+    { name: 'Buscar Secretaria', href: '/search/secretary', icon: Search },
   ]
 
   return (
@@ -28,6 +29,14 @@ export default function Navbar() {
                 {item.name}
               </NavLink>
             ))}
+             <form
+              action={() => cerrarSesion()}
+            >
+              <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md p-3 text-sm font-medium hover:bg-[#012623] md:flex-none md:justify-start md:p-2 md:px-3">
+                <PowerIcon className="w-6" />
+                <div className="hidden md:block">Cerrar Sesión</div>
+              </button>
+            </form>
           </div>
           <button
             onClick={() => setIsOpen(!isOpen)}

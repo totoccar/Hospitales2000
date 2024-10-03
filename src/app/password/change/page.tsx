@@ -1,4 +1,4 @@
-import MaxWidthWrapper from "@/ui/MaxWidthWrapper";
+import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
 import ChangePasswordForm from "./ui/ChangePasswordForm";
 
 export default function Change() {

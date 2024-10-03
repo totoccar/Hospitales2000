@@ -14,7 +14,8 @@ const config: Config = {
   			primario: '#025951',
   			secundario: '#012623',
   			fondo: '#F2F2F2',
-  			acentos: '#04D99D'
+  			acentos: '#04D99D',
+			fondo2: '#e3e3e3',
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
