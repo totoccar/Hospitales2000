@@ -17,9 +17,9 @@ export async function POST(req: NextRequest) {
 
   try {
     const { data, error } = await resend.emails.send({
-      from: `Hospitales 20000 <recover_password@hospitales2000.tech>`,
+      from: `Hospitales 2000 <recover_password@hospitales2000.tech>`,
       to: email,
-      subject: "Recupera tu cuenta y segui con nosotros :)", 
+      subject: "Recuperá tu cuenta y seguí con nosotros :)", 
       react: RecoveryEmail({ email, message}), 
     });
 
