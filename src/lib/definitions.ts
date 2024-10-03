@@ -94,8 +94,8 @@ export enum TipoDocumentoEnum {
 }
 
 export enum RoleProfile{
-  Padre = "Padre",
-  Alumno = "Alumno",
-  Profesor= "Profesor",
+  Medico = "Medico",
+  Secretaria = "Secretaria",
+  Paciente= "Paciente",
   Administrador = "Administrador",
 }
