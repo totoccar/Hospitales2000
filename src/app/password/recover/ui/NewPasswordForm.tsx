@@ -6,22 +6,17 @@ import {
 } from '@heroicons/react/24/outline';
 import { changePasswordAPI } from '../../api/PasswordActions';
 
+interface ChangePasswordFormProps {
+    user_id: string;
+}
 
 
+export default function ChangePasswordForm(id : ChangePasswordFormProps) {
 
-export default function ChangePasswordForm() {
-    // Usamos useState para manejar el estado del mensaje de error
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isPending, setIsPending] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
-    const [isDisabled, setIsDisabled] = useState(false);  // Nuevo estado para deshabilitar el formulario
-
-    /* Constantes para hardcodear la BDD, lo ideal es buscar por ID*/
-    const user_id = "2c496f26-8a23-4b1c-92da-aff39d5fcb9d";
-
-
-
-
+    const [isDisabled, setIsDisabled] = useState(false);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -29,12 +24,11 @@ export default function ChangePasswordForm() {
         const formData = new FormData(event.currentTarget);
         setIsPending(true);
 
-        /*Chequeo solo front*/
         if (formData.get('nueva_contrasena') !== formData.get('confirm_contrasena')) {
             setErrorMessage('Las contraseñas no coinciden');
             setIsPending(false);
         } else {
-            changePasswordAPI(formData.get('nueva_contrasena') as string, user_id);
+            changePasswordAPI(formData.get('nueva_contrasena') as string, id.user_id);
             setSuccessMessage("La contraseña se ha cambiado correctamente.");
 
             setErrorMessage(null);
@@ -43,9 +37,6 @@ export default function ChangePasswordForm() {
 
 
         }
-
-
-        /** Podria chequearse si la nueva contraseña no es igual a la que ya tiene el usuario */
 
     };
 
@@ -56,9 +47,6 @@ export default function ChangePasswordForm() {
                     <h1 className="text-center mb-3 font-bold text-3xl text-[#025951]">
                         Cambiar Contraseña
                     </h1>
-
-
-
 
                     {
                         errorMessage && (
@@ -77,9 +65,7 @@ export default function ChangePasswordForm() {
                             </div>
                         )
                     }
-
                     <div className="w-full">
-                        {/* Campo de nueva contraseña */}
                         <div className="mt-4">
                             <label
                                 className="mb-3 mt-5 block font-medium text-m text-gray-900"
@@ -124,11 +110,9 @@ export default function ChangePasswordForm() {
                         </div>
 
                     </div>
-                    {/* Botón de cambio de contraseña centrado */}
                     <div className="flex justify-center mt-6">
                         <LoginButton isDisabled={isDisabled} isPending={isPending} />
                     </div>
-                    {/* Enlace de 'Olvidaste tu contraseña?' */}
                     <div className="text-center mt-4">
                         <a href="/" className="text-sm text-gray-500 hover:underline">
                             Volver al Inicio
