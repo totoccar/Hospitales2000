@@ -50,7 +50,7 @@ export default function ChangePasswordForm() {
                         },
                         body: JSON.stringify({
                           email: user_email,
-                          message: "Recupera tu contraseña haciendo click en el siguiente link: " + link,
+                          message: link,
                         }),
                       });
 

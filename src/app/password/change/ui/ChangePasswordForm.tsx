@@ -16,7 +16,7 @@ export default function ChangePasswordForm() {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [isDisabled, setIsDisabled] = useState(false);
 
-    const user_id = "cde3fea9-b222-49e6-8e53-24cc1ec6d0ba";
+    const user_id = "4b2bb465-775b-4ee3-be15-3c335f9d3c2d";
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
