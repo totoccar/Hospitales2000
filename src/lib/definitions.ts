@@ -99,3 +99,9 @@ export enum RoleProfile{
   Paciente= "Paciente",
   Administrador = "Administrador",
 }
+
+export interface LoginData{
+  numero_documento: string;
+  contrasena: string;
+  tipo_documento: TipoDocumentoEnum;
+}

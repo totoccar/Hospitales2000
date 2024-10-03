@@ -5,9 +5,9 @@ import Credentials from 'next-auth/providers/credentials';
 import { z } from 'zod';
 import { PrismaClient, TipoDocumentoEnum } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-import { authConfig } from './auth.config';
 import { fetchRolesDeUsuario } from './lib/users';
 import { RoleProfile } from './lib/definitions';
+import { authConfig } from '@/auth.config';
 
 
 const prisma = new PrismaClient();
@@ -33,7 +33,7 @@ async function getUser(numero_documento: string) {
   }
 }
 
-export const { auth, signIn, signOut } = NextAuth({
+export const { auth, signIn, signOut, unstable_update } = NextAuth({
   ...authConfig,
   providers: [
     Credentials({
