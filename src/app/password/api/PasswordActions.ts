@@ -48,8 +48,7 @@ export async function authenticatePassword(
 
 export async function changePasswordAPI(
     param_nueva_contrasena: string,
-    documento: string,
-    tipo_documento: TipoDocumentoEnum 
+    documento: string
 ): Promise<void> {
     await changePassword(param_nueva_contrasena, documento);
 }
