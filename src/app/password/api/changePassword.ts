@@ -1,11 +1,9 @@
-// pages/api/changePassword.ts
-
+"use server"
 import prisma from '@/src/lib/db';
+import { TipoDocumentoEnum } from '@prisma/client';
 import bcrypt from 'bcryptjs';
 
 
-
-/** Primer funcion =') nunca olvidar */
 export async function getPassword(user_id: string): Promise<string> {
     try {
         const user = await prisma.usuario.findUnique({
@@ -25,10 +23,13 @@ export async function getPassword(user_id: string): Promise<string> {
     }
 }
 
-export async function getPasswordByDocument(documento: string) {
+export async function getPasswordByDocument(documento: string, tipo_documento: TipoDocumentoEnum) {
     try {
         const user = await prisma.usuario.findUnique({
-            where: { numero_documento: documento }, // Cambiar aquí para buscar por documento
+            where: { 
+                numero_documento: documento,
+                tipo_documento: tipo_documento,
+            }, 
         });
 
         if (!user) {
@@ -36,7 +37,7 @@ export async function getPasswordByDocument(documento: string) {
         }
 
         console.log(user);
-        return user.contrasena; // Devuelve la contraseña del usuario
+        return user.contrasena; 
     } catch (error) {
         console.error('Failed to fetch user:', error);
         throw new Error('Failed to fetch user.');
@@ -48,9 +49,7 @@ export async function changePassword(
     user_id: string
 ) {
     try {
-        // Hash de la nueva contraseña antes de guardarla
         const hashedPassword = await bcrypt.hash(nueva_contrasena, 10);
-
 
         const user = await prisma.usuario.update({
             where: { id: user_id },
@@ -68,12 +67,13 @@ export async function changePassword(
     }
 }
 
-export async function getUserIdByDocument(documento: string) {
+export async function getUserIdByDocument(documento: string, tipo_documento: TipoDocumentoEnum) {
     try {
         const user = await prisma.usuario.findUnique({
-            where: {
+            where: { 
                 numero_documento: documento,
-            },
+                tipo_documento: tipo_documento,
+            }, 
         });
 
         if (!user) {
@@ -81,8 +81,8 @@ export async function getUserIdByDocument(documento: string) {
             return null;
         }
 
-        console.log("El usuario de documento" + documento + "  es: " + user.nombre + " " + user.apellido); // Muestra el usuario en la consola
-        return user.id; // Devuelve el id del usuario
+        console.log("El usuario de documento" + documento + "  es: " + user.nombre + " " + user.apellido); 
+        return user.id; 
     } catch (error) {
         console.error('Error fetching user:', error);
         return null;
@@ -91,12 +91,13 @@ export async function getUserIdByDocument(documento: string) {
 
 
 
-export async function getUserEmailByDocument(user_document: string) {
+export async function getUserEmailByDocument(documento: string, tipo_documento: TipoDocumentoEnum) {
     try {
         const user = await prisma.usuario.findUnique({
-            where: {
-                numero_documento: user_document,
-            },
+            where: { 
+                numero_documento: documento,
+                tipo_documento: tipo_documento,
+            }, 
         });
 
         if (!user) {
@@ -104,7 +105,7 @@ export async function getUserEmailByDocument(user_document: string) {
             return null;
         }
 
-        console.log("El usuario de documento" + user_document + "  es: " + user.nombre + " " + user.apellido + " d correo :" + user.correo_electronico);
+        console.log("El usuario de documento " + documento + " y tipo de documento " + tipo_documento + " es: " + user.nombre + " " + user.apellido + " de correo: " + user.correo_electronico);
         return user.correo_electronico;
     } catch (error) {
         console.error('Error fetching user:', error);
@@ -112,12 +113,13 @@ export async function getUserEmailByDocument(user_document: string) {
     }
 }
 
-export async function getUserNameByDocument(user_document: string) {
+export async function getUserNameByDocument(documento: string, tipo_documento: TipoDocumentoEnum) {
     try {
         const user = await prisma.usuario.findUnique({
-            where: {
-                numero_documento: user_document,
-            },
+            where: { 
+                numero_documento: documento,
+                tipo_documento: tipo_documento,
+            }, 
         });
 
         if (!user) {

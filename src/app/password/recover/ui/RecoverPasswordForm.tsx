@@ -6,6 +6,7 @@ import {
     LinkIcon
 } from '@heroicons/react/24/outline';
 import { authenticateDocument, getUserEmail } from '../../api/PasswordActions';
+import { TipoDocumentoEnum } from '@/src/lib/definitions';
 
 
 export default function ChangePasswordForm() {
@@ -26,16 +27,20 @@ export default function ChangePasswordForm() {
 
         const user_document = formData.get('user_document') as string;
 
+        const user_tipo_documento = formData.get('user_tipo_documento') as TipoDocumentoEnum;
+
+        console.log("TIPO DOC:",user_tipo_documento)
+
 
         try {
-            const documentoMatch = await authenticateDocument(user_document);
+            const documentoMatch = await authenticateDocument(user_document, user_tipo_documento);
 
             if (!documentoMatch) {
                 setErrorMessage('No se encontro usuario con ese documento');
                 setIsPending(false);
             } else {
 
-                const user_email = await getUserEmail(user_document);
+                const user_email = await getUserEmail(user_document,user_tipo_documento);
                 //const user_name = await getUserName(user_document);
                 if (user_email) {
                     setSuccessMessage("Se envio el link de cambio de contraseña a la dirección: " + user_email as string);
@@ -93,12 +98,19 @@ export default function ChangePasswordForm() {
 
                             <div className="flex flex-row space-x-4 mt-4">
                                 {/* Select */}
-                                <select className="border border-gray-400 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500">
-                                    <option value="DOCUMENTO_NACIONAL_IDENTIDAD">Documento Nacional de Indentidad</option>
-                                    <option value="CEDULA_IDENTIDAD">Cédula de Identidad</option>
-                                    <option value="LIBRETA_CIVICA">Libreta Cívica</option>
-                                    <option value="LIBRETA_ENROLAMIENTO">Libreta de Enrolamiento</option>
-                                    <option value="PASAPORTE">Pasaporte</option>
+                                <select
+                                    className="border border-gray-400 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                    name="user_tipo_documento"
+                                    value={selectedDocument}
+                                    onChange={(e) => setSelectedDocument(e.target.value)}
+                                    required
+                                    disabled={isDisabled}
+                                >
+                                    {Object.keys(TipoDocumentoEnum).map((key) => (
+                                        <option key={key} value={TipoDocumentoEnum[key as keyof typeof TipoDocumentoEnum]}>
+                                            {TipoDocumentoEnum[key as keyof typeof TipoDocumentoEnum]}
+                                        </option>
+                                    ))}
                                 </select>
 
                                 {/* Input */}
