@@ -4,6 +4,7 @@ import Table from '../doctor/ui/Table'
 import Pagination from '../ui/Pagination'
 import { TipoDocumentoEnum } from '@prisma/client';
 import MaxWidthWrapper from '@/src/ui/MaxWidthWrapper';
+import { getAmountDoctorsByQuery } from '@/src/lib/searchdoctor';
 
 export default async function SearchDoctor({searchParams,
 }: {
@@ -21,7 +22,14 @@ export default async function SearchDoctor({searchParams,
   const currentTipoDocumento = searchParams?.tipoDocumento || TipoDocumentoEnum.CEDULA_IDENTIDAD;
   const currentPage = Number(searchParams?.page) || 1;
 
-  const count = 1
+  const count = await getAmountDoctorsByQuery({ 
+    dni: currentDNI, 
+    apellido: currentApellido, 
+    numero_matricula: currentMatricula, 
+    tipoDocumento: currentTipoDocumento,
+    currentPage: currentPage 
+  });
+  console.log(count)
   return (
     <MaxWidthWrapper>
     <div className="bg-fondo rounded-lg shadow-md p-6 mt-5">
