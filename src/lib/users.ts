@@ -18,9 +18,9 @@ export async function fetchRolesDeUsuario(numero_documento: string): Promise<Rol
 
   const roles: RoleProfile[] = [];
   if (usuario.Admin) roles.push(RoleProfile.Administrador);
-  if (usuario.Medico) roles.push(RoleProfile.Alumno);
-  if (usuario.Paciente) roles.push(RoleProfile.Padre);
-  if (usuario.Secretaria) roles.push(RoleProfile.Profesor);
+  if (usuario.Medico) roles.push(RoleProfile.Medico);
+  if (usuario.Paciente) roles.push(RoleProfile.Paciente);
+  if (usuario.Secretaria) roles.push(RoleProfile.Secretaria);
 
   return roles;
 }
