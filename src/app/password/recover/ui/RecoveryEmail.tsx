@@ -24,7 +24,7 @@ import {
         <Preview>Recupera tu contraseña</Preview>
         <Body style={main}>
           <Container style={container}>
-            <Heading style={h1}>Hospitales 20000</Heading>
+            <Heading style={h1}>Hospitales 2000</Heading>
             <Heading style={text}>
               Recupera tu cuenta y Segui con nosotros
             </Heading>
