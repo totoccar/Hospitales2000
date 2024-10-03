@@ -7,7 +7,7 @@ import {
 } from '@heroicons/react/24/outline';
 import { authenticateDocument, getUserEmail } from '../../api/PasswordActions';
 import { TipoDocumentoEnum } from '@/src/lib/definitions';
-
+import { getUserIdByDocument } from '../../api/changePassword';
 
 export default function ChangePasswordForm() {
     // Usamos useState para manejar el estado del mensaje de error
@@ -29,8 +29,7 @@ export default function ChangePasswordForm() {
 
         const user_tipo_documento = formData.get('user_tipo_documento') as TipoDocumentoEnum;
 
-        console.log("TIPO DOC:",user_tipo_documento)
-
+        const user_id = await getUserIdByDocument(user_document, user_tipo_documento);
 
         try {
             const documentoMatch = await authenticateDocument(user_document, user_tipo_documento);
@@ -41,15 +40,31 @@ export default function ChangePasswordForm() {
             } else {
 
                 const user_email = await getUserEmail(user_document,user_tipo_documento);
-                //const user_name = await getUserName(user_document);
+                const link = `${window.location.origin}/password/recover/new/${user_id}`
+                console.log("EMAIL:",user_email)
                 if (user_email) {
-                    setSuccessMessage("Se envio el link de cambio de contraseña a la dirección: " + user_email as string);
-                    setErrorMessage(null);
-                    setIsDisabled(true);
-                } else {
+                    const response = await fetch("api/contact", {
+                        method: "POST",
+                        headers: {
+                          "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({
+                          email: user_email,
+                          message: "Recupera tu contraseña haciendo click en el siguiente link: " + link,
+                        }),
+                      });
+
+                      if (response.ok) {
+                        setSuccessMessage("Se envio el link de cambio de contraseña a la dirección: " + user_email as string);
+                        setErrorMessage(null);
+                        setIsDisabled(true);
+                      } else {
+                        setErrorMessage('Ocurrio un error al enviar el correo');
+                      }
+                }
+                else{
                     setErrorMessage('Ocurrio un error al obtener el correo');
                 }
-                // sendPasswordRecoveryEmail(user_email, user_name);
             }
 
         } catch (error) { console.log(error); } finally {
@@ -64,12 +79,7 @@ export default function ChangePasswordForm() {
                     <h1 className="text-center mb-3 font-bold text-3xl text-[#025951]">
                         Recupera tu Cuenta
                     </h1>
-
-
-
-
                     <div className="w-full">
-                        {/* Campo de contraseña actual */}
                         <div>
                             <label
                                 className="mx-auto block text-m font-medium text-gray-900"
