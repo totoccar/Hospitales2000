@@ -3,19 +3,19 @@ import { RoleProfile } from './lib/definitions';
 
 declare module "next-auth" {
   interface User {
-    dni: string;
+    dni: string | undefinded;
     role: RoleProfile | undefined;
   }
 
   interface Session {
     user: {
-      dni: string;
+      dni: string | undefinded;
       role: RoleProfile | undefined;
     };
   }
 
   interface JWT {
-    dni: string;
+    dni: string | undefinded;
     role: RoleProfile | undefined;
   }
 }

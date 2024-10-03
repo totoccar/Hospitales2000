@@ -6,7 +6,8 @@ import {
   IdentificationIcon,
 } from '@heroicons/react/24/outline';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
-import { authenticate } from '../../lib/actions';
+import { login } from '@/login';
+import { LoginData, TipoDocumentoEnum } from '@/src/lib/definitions';
 
 export default function LoginForm() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -15,15 +16,27 @@ export default function LoginForm() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
+    
+    const formElements = event.currentTarget.elements as typeof event.currentTarget.elements & {
+      numero_documento: HTMLInputElement;
+      contrasena: HTMLInputElement;
+      tipo_documento: HTMLSelectElement;
+    };
+
+    const formData: LoginData = {
+      numero_documento: formElements.numero_documento.value,
+      contrasena: formElements.contrasena.value,
+      tipo_documento: formElements.tipo_documento.value as TipoDocumentoEnum,
+    };
+    
     setIsPending(true); 
 
     try {
-      const error = await authenticate(undefined, formData);
+      const error = await login(formData);
       if (error) setErrorMessage(error);
       else setErrorMessage(null);
     } catch (error) {
-      setErrorMessage('Algo salió mal.');
+      setErrorMessage('Algo salió mal del fomr ');
     } finally {
       setIsPending(false); 
     }
