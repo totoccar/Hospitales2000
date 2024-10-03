@@ -1,4 +1,5 @@
-import MaxWidthWrapper from "@/ui/MaxWidthWrapper";
+
+import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
 import NewPasswordForm from "../ui/NewPasswordForm";
 
 
