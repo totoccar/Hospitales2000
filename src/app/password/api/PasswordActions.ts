@@ -1,5 +1,6 @@
 'use server';
 
+import { TipoDocumentoEnum } from "@/src/lib/definitions";
 import {
     getPassword, changePassword, getUserIdByDocument,
     getUserEmailByDocument
@@ -9,14 +10,15 @@ import bcrypt from 'bcryptjs';
 
 export async function authenticateDocument(
     documento: string,
+    tipo_documento: TipoDocumentoEnum
 ): Promise<boolean> {
 
-    const userId = await getUserIdByDocument(documento);
+    const userId = await getUserIdByDocument(documento, tipo_documento);
 
     if (userId) {
-        return true;  // Retorna true si el correo electrónico coincide con algun usuario
+        return true; 
     } else {
-        return false;  // Retorna false si el correo electrónico no coincide
+        return false;  
     }
 }
 
@@ -32,42 +34,44 @@ export async function authenticatePassword(
 
         if (passwordMatch) {
             console.log("Password correcta");
-            return true;  // Retorna true si la contraseña coincide
+            return true; 
         } else {
             console.log("Password incorrecta");
-            return false;  // Retorna false si la contraseña no coincide
+            return false;  
         }
     } catch (error) {
         console.error('Error al autenticar la contraseña:', error);
-        return false;  // En caso de error, devuelve false
+        return false;  
     }
 
 }
 
 export async function changePasswordAPI(
     param_nueva_contrasena: string,
-    documento: string
+    documento: string,
+    tipo_documento: TipoDocumentoEnum 
 ): Promise<void> {
     await changePassword(param_nueva_contrasena, documento);
 }
 
-export async function getUserEmail(user_document: string): Promise<string> {
-    const user_email = await getUserEmailByDocument(user_document);
+export async function getUserEmail(user_document: string, tipo_documento: TipoDocumentoEnum): Promise<string> {
+    const user_email = await getUserEmailByDocument(user_document, tipo_documento);
 
     if (user_email) {
-        return user_email;  // Retorna el correo electrónico del usuario
+        return user_email;  
     } else {
-        return "";  // Retorna una cadena vacía si el usuario no existe
+        return ""; 
     }
 }
 
 export async function getUserName(
-    user_document: string
+    user_document: string,
+    tipo_documento: TipoDocumentoEnum
 ): Promise<string> {
-    const user_email = await getUserEmailByDocument(user_document);
+    const user_email = await getUserEmailByDocument(user_document, tipo_documento);
 
     if (user_email) {
-        return user_email;  // Retorna el correo electrónico del usuario    
+        return user_email;     
 
     } else return "null";
 }
