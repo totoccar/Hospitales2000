@@ -21,23 +21,26 @@ import {
     return (
       <Html>
         <Head />
-        <Preview>Password Recovery Request</Preview>
+        <Preview>Recupera tu contraseña</Preview>
         <Body style={main}>
           <Container style={container}>
-            <Heading style={h1}>Recupera tu cuenta y Segui con nosotros</Heading>
+            <Heading style={h1}>Hospitales 20000</Heading>
+            <Heading style={text}>
+              Recupera tu cuenta y Segui con nosotros
+            </Heading>
             <Text style={text}>¡Hola!</Text>
             <Text style={text}>
               Recibimos una peticion para recuperar tu contraseña de la cuenta asociada a: {email}.
             </Text>
             <Section style={buttonContainer}>
-              <Link
-                style={button}
+                <Link
+                style={{ ...button, backgroundColor: "#025951" }}
                 href={message}
                 target="_blank"
                 rel="noopener"
-              >
-                Reestablece tu Contraseña
-              </Link>
+                >
+                Reestablecé tu Contraseña
+                </Link>
             </Section>
             <Text style={text}>
               Si el boton no funciona, copia y pega el siguiente link en tu navegador:
