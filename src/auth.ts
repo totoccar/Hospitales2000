@@ -1,10 +1,14 @@
 // auth.ts
 import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import { authConfig } from './auth.config';
+
 import { z } from 'zod';
 import { PrismaClient, TipoDocumentoEnum } from '@prisma/client';
 import bcrypt from 'bcryptjs';
+import { authConfig } from './auth.config';
+import { fetchRolesDeUsuario } from './lib/users';
+import { RoleProfile } from './lib/definitions';
+
 
 const prisma = new PrismaClient();
 
@@ -35,16 +39,17 @@ export const { auth, signIn, signOut } = NextAuth({
     Credentials({
       async authorize(credentials) {
         const parsedCredentials = z
-          .object({ numero_documento: z.string().min(6), 
+          .object({
+            numero_documento: z.string().min(6),
             contrasena: z.string().min(6),
             tipo_documento: z.enum(tipos_documento),
-             })
+          })
           .safeParse(credentials);
 
         console.log(parsedCredentials);
 
         if (parsedCredentials.success) {
-          const { numero_documento, contrasena,tipo_documento } = parsedCredentials.data;
+          const { numero_documento, contrasena, tipo_documento } = parsedCredentials.data;
           const user = await getUser(numero_documento);
           if (!user) return null;
 
@@ -52,12 +57,17 @@ export const { auth, signIn, signOut } = NextAuth({
           if (!passwordMatch) return null;
 
           if (user.tipo_documento !== tipo_documento) return null;
-        
-          return user;
-        }
 
+          const profiles = await fetchRolesDeUsuario(numero_documento);
+          if (profiles.length === 1) {
+            return { dni: numero_documento, role: profiles[0] as RoleProfile };
+          } else {
+            return { dni: numero_documento, role: undefined };
+          }
+        }
         return null;
       },
     }),
   ],
 });
+
