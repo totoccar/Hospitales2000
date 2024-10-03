@@ -92,3 +92,10 @@ export enum TipoDocumentoEnum {
   LIBRETA_ENROLAMIENTO = "LIBRETA_ENROLAMIENTO",
   PASAPORTE = "PASAPORTE"
 }
+
+export enum RoleProfile{
+  Padre = "Padre",
+  Alumno = "Alumno",
+  Profesor= "Profesor",
+  Administrador = "Administrador",
+}
