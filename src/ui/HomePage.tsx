@@ -4,6 +4,7 @@ import { Input } from "../components/ui/input"
 import { Button } from "../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import Link from "next/link"
+import { getTotalDoctors, getTotalMedicalRecords, getTotalPatients } from "../lib/homePageActiones"
 
 export default function HomePage() {
   return (
@@ -47,8 +48,8 @@ export default function HomePage() {
                   <UserRound className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">245</div>
-                  <p className="text-xs text-muted-foreground">+4% desde el último mes</p>
+                  <div className="text-2xl font-bold">{ getTotalDoctors()}</div>
+                  <p className="text-xs text-muted-foreground">Esperando para atenderte</p>
                 </CardContent>
               </Card>
               <Card>
@@ -57,8 +58,8 @@ export default function HomePage() {
                   <UserRound className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">15,234</div>
-                  <p className="text-xs text-muted-foreground">+12% desde el último mes</p>
+                  <div className="text-2xl font-bold">{getTotalPatients()}</div>
+                  <p className="text-xs text-muted-foreground">Con excelentes resultados</p>
                 </CardContent>
               </Card>
               <Card>
@@ -67,8 +68,7 @@ export default function HomePage() {
                   <FileText className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">32,845</div>
-                  <p className="text-xs text-muted-foreground">+18% desde el último mes</p>
+                  <div className="text-2xl font-bold">{getTotalMedicalRecords()}</div>
                 </CardContent>
               </Card>
             </div>
