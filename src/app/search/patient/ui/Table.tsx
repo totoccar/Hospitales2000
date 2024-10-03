@@ -18,7 +18,8 @@ export default async function Table({
   const patients = await findPacientesByQuery({ 
     dni: dni || '', 
     apellido: apellido || '', 
-    tipoDocumento: tipoDocumento || TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD 
+    tipoDocumento: tipoDocumento || TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD,
+    currentPage
   });
 
   return (
