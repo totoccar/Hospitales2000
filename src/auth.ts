@@ -25,7 +25,6 @@ async function getUser(numero_documento: string) {
     const user = await prisma.usuario.findUnique({
      where: {numero_documento},
     });
-    console.log(user);
      return user;
   } catch (error) {
     console.error('Failed to fetch user:', error);
@@ -46,25 +45,23 @@ export const { auth, signIn, signOut, unstable_update } = NextAuth({
           })
           .safeParse(credentials);
 
-        console.log(parsedCredentials);
 
         if (parsedCredentials.success) {
           const { numero_documento, contrasena, tipo_documento } = parsedCredentials.data;
           const user = await getUser(numero_documento);
-          if (!user) return null;
+          if (!user) {throw new Error("Usuario no encontrado");
+          }
 
           const passwordMatch = await bcrypt.compare(contrasena, user.contrasena);
-          if (!passwordMatch) return null;
+          if (!passwordMatch) {throw new Error ("Contraseña incorrecta");};
 
-          if (user.tipo_documento !== tipo_documento) return null;
-
+          if (user.tipo_documento !== tipo_documento) {
+            throw new Error('Verifique los datos ingresados');
+          };
           const profiles = await fetchRolesDeUsuario(numero_documento);
-          console.log(profiles);
           if (profiles.length === 1) {
-            console.log(profiles.length);
             return { dni: numero_documento, role: profiles[0] as RoleProfile };
           } else {
-            console.log("MAS DE UNO");
             return { dni: numero_documento, role: undefined };
           }
         }
