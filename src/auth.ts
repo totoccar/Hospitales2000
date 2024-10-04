@@ -13,8 +13,8 @@ import { authConfig } from '@/auth.config';
 const prisma = new PrismaClient();
 
 const tipos_documento = [
-  TipoDocumentoEnum.CEDULA_IDENTIDAD,
   TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD,
+  TipoDocumentoEnum.CEDULA_IDENTIDAD,
   TipoDocumentoEnum.LIBRETA_CIVICA,
   TipoDocumentoEnum.LIBRETA_ENROLAMIENTO,
   TipoDocumentoEnum.PASAPORTE,
@@ -59,9 +59,12 @@ export const { auth, signIn, signOut, unstable_update } = NextAuth({
           if (user.tipo_documento !== tipo_documento) return null;
 
           const profiles = await fetchRolesDeUsuario(numero_documento);
+          console.log(profiles);
           if (profiles.length === 1) {
+            console.log(profiles.length);
             return { dni: numero_documento, role: profiles[0] as RoleProfile };
           } else {
+            console.log("MAS DE UNO");
             return { dni: numero_documento, role: undefined };
           }
         }

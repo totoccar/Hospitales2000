@@ -12,12 +12,15 @@ export const authConfig = {
   callbacks: {
     authorized({auth, request: {nextUrl}}) {
       const isLoggedIn = !!auth?.user;
+
       if (!isLoggedIn) {
+          console.log("Not logged in")
           return nextUrl.pathname === '/login'
       } else{
           if(nextUrl.pathname === '/selectrole' || nextUrl.pathname === '/403' ||nextUrl.pathname === "/login")
               return true
           if (!auth.user.role){
+              console.log("Role not set")
               const newUrl = new URL('/selectrole', nextUrl);
               const callback = nextUrl.searchParams.get('callbackUrl');
               if (callback)
