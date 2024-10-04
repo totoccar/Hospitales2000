@@ -17,13 +17,10 @@ export default async function RoleSelectPage({searchParams: {callbackUrl}}: {sea
         return <ErrorPage />
     }
 
-    if((await auth())?.user.role) {
-        if(callbackUrl && new URL(callbackUrl).host === headers().get("host"))
-            redirect(callbackUrl)
-        else
-            redirect("/")
+    if((await auth())?.user.role) {     
+        redirect("/")
     }
-
+    
     const roles = await fetchRolesDeUsuario(dni).then(profiles => profiles.map(profile => profile));
     console.log(roles)
 
@@ -35,7 +32,7 @@ export default async function RoleSelectPage({searchParams: {callbackUrl}}: {sea
     return (
         <div className="min-h-screen bg-white flex items-center justify-center p-4 transition-colors duration-200">
             <Card className="w-full max-w-sm p-6 space-y-4  bg-gray-200 transition-colors duration-200">
-                <h1 className="text-2xl font-bold text-[#025951] text-center">Selecciona un rol</h1>
+                <h1 className="text-2xl font-bold text-black text-center">Selecciona un rol</h1>
                 <div className="space-y-3">
                     {roles.map((role) => (
                         console.log(role),
@@ -46,13 +43,13 @@ export default async function RoleSelectPage({searchParams: {callbackUrl}}: {sea
                                 className="dark w-full h-16 justify-start px-4 hover:bg-gray-100 text-white font-bold transition-colors duration-200"
                             >
                                 <User2 className={`mr-4 h-6 w-6 text-black`}/>
-                                <span className="text-lg text-black">{roleDisplayNames[role] || "role"}</span>
+                                <span className="text-lg text-[#025951]">{roleDisplayNames[role] || "role"}</span>
                             </Button>
                         </form>
                     ))}
                 </div>
                 <form action={logout}>
-                    <Button variant="destructive" className="w-full mt-2 bg-[#025951] hover:bg-[#28b78ee7] text-white font-bold text-lg" type="submit">
+                    <Button variant="destructive" className="w-full mt-2 bg-red-600 hover:bg-red-700 text-white font-bold text-lg" type="submit">
                         <LogOut className="mr-2 h-4 w-4"/>
                         Cerrar sesión
                     </Button>
