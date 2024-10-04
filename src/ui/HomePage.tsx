@@ -3,12 +3,14 @@ import { UserRound, FileText, Search } from "lucide-react"
 import { Input } from "../components/ui/input"
 import { Button } from "../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
+import Link from "next/link"
+import { getTotalDoctors, getTotalMedicalRecords, getTotalPatients } from "../lib/homePageActiones"
 
 export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1">
-        <section className="w-full py-8 md:py-20 lg:py-28 xl:py-38">
+        <section className="w-full py-8 md:pt-20 lg:pt-24 xl:pt-34">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
@@ -22,15 +24,18 @@ export default function HomePage() {
                   Administre médicos, pacientes y fichas médicas de manera sencilla y eficaz.
                 </p>
               </div>
-              <div className="w-full max-w-sm space-y-2">
-                <form className="flex space-x-2">
-                  <Input className="max-w-lg flex-1 border-primario" placeholder="Buscar paciente, médico o ficha" type="text" />
-                  <Button type="submit" className="bg-primario">
-                    <Search className="h-4 w-4 mr-2" />
-                    Buscar
-                  </Button>
-                </form>
-              </div>
+              
+            </div>
+            <div className="grid grid-cols-1 gap-2 mt-8 md:grid-cols-3 md:gap-4">
+              <Link href="/admin/create/patient" passHref>
+                <Button className="bg-primario w-full">Registrar Paciente</Button>
+              </Link>
+              <Link href="/admin/create/doctor" passHref>
+                <Button className="bg-primario w-full">Registrar Medico</Button>
+              </Link>
+              <Link href="/admin/create/secretary" passHref>
+                <Button className="bg-primario w-full">Registrar Secretaria</Button>
+              </Link>
             </div>
           </div>
         </section>
@@ -43,8 +48,8 @@ export default function HomePage() {
                   <UserRound className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">245</div>
-                  <p className="text-xs text-muted-foreground">+4% desde el último mes</p>
+                  <div className="text-2xl font-bold">{ getTotalDoctors()}</div>
+                  <p className="text-xs text-muted-foreground">Esperando para atenderte</p>
                 </CardContent>
               </Card>
               <Card>
@@ -53,8 +58,8 @@ export default function HomePage() {
                   <UserRound className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">15,234</div>
-                  <p className="text-xs text-muted-foreground">+12% desde el último mes</p>
+                  <div className="text-2xl font-bold">{getTotalPatients()}</div>
+                  <p className="text-xs text-muted-foreground">Con excelentes resultados</p>
                 </CardContent>
               </Card>
               <Card>
@@ -63,8 +68,7 @@ export default function HomePage() {
                   <FileText className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">32,845</div>
-                  <p className="text-xs text-muted-foreground">+18% desde el último mes</p>
+                  <div className="text-2xl font-bold">{getTotalMedicalRecords()}</div>
                 </CardContent>
               </Card>
             </div>
@@ -80,7 +84,7 @@ export default function HomePage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground mb-4">Administre la información y horarios de los médicos.</p>
-                  <Button className="w-full bg-primario">
+                  <Button disabled={true} className="w-full bg-primario">
                     <UserRound className="mr-2 h-4 w-4" /> Ir a Médicos
                   </Button>
                 </CardContent>
@@ -91,7 +95,7 @@ export default function HomePage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground mb-4">Administre los registros y citas de los pacientes.</p>
-                  <Button className="w-full bg-primario">
+                  <Button disabled={true} className="w-full bg-primario">
                     <UserRound className="mr-2 h-4 w-4" /> Ir a Pacientes
                   </Button>
                 </CardContent>
@@ -102,7 +106,7 @@ export default function HomePage() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground mb-4">Acceda y gestione las fichas médicas de los pacientes.</p>
-                  <Button className="w-full bg-primario">
+                  <Button disabled={true} className="w-full bg-primario">
                     <FileText className="mr-2 h-4 w-4" /> Ver Fichas Médicas
                   </Button>
                 </CardContent>

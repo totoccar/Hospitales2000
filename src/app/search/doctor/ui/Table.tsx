@@ -8,6 +8,7 @@ export default async function Table({
   apellido,
   numero_matricula,
   tipoDocumento,
+  currentPage,
 }: {
   dni?: string;
   apellido?: string;
@@ -20,13 +21,13 @@ export default async function Table({
     apellido: apellido || '',
     tipoDocumento: tipoDocumento || TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD,
     numero_matricula: numero_matricula || '',
+    currentPage,
   });
 
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
-          {/* Mobile View */}
           <div className="md:hidden">
             {doctors?.map((doctor) => (
               <div key={doctor.usuario.id} className="mb-2 w-full rounded-md bg-white p-4">
