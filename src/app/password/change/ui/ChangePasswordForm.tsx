@@ -6,6 +6,7 @@ import {
     KeyIcon,
 } from '@heroicons/react/24/outline';
 import { authenticatePassword, changePasswordAPI } from '@/src/lib/passwordActions';
+import { set } from 'zod';
 
 
 
@@ -32,8 +33,7 @@ export default function ChangePasswordForm() {
             setIsPending(false);
         } else {
 
-            setErrorMessage(null);
-            setIsPending(false);
+
             if (formData.get('nueva_contrasena') !== formData.get('confirm_contrasena')) {
                 setErrorMessage('Las contraseñas no coinciden');
             } else {
@@ -41,6 +41,9 @@ export default function ChangePasswordForm() {
                     await changePasswordAPI(formData.get('nueva_contrasena') as string, user_id);
                     setSuccessMessage("La contraseña se ha cambiado correctamente.");
                     setIsDisabled(true);
+                    setErrorMessage(null);
+                    setIsPending(false);
+
                 } catch (error: any) {
                     if (error.message === 'VALIDATION_ERROR') {
                         setErrorMessage('La contraseña debe contener al menos 12 caracteres, una letra mayúscula, una letra minúscula, un número y un caracter especial.');
