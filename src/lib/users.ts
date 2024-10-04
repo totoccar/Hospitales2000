@@ -5,10 +5,10 @@ export async function fetchRolesDeUsuario(numero_documento: string): Promise<Rol
   const usuario = await prisma.usuario.findUnique({
     where: { numero_documento },
     select: {
-      Admin: true,
-      Medico: true,
-      Paciente: true,
-      Secretaria: true,
+      admin: true,
+      medico: true,
+      paciente: true,
+      secretaria: true,
     },
   });
 
@@ -17,10 +17,10 @@ export async function fetchRolesDeUsuario(numero_documento: string): Promise<Rol
   }
 
   const roles: RoleProfile[] = [];
-  if (usuario.Admin) roles.push(RoleProfile.Administrador);
-  if (usuario.Medico) roles.push(RoleProfile.Medico);
-  if (usuario.Paciente) roles.push(RoleProfile.Paciente);
-  if (usuario.Secretaria) roles.push(RoleProfile.Secretaria);
+  if (usuario.admin) roles.push(RoleProfile.Administrador);
+  if (usuario.medico) roles.push(RoleProfile.Medico);
+  if (usuario.paciente) roles.push(RoleProfile.Paciente);
+  if (usuario.secretaria) roles.push(RoleProfile.Secretaria);
 
   return roles;
 }
