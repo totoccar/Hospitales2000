@@ -1,9 +1,10 @@
 // Definición de permisos para las rutas
 export function getPermission(pathname: string): string | null {
+ 
     const routePermissions: Record<string, string> = {
-      '/admin': 'admin:access',             // Solo Administrador
+      '/admin/create/doctor': 'admin:access',// Solo Administrador
       '/dashboard': 'medico:access',        // Solo Médicos
-      '/patients': 'secretario:access',     // Secretarios pueden acceder
+      '/search/patient': 'secretaria:access',     // Secretarios pueden acceder
       '/my-profile': 'paciente:access',     // Solo Pacientes
       '/selectrole': 'common:access',       // Acceso común a todos
       '/403': 'common:access',              // Acceso común a todos
@@ -15,9 +16,9 @@ export function getPermission(pathname: string): string | null {
   // Verifica si el rol tiene acceso a un permiso
   export function hasPermission(role: string, permission: string): boolean {
     const rolePermissions: Record<string, string[]> = {
-      'Administrador': ['admin:access', 'medico:access', 'secretario:access', 'paciente:access'],
+      'Administrador': ['admin:access', 'medico:access', 'secretaria:access', 'paciente:access'],
       'Medico': ['medico:access', 'paciente:access'],
-      'Secretario': ['secretario:access', 'paciente:access'],
+      'Secretaria': ['secretaria:access', 'paciente:access'],
       'Paciente': ['paciente:access'],
     };
   

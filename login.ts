@@ -28,7 +28,7 @@ export async function login(_data: LoginData) {
     }
 }
 
-export async function selectRole({ _role, callbackUrl }: { _role: RoleProfile; callbackUrl?: string; }): Promise<never> {
+export async function selectRole(_role: RoleProfile, callbackUrl?: string): Promise<never> {
     const dni = (await auth())?.user.dni;
     if(!dni) {
         console.error("DNI not set")
@@ -37,9 +37,15 @@ export async function selectRole({ _role, callbackUrl }: { _role: RoleProfile; c
     if(!(await auth())?.user.role) {
         const role = z.string().safeParse(_role)
         if(role.success) {
-            const userProfiles = await fetchRolesDeUsuario(dni) as unknown as { role: RoleProfile }[]; // Aseguramos el tipo
-            const userProfile = userProfiles.find(profile => profile.role === role.data);
-             if (userProfile) {
+            const userProfiles = await fetchRolesDeUsuario(dni) as unknown as string[]; // Array de strings
+            console.log('userProfiles:', userProfiles); // ['Paciente', 'Secretaria']
+            console.log('role.data:', role.data); // 'Paciente'
+
+            // Comparar directamente el string del rol
+            const userProfile = userProfiles.find(profile => profile === role.data);
+            console.log(userProfile); // 'Paciente' si lo encuentra, undefined si no
+
+             if (role) {
                 await unstable_update({user: {role: role.data as RoleProfile}, roleChangeKey: process.env.ROLE_CHANGE_KEY} as any)
             }
             else {
