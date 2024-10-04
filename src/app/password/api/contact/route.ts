@@ -23,8 +23,6 @@ export async function POST(req: NextRequest) {
       react: RecoveryEmail({ email, message}), 
     });
 
-    console.log("Email sent:", data);
-
     if (error) {
       return NextResponse.json(
         { message: "Email sending failed", error },
