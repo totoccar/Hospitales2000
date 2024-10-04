@@ -48,8 +48,10 @@ export default function ChangePasswordForm() {
                 } catch (error: any) {
                     if (error.message === 'VALIDATION_ERROR') {
                         setErrorMessage('La contraseña debe contener al menos 12 caracteres, una letra mayúscula, una letra minúscula, un número y un caracter especial.');
+                        setIsPending(false);
                     } else {
                         setErrorMessage('Ocurrió un error inesperado. Por favor, inténtelo de nuevo.');
+                        setIsPending(false);
                     }
                 }
             }
