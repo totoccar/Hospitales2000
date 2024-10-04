@@ -53,9 +53,9 @@ export default function ChangePasswordForm() {
     };
 
     return (
-        <div className="min-h-screen flex  items-center justify-center">
+        <div className="min-h-screen flex items-center justify-center">
             <form onSubmit={handleSubmit} className="space-y-3">
-                <div className="rounded-lg w-96 border border-gray-400 bg-gray-200 px-6 pb-4 pt-8">
+                <div className="rounded-lg w-[35rem] border border-gray-400 bg-gray-200 px-6 pb-4 pt-8">
                     <h1 className="text-center mb-3 font-bold text-3xl text-[#025951]">
                         Cambiar Contraseña
                     </h1>
@@ -63,7 +63,7 @@ export default function ChangePasswordForm() {
                         errorMessage && (
                             <div className="flex items-center bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
                                 <ExclamationCircleIcon className="h-[18px] w-[18px] text-red-500 mr-4 flex-shrink-0" />
-                                <span className="text-sm text-justify">{errorMessage}</span>
+                                <span className="text-sm ml-4">{errorMessage}</span>
                             </div>
 
 
