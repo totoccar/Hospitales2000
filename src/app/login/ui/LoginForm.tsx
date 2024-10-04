@@ -23,7 +23,7 @@ export default function LoginForm() {
       tipo_documento: HTMLSelectElement;
     };
 
-    const formData: LoginData = {
+    const loginData: LoginData = {
       numero_documento: formElements.numero_documento.value,
       contrasena: formElements.contrasena.value,
       tipo_documento: formElements.tipo_documento.value as TipoDocumentoEnum,
@@ -32,7 +32,7 @@ export default function LoginForm() {
     setIsPending(true); 
 
     try {
-      const error = await login(formData);
+      const error = await login(loginData);
       if (error) setErrorMessage(error);
       else setErrorMessage(null);
     } catch (error) {
@@ -110,8 +110,8 @@ export default function LoginForm() {
                   required
                 >
                   
-                  <option value="CEDULA_IDENTIDAD">Cédula de identidad</option>
                   <option value="DOCUMENTO_NACIONAL_IDENTIDAD">Documento Nacional de Identidad</option>
+                  <option value="CEDULA_IDENTIDAD">Cédula de identidad</option>
                   <option value="LIBRETA_CIVICA">Libreta Cívica</option>
                   <option value="LIBRETA_ENROLAMIENTO">Libreta de Enrolamiento</option>
                   <option value="PASAPORTE">Pasaporte</option>

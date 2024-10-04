@@ -16,6 +16,7 @@ type CallbackError = {
 export async function login(_data: LoginData) {
     try{
         const callback = await signIn("credentials", {numero_documento: _data.numero_documento, contrasena: _data.contrasena,tipo_documento:_data.tipo_documento, redirect: false})
+        console.log(callback);
         const params = new URLSearchParams({callbackUrl: callback})
         redirect("/selectrole?"+params.toString())
     }catch (e){
