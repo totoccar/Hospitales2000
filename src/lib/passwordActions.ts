@@ -28,15 +28,13 @@ export async function authenticatePassword(
         const passwordMatch = await bcrypt.compare(param_contrasena, password);
 
         if (passwordMatch) {
-            console.log("Password correcta");
-            return true;  // Retorna true si la contraseña coincide
+            return true; 
         } else {
-            console.log("Password incorrecta");
-            return false;  // Retorna false si la contraseña no coincide
+            return false;
         }
     } catch (error) {
         console.error('Error al autenticar la contraseña:', error);
-        return false;  // En caso de error, devuelve false
+        return false;  
     }
 
 }
