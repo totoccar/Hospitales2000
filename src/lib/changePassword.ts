@@ -51,22 +51,16 @@ export async function changePassword(
     user_id: string
 ) {
     try {
-        // Hash de la nueva contraseña antes de guardarla
         const hashedPassword = await bcrypt.hash(nueva_contrasena, 10);
-
-
-
 
         const user = await prisma.usuario.update({
             where: { id: user_id },
             data: { contrasena: hashedPassword },
         });
 
-
         if (!user) {
             throw new Error('User not found.');
         }
-
 
         console.log('Password updated successfully for user:', user);
     } catch (error) {

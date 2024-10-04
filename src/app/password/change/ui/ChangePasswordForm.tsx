@@ -37,9 +37,17 @@ export default function ChangePasswordForm() {
             if (formData.get('nueva_contrasena') !== formData.get('confirm_contrasena')) {
                 setErrorMessage('Las contraseñas no coinciden');
             } else {
-                changePasswordAPI(formData.get('nueva_contrasena') as string, user_id);
-                setSuccessMessage("La contraseña se ha cambiado correctamente.");
-                setIsDisabled(true);
+                try {
+                    await changePasswordAPI(formData.get('nueva_contrasena') as string, user_id);
+                    setSuccessMessage("La contraseña se ha cambiado correctamente.");
+                    setIsDisabled(true);
+                } catch (error: any) {
+                    if (error.message === 'VALIDATION_ERROR') {
+                        setErrorMessage('La contraseña no cumple con los requisitos. Debe contener al menos 12 caracteres, una letra mayúscula, una letra minúscula, un número y un caracter especial.');
+                    } else {
+                        setErrorMessage('Ocurrió un error inesperado. Por favor, inténtelo de nuevo.');
+                    }
+                }
             }
         }
     };
@@ -54,7 +62,7 @@ export default function ChangePasswordForm() {
                     {
                         errorMessage && (
                             <div className="flex items-center bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                                <ExclamationCircleIcon className="h-5 w-5 text-red-500 mr-2" />
+                                <ExclamationCircleIcon className="h-10 w-10 text-red-500 mr-2" />
                                 <span className="block sm:inline text-sm">{errorMessage}</span>
                             </div>
                         )
