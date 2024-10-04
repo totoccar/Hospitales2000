@@ -43,7 +43,7 @@ export default function ChangePasswordForm() {
                     setIsDisabled(true);
                 } catch (error: any) {
                     if (error.message === 'VALIDATION_ERROR') {
-                        setErrorMessage('La contraseña no cumple con los requisitos. Debe contener al menos 12 caracteres, una letra mayúscula, una letra minúscula, un número y un caracter especial.');
+                        setErrorMessage('La contraseña debe contener al menos 12 caracteres, una letra mayúscula, una letra minúscula, un número y un caracter especial.');
                     } else {
                         setErrorMessage('Ocurrió un error inesperado. Por favor, inténtelo de nuevo.');
                     }
@@ -62,18 +62,22 @@ export default function ChangePasswordForm() {
                     {
                         errorMessage && (
                             <div className="flex items-center bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                                <ExclamationCircleIcon className="h-10 w-10 text-red-500 mr-2" />
-                                <span className="block sm:inline text-sm">{errorMessage}</span>
+                                <ExclamationCircleIcon className="h-[18px] w-[18px] text-red-500 mr-4 flex-shrink-0" />
+                                <span className="text-sm text-justify">{errorMessage}</span>
                             </div>
+
+
+
                         )
                     }
 
                     {
                         successMessage && (
                             <div className="flex items-center bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                                <KeyIcon className="h-8 w-8 text-green-500 mr-4" />
-                                <span className="block sm:inline text-sm">{successMessage}</span>
+                                <KeyIcon className="h-[18px] w-[18px] text-green-500 mr-4 flex-shrink-0" />
+                                <span className=" text-sm flex-1">{successMessage}</span>
                             </div>
+
                         )
                     }
                     <div className="w-full">
