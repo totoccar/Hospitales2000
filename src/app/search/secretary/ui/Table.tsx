@@ -7,7 +7,6 @@ export default async function Table({
   dni,
   apellido,
   tipoDocumento,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   currentPage,
 }: {
   dni?: string;
@@ -18,7 +17,8 @@ export default async function Table({
   const secretaries = await findSecretariesByQuery({ 
     dni: dni || '', 
     apellido: apellido || '', 
-    tipoDocumento: tipoDocumento || TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD 
+    tipoDocumento: tipoDocumento || TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD,
+    currentPage
   });
 
   return (
