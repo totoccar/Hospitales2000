@@ -1,42 +1,89 @@
-'use client'
-import { ArrowRightIcon } from 'lucide-react';
-import React, { useState } from 'react'
+import {User2, LogOut} from "lucide-react"
+import {redirect} from "next/navigation";
+import {headers} from "next/headers";
+import { AlertTriangle } from "lucide-react"
+import { auth } from "@/src/auth";
+import { logout, selectRole } from "@/login";
+import { fetchRolesDeUsuario } from "@/src/lib/users";
+import { RoleProfile } from "@/src/lib/definitions";
+import { roleDisplayNames } from "@/src/lib/roleDisplayNames";
+import { Button } from "@/src/components/ui/button";
+import { Card } from "@/src/components/ui/card";
 
+export default async function RoleSelectPage({searchParams: {callbackUrl}}: {searchParams: {callbackUrl?: string}} ) {
+    const dni = (await auth())?.user.dni;
+    if (!dni) {
+        console.error("Could not get user dni")
+        return <ErrorPage />
+    }
 
-export default function page() {
-  return (
-    <div className="min-h-screen flex items-center justify-center">
-        <div className="rounded-lg w-96 bg-gray-200 px-6 pb-4 pt-8">
-            <div className="text-center mb-3 font-bold text-3xl text-[#025951]"> Seleccionar Rol</div>
-            <div className="flex justify-center mt-6">
-            <RolButton rol="Administrador"/>
-            </div>
-            <div className="flex justify-center mt-6">
-            <RolButton rol="Medico"/>
-            </div>
-            <div className="flex justify-center mt-6">
-            <RolButton rol="Secretaria" disabled={true}/>
-            </div>
-            <div className="flex justify-center mt-6">
-            <RolButton rol="Paciente" disabled={true}/>
-            </div>
+    if((await auth())?.user.role) {
+        if(callbackUrl && new URL(callbackUrl).host === headers().get("host"))
+            redirect(callbackUrl)
+        else
+            redirect("/")
+    }
+
+    const roles = await fetchRolesDeUsuario(dni).then(profiles => profiles.map(profile => profile));
+    console.log(roles)
+
+    if(roles.length === 0) {
+        console.error("User has no roles")
+        return <ErrorPage/>
+    }
+
+    return (
+        <div className="min-h-screen bg-white flex items-center justify-center p-4 transition-colors duration-200">
+            <Card className="w-full max-w-sm p-6 space-y-4  bg-gray-200 transition-colors duration-200">
+                <h1 className="text-2xl font-bold text-[#025951] text-center">Selecciona un rol</h1>
+                <div className="space-y-3">
+                    {roles.map((role) => (
+                        console.log(role),
+                        <form action={selectRole.bind(null, role, callbackUrl)} key={role}>
+                            <Button
+                                type="submit"
+                                variant="outline"
+                                className="dark w-full h-16 justify-start px-4 hover:bg-gray-100 text-white font-bold transition-colors duration-200"
+                            >
+                                <User2 className={`mr-4 h-6 w-6 text-black`}/>
+                                <span className="text-lg text-black">{roleDisplayNames[role] || "role"}</span>
+                            </Button>
+                        </form>
+                    ))}
+                </div>
+                <form action={logout}>
+                    <Button variant="destructive" className="w-full mt-2 bg-[#025951] hover:bg-[#28b78ee7] text-white font-bold text-lg" type="submit">
+                        <LogOut className="mr-2 h-4 w-4"/>
+                        Cerrar sesión
+                    </Button>
+                </form>
+            </Card>
         </div>
-    </div>
-  )
+    )
 }
 
 
-function RolButton({ rol, disabled }: { rol: string; disabled?: boolean }) {
-    return (
-      <button
-        type="submit"
-        className={`relative flex items-center justify-center bg-[#025951] hover:bg-[#28b78ee7] text-white font-bold text-lg mt-4 w-full py-3 rounded-md transition duration-300 ease-in-out transform ${disabled ? 'cursor-not-allowed opacity-50' : 'hover:scale-105 active:scale-95'}`}
-        aria-label={`clic aquí para seleccionar ${rol}`}
-        disabled={disabled}
-      >
-        {rol}
-      </button>
-    );
-  }
-  
 
+
+function ErrorPage() {
+
+    return (
+        <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-4">
+            <div className="bg-white rounded-lg shadow-xl p-6 max-w-md w-full space-y-6 text-center">
+                <div className="flex justify-center">
+                    <AlertTriangle className="h-24 w-24 text-red-500" />
+                </div>
+                <h1 className="text-2xl font-bold text-gray-800">Se ha producido un error</h1>
+                <p className="text-gray-600">Prueba cerrar sesión y volver a iniciarla. Si el problema persiste, contacta a un administrador</p>
+                <form action={logout}>
+                <Button
+                    className="w-full"
+                    variant="destructive"
+                >
+                    Cerrar sesión
+                </Button>
+                </form>
+            </div>
+        </div>
+    )
+}
