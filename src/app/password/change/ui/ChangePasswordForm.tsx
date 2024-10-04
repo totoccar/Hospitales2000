@@ -36,6 +36,7 @@ export default function ChangePasswordForm() {
 
             if (formData.get('nueva_contrasena') !== formData.get('confirm_contrasena')) {
                 setErrorMessage('Las contraseñas no coinciden');
+                setIsPending(false);
             } else {
                 try {
                     await changePasswordAPI(formData.get('nueva_contrasena') as string, user_id);
