@@ -17,9 +17,9 @@ export const authConfig = {
           console.log("Not logged in")
           return nextUrl.pathname === '/login'
       } else{
-          if(nextUrl.pathname === '/selectrole' || nextUrl.pathname === '/403' )
-              return true
-          if (nextUrl.pathname === "/login")
+          if(nextUrl.pathname === '/selectrole')
+            return true
+          if (nextUrl.pathname === "/login" || nextUrl.pathname === '/403')
               return Response.redirect(new URL('/', nextUrl));  
           if (!auth.user.role){
               console.log("Role not set")
