@@ -30,13 +30,18 @@ export default function Navbar() {
               </NavLink>
             ))}
              <form
-              action={() => cerrarSesion()}
-            >
-              <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md p-3 text-sm font-medium hover:bg-[#012623] md:flex-none md:justify-start md:p-2 md:px-3">
-                <PowerIcon className="w-6" />
-                <div className="hidden md:block">Cerrar Sesión</div>
-              </button>
-            </form>
+                  onSubmit={async (e) => {
+                    e.preventDefault(); // Evitamos el comportamiento por defecto del formulario (redirección)
+                    await cerrarSesion(); // Ejecutamos la función de cierre de sesión
+                    window.location.reload(); // Refrescamos la página después de cerrar sesión
+                  }}
+                  >
+  <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md p-3 text-sm font-medium hover:bg-[#012623] md:flex-none md:justify-start md:p-2 md:px-3">
+    <PowerIcon className="w-6" />
+    <div className="hidden md:block">Cerrar Sesión</div>
+  </button>
+</form>
+
           </div>
           <button
             onClick={() => setIsOpen(!isOpen)}

@@ -36,7 +36,7 @@ export default function LoginForm() {
       if (error) setErrorMessage(error);
       else setErrorMessage(null);
     } catch (error) {
-      setErrorMessage('Algo salió mal del fomr ');
+      setErrorMessage('Las credenciales son inválidas');
     } finally {
       setIsPending(false); 
     }
