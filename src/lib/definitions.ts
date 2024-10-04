@@ -92,3 +92,16 @@ export enum TipoDocumentoEnum {
   LIBRETA_ENROLAMIENTO = "LIBRETA_ENROLAMIENTO",
   PASAPORTE = "PASAPORTE"
 }
+
+export enum RoleProfile{
+  Medico = "Medico",
+  Secretaria = "Secretaria",
+  Paciente= "Paciente",
+  Administrador = "Administrador",
+}
+
+export interface LoginData{
+  numero_documento: string;
+  contrasena: string;
+  tipo_documento: TipoDocumentoEnum;
+}
