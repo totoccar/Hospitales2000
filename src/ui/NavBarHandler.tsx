@@ -13,7 +13,7 @@ export default function NavBarHandler() {
   const pathname = usePathname();
   const { data: session, status } = useSession();
 
-  const noNavbarRoutes = ['/login', '/selectrole', '/404'];
+  const noNavbarRoutes = ['/login', '/selectrole', '/404', '/password/recover', '/password/change'];
 
 
   if (noNavbarRoutes.includes(pathname)) {
@@ -25,7 +25,7 @@ export default function NavBarHandler() {
     return <div>Cargando...</div>;
   }
 
-  
+
   const role = session?.user?.role;
   console.log("rol de la session:", role)
 
