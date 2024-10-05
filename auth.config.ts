@@ -13,10 +13,6 @@ export const authConfig = {
         authorized({ auth, request: { nextUrl } }) {
             const isLoggedIn = !!auth?.user;
             if (!isLoggedIn) {
-
-                if (nextUrl.pathname.startsWith('/password/recover')) {
-                    return true;
-                }
                 console.log("Not logged in")
                 return nextUrl.pathname === '/login'
             } else {
