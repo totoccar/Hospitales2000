@@ -16,7 +16,7 @@ export default function LoginForm() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    
+
     const formElements = event.currentTarget.elements as typeof event.currentTarget.elements & {
       numero_documento: HTMLInputElement;
       contrasena: HTMLInputElement;
@@ -28,8 +28,8 @@ export default function LoginForm() {
       contrasena: formElements.contrasena.value,
       tipo_documento: formElements.tipo_documento.value as TipoDocumentoEnum,
     };
-    
-    setIsPending(true); 
+
+    setIsPending(true);
 
     try {
       const error = await login(loginData);
@@ -38,7 +38,7 @@ export default function LoginForm() {
     } catch (error) {
       setErrorMessage('Las credenciales son inválidas');
     } finally {
-      setIsPending(false); 
+      setIsPending(false);
     }
   };
 
@@ -106,10 +106,10 @@ export default function LoginForm() {
                 <select
                   className="block w-full rounded-md border border-gray-200 py-[9px] pl-10 text-m outline-2"
                   id="tipo_documento"
-                  name="tipo_documento" 
+                  name="tipo_documento"
                   required
                 >
-                  
+
                   <option value="DOCUMENTO_NACIONAL_IDENTIDAD">Documento Nacional de Identidad</option>
                   <option value="CEDULA_IDENTIDAD">Cédula de identidad</option>
                   <option value="LIBRETA_CIVICA">Libreta Cívica</option>
@@ -125,7 +125,7 @@ export default function LoginForm() {
           </div>
           {/* Enlace de 'Olvidaste tu contraseña?' */}
           <div className="text-center mt-4">
-            <a href="#" className="text-sm text-gray-500 hover:underline">
+            <a href="/password/recover" className="text-sm text-gray-500 hover:underline">
               ¿Olvidaste tu contraseña?
             </a>
           </div>
@@ -151,9 +151,8 @@ function LoginButton({ isPending }: { isPending: boolean }) {
     <button
       type="submit"
       disabled={isPending}
-      className={`relative flex items-center justify-center bg-[#025951] hover:bg-[#28b78ee7] text-white font-bold text-lg mt-4 w-full py-3 rounded-md transition duration-300 ease-in-out transform hover:scale-105 active:scale-95 ${
-        isPending ? 'cursor-not-allowed opacity-50' : ''
-      }`}
+      className={`relative flex items-center justify-center bg-[#025951] hover:bg-[#28b78ee7] text-white font-bold text-lg mt-4 w-full py-3 rounded-md transition duration-300 ease-in-out transform hover:scale-105 active:scale-95 ${isPending ? 'cursor-not-allowed opacity-50' : ''
+        }`}
       aria-label="clic aqui para loguearse"
     >
       {isPending ? (
