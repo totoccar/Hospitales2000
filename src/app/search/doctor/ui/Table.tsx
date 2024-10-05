@@ -1,3 +1,4 @@
+import { getEspecialidadById } from '@/src/lib/getMedicoById';
 import { findDoctorsByQuery } from '@/src/lib/searchdoctor';
 import { obtenerIniciales } from '@/src/lib/utils';
 import { ViewDoctor } from '@/src/ui/Buttons';
@@ -24,25 +25,26 @@ export default async function Table({
     currentPage,
   });
 
+
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
-          <div className="md:hidden">
+        <div className="md:hidden">
             {doctors?.map((doctor) => (
-              <div key={doctor.usuario.id} className="mb-2 w-full rounded-md bg-white p-4">
-                <div className="flex items-center justify-between border-b pb-4">
+              <div key={doctor.usuario.id} className="mb-2 w-full rounded-md bg-fondo p-4 border-b pb-4">
+                <div className="flex justify-between bg-fondo p-2 items-left">
                   <div>
-                    <div className="mb-2 flex items-center">
-                      <p>{doctor.usuario.nombre}</p>
-                    </div>
+                    <p>{doctor.usuario.nombre}</p>
                     <p className="text-xl text-gray-500">{doctor.usuario.apellido}</p>
                   </div>
-                </div>
-                <div className="flex w-full items-center justify-between pt-4">
-                  <div className="flex justify-end gap-2">
-                    <ViewDoctor id={doctor.usuario.id} />
+                  <div className="flex flex-col items-right">
+                    <p className="text-gray-500">{obtenerIniciales(doctor.usuario.tipo_documento)} {doctor.usuario.numero_documento}</p>
+                    <p className="text-gray-500 text-xs">{getEspecialidadById(doctor.especialidad_id)}</p>
                   </div>
+                </div>
+                <div className="flex w-full">
+                  <ViewDoctor id={doctor.usuario.id} />
                 </div>
               </div>
             ))}

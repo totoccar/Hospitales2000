@@ -111,12 +111,30 @@ export async function getAmountDoctorsByQuery({
         ],
       },
     });
-    console.log(count);
     const totalPages = Math.round(count / ITEMS_PER_PAGE);
     return totalPages;
   } catch (error) {
     console.error("Error al buscar médicos:", error);
     throw new Error("No se pudo buscar los médicos");
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export async function getEspecialidadById(especialidadId: string) {
+  try {
+    const especialidad = await prisma.especialidad.findUnique({
+      where: { id: especialidadId },
+    });
+
+    if (!especialidad) {
+      throw new Error("Especialidad no encontrada");
+    }
+
+    return especialidad.nombre;
+  } catch (error) {
+    console.error("Error al obtener la especialidad:", error);
+    throw error;
   } finally {
     await prisma.$disconnect();
   }

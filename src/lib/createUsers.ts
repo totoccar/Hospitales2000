@@ -5,8 +5,6 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { hash } from "bcryptjs";
 import prisma from "./db";
-//TODO: Zip all common fields into one UserState, use it along with particular cases.
-//TODO: Change file name to create-user.ts.
 
 //-----------------------------------------------CREATE PATIENT FORM-----------------------------------------------
 export type PatientState = {
@@ -124,48 +122,97 @@ export async function createPatient(prevState: PatientState, formData: FormData)
     const parsedDate = new Date(year, month - 1, day);
 
     try {
-        const newUser = await prisma.usuario.create({
-            data: {
-                tipo_documento: typeId,
-                numero_documento: numberId,
-                nombre: patientName,
-                apellido: patientLastName,
-                correo_electronico: email,
-                contrasena: hashedPassword, //At first, default password is numberId.
-                paciente: {
-                    create: {
-                        fecha_nacimiento: parsedDate,
-                        lugar_nacimiento: birthPlace,
-                        contacto_emergencia: emergencyContact,
-                        numero_telefono: phoneNumber,
-                        ficha_medica: {
-                            create: {
-                                alergias: " ",
-                                diagnostico: " ",
-                                tratamientos: " ",
-                                medicamentos_recetados: " "
-                            }
-                        },
-                        obra_social: {
-                            connect: {
-                                id: socialWork
-                            }
-                        },
-                        ubicacion: {
-                            create: {
-                                calle: streetName,
-                                numero: streetNumber,
-                                codigo_postal: postalCode,
-                                ciudad: city,
-                                provincia: cityState,
-                            }
-                        },
-                    }
-                },
-            }
+        const existingUser = await prisma.usuario.findUnique({
+            where: { numero_documento: numberId },
         });
+
+        let newUser;
+
+        if (existingUser) {
+            newUser = await prisma.usuario.update({
+                where: { numero_documento: numberId },
+                data: {
+                    tipo_documento: typeId,
+                    nombre: patientName,
+                    apellido: patientLastName,
+                    correo_electronico: email,
+                    contrasena: hashedPassword,
+                    paciente: {
+                        create: {
+                            fecha_nacimiento: parsedDate,
+                            lugar_nacimiento: birthPlace,
+                            contacto_emergencia: emergencyContact,
+                            numero_telefono: phoneNumber,
+                            ficha_medica: {
+                                create: {
+                                    alergias: " ",
+                                    diagnostico: " ",
+                                    tratamientos: " ",
+                                    medicamentos_recetados: " "
+                                }
+                            },
+                            obra_social: {
+                                connect: {
+                                    id: socialWork
+                                }
+                            },
+                            ubicacion: {
+                                create: {
+                                    calle: streetName,
+                                    numero: streetNumber,
+                                    codigo_postal: postalCode,
+                                    ciudad: city,
+                                    provincia: cityState,
+                                }
+                            },
+                        }
+                    },
+                }
+            });
+        } else {
+            newUser = await prisma.usuario.create({
+                data: {
+                    tipo_documento: typeId,
+                    numero_documento: numberId,
+                    nombre: patientName,
+                    apellido: patientLastName,
+                    correo_electronico: email,
+                    contrasena: hashedPassword,
+                    paciente: {
+                        create: {
+                            fecha_nacimiento: parsedDate,
+                            lugar_nacimiento: birthPlace,
+                            contacto_emergencia: emergencyContact,
+                            numero_telefono: phoneNumber,
+                            ficha_medica: {
+                                create: {
+                                    alergias: " ",
+                                    diagnostico: " ",
+                                    tratamientos: " ",
+                                    medicamentos_recetados: " "
+                                }
+                            },
+                            obra_social: {
+                                connect: {
+                                    id: socialWork
+                                }
+                            },
+                            ubicacion: {
+                                create: {
+                                    calle: streetName,
+                                    numero: streetNumber,
+                                    codigo_postal: postalCode,
+                                    ciudad: city,
+                                    provincia: cityState,
+                                }
+                            },
+                        }
+                    },
+                }
+            });
+        }
         console.log(newUser);
-    }catch (error) {
+    } catch (error) {
         console.log("error on create.");
         console.log(error);
         return {
@@ -173,8 +220,8 @@ export async function createPatient(prevState: PatientState, formData: FormData)
         };
     }
 
-    revalidatePath('/search/patient'); //Updates the patient search.
-    redirect('/search/patient'); //Redirects you to patient search.
+    revalidatePath('/search/patient'); 
+    redirect('/search/patient'); 
 }
 
 //-----------------------------------------------CREATE DOCTOR FORM-----------------------------------------------
@@ -286,37 +333,77 @@ export async function createDoctor(prevState: DoctorState, formData: FormData) {
     const hashedPassword = await hash(numberId, 10);
 
     try {
-        const newUser = await prisma.usuario.create({
-            data: {
-                tipo_documento: typeId,
-                numero_documento: numberId,
-                nombre: doctorName,
-                apellido: doctorLastName,
-                correo_electronico: email,
-                contrasena: hashedPassword, 
-                medico: {
-                    create: {
-                        tipo_matricula: regType,
-                        numero_matricula: regNumber,
-                        numero_telefono: phoneNumber,
-                        especialidad: {
-                            connect: {
-                                id: specialty,
-                            }
-                        },
-                        ubicacion: {
-                            create: {
-                                calle: streetName,
-                                numero: streetNumber,
-                                codigo_postal: postalCode,
-                                ciudad: city,
-                                provincia: cityState,
-                            }
-                        },
-                    }
-                },
-            }
+        const existingUser = await prisma.usuario.findUnique({
+            where: { numero_documento: numberId },
         });
+
+        let newUser;
+
+        if (existingUser) {
+            newUser = await prisma.usuario.update({
+                where: { numero_documento: numberId },
+                data: {
+                    tipo_documento: typeId,
+                    nombre: doctorName,
+                    apellido: doctorLastName,
+                    correo_electronico: email,
+                    contrasena: hashedPassword,
+                    medico: {
+                        create: {
+                            tipo_matricula: regType,
+                            numero_matricula: regNumber,
+                            numero_telefono: phoneNumber,
+                            especialidad: {
+                                connect: {
+                                    id: specialty,
+                                }
+                            },
+                            ubicacion: {
+                                create: {
+                                    calle: streetName,
+                                    numero: streetNumber,
+                                    codigo_postal: postalCode,
+                                    ciudad: city,
+                                    provincia: cityState,
+                                }
+                            },
+                        }
+                    },
+                }
+            });
+        } else {
+            newUser = await prisma.usuario.create({
+                data: {
+                    tipo_documento: typeId,
+                    numero_documento: numberId,
+                    nombre: doctorName,
+                    apellido: doctorLastName,
+                    correo_electronico: email,
+                    contrasena: hashedPassword,
+                    medico: {
+                        create: {
+                            tipo_matricula: regType,
+                            numero_matricula: regNumber,
+                            numero_telefono: phoneNumber,
+                            especialidad: {
+                                connect: {
+                                    id: specialty,
+                                }
+                            },
+                            ubicacion: {
+                                create: {
+                                    calle: streetName,
+                                    numero: streetNumber,
+                                    codigo_postal: postalCode,
+                                    ciudad: city,
+                                    provincia: cityState,
+                                }
+                            },
+                        }
+                    },
+                }
+            });
+        }
         console.log(newUser);
     }catch (error) {
         console.log("error on creation.");
@@ -325,8 +412,8 @@ export async function createDoctor(prevState: DoctorState, formData: FormData) {
         };
     }
     
-    revalidatePath('/search/doctor'); //Updates the doctor search.
-    redirect('/search/doctor'); //Redirects you to doctor search.
+    revalidatePath('/search/doctor'); 
+    redirect('/search/doctor'); 
 }
 
 //-----------------------------------------------CREATE SECRETARY FORM-----------------------------------------------
@@ -422,32 +509,65 @@ export async function createSecretary(prevState: SecretaryState, formData: FormD
     const hashedPassword = await hash(numberId, 10);
 
     try {
-        const newUser = await prisma.usuario.create({
-            data: {
-                tipo_documento: typeId,
-                numero_documento: numberId,
-                nombre: secretaryName,
-                apellido: secretaryLastName,
-                correo_electronico: email,
-                contrasena: hashedPassword, //At first, default password is numberId.
-                secretaria: {
-                    create: {
-                        numero_telefono: phoneNumber,
-                        ubicacion: {
-                            create: {
-                                calle: streetName,
-                                numero: streetNumber,
-                                codigo_postal: postalCode,
-                                ciudad: city,
-                                provincia: cityState,
-                            }
-                        },
-                    }
-                }
-            }
+        const existingUser = await prisma.usuario.findUnique({
+            where: { numero_documento: numberId },
         });
+
+        let newUser;
+
+        if (existingUser) {
+            newUser = await prisma.usuario.update({
+                where: { numero_documento: numberId },
+                data: {
+                    tipo_documento: typeId,
+                    nombre: secretaryName,
+                    apellido: secretaryLastName,
+                    correo_electronico: email,
+                    contrasena: hashedPassword,
+                    secretaria: {
+                        create: {
+                            numero_telefono: phoneNumber,
+                            ubicacion: {
+                                create: {
+                                    calle: streetName,
+                                    numero: streetNumber,
+                                    codigo_postal: postalCode,
+                                    ciudad: city,
+                                    provincia: cityState,
+                                }
+                            },
+                        }
+                    },
+                }
+            });
+        } else {
+            newUser = await prisma.usuario.create({
+                data: {
+                    tipo_documento: typeId,
+                    numero_documento: numberId,
+                    nombre: secretaryName,
+                    apellido: secretaryLastName,
+                    correo_electronico: email,
+                    contrasena: hashedPassword,
+                    secretaria: {
+                        create: {
+                            numero_telefono: phoneNumber,
+                            ubicacion: {
+                                create: {
+                                    calle: streetName,
+                                    numero: streetNumber,
+                                    codigo_postal: postalCode,
+                                    ciudad: city,
+                                    provincia: cityState,
+                                }
+                            },
+                        }
+                    },
+                }
+            });
+        }
         console.log(newUser);
-    }catch (error) {
+    } catch (error) {
         console.log("error on creation.");
         return {
             message: 'Fallo en la base de datos: No se creó la secretaria.',

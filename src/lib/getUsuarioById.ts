@@ -3,7 +3,6 @@
 import prisma from "./db";
 
 export async function getUsuarioById(usuarioId: string) {
-  console.log("usuario: ", usuarioId);
   try {
     const usuario = await prisma.usuario.findUnique({
       where: { id: usuarioId },
