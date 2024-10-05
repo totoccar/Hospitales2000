@@ -3,9 +3,7 @@ import { getObraSocialById, getUbicacionById, getUsuarioById } from "@/src/lib/g
 
 
 export default async function Component({ params }: { params: { id: string } }) {
-
   const id = params.id as string;
-  console.log("id antes de entrar a route: ",id);
   const usuario = await getUsuarioById(id);
   let ubicacionUsuario=null;
   if (usuario.paciente){

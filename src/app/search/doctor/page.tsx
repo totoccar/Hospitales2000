@@ -29,7 +29,6 @@ export default async function SearchDoctor({searchParams,
     tipoDocumento: currentTipoDocumento,
     currentPage: currentPage 
   });
-  console.log(count)
   return (
     <MaxWidthWrapper>
     <div className="bg-fondo rounded-lg shadow-md p-6 mt-5">
