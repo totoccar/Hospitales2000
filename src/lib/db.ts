@@ -4,12 +4,6 @@ const prismaClientSingleton = () => {
   return new PrismaClient()
 }
 
-/*
-Hardcodeo que entre como "Benja"
-Cheuqear si en el form la co
-
-*/
-
 declare const globalThis: {
   prismaGlobal: ReturnType<typeof prismaClientSingleton>;
 } & typeof global;
