@@ -9,13 +9,9 @@ export async function getPassword(user_id: string): Promise<string> {
         const user = await prisma.usuario.findUnique({
             where: { id: user_id },
         });
-        console.log("Se obtuvo el usuario: ", user);
-
         if (!user) {
             throw new Error('User not found.');
         }
-        console.log(user);
-
         return user.contrasena;
     } catch (error) {
         console.error('Failed to fetch user:', error);
@@ -35,8 +31,6 @@ export async function getPasswordByDocument(documento: string, tipo_documento: T
         if (!user) {
             throw new Error('User not found.');
         }
-
-        console.log(user);
         return user.contrasena; 
     } catch (error) {
         console.error('Failed to fetch user:', error);
@@ -60,7 +54,6 @@ export async function changePassword(
             throw new Error('User not found.');
         }
 
-        console.log('Password updated successfully for user:', user);
     } catch (error) {
         console.error('Failed to update password:', error);
         throw new Error('Failed to update password.');
@@ -77,11 +70,8 @@ export async function getUserIdByDocument(documento: string, tipo_documento: Tip
         });
 
         if (!user) {
-            console.log('User not found');
             return null;
         }
-
-        console.log("El usuario de documento" + documento + "  es: " + user.nombre + " " + user.apellido); 
         return user.id; 
     } catch (error) {
         console.error('Error fetching user:', error);
@@ -101,11 +91,8 @@ export async function getUserEmailByDocument(documento: string, tipo_documento: 
         });
 
         if (!user) {
-            console.log('User not found');
             return null;
         }
-
-        console.log("El usuario de documento " + documento + " y tipo de documento " + tipo_documento + " es: " + user.nombre + " " + user.apellido + " de correo: " + user.correo_electronico);
         return user.correo_electronico;
     } catch (error) {
         console.error('Error fetching user:', error);
@@ -121,9 +108,7 @@ export async function getUserNameByDocument(documento: string, tipo_documento: T
                 tipo_documento: tipo_documento,
             }, 
         });
-
         if (!user) {
-            console.log('User not found');
             return null;
         }
     } catch (error) {

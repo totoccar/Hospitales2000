@@ -28,19 +28,24 @@ export default async function Table({
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
           <div className="md:hidden">
             {patients?.map((patient) => (
-              <div key={patient.usuario.id} className="mb-2 w-full rounded-md bg-white p-4">
-                <div className="flex items-center justify-between border-b pb-4">
+              <div key={patient.usuario.id} className="mb-2 w-full rounded-md bg-fondo p-4 border-b pb-4">
+                <div className="flex justify-between bg-fondo p-2 items-left">
                   <div>
-                    <div className="mb-2 flex items-center">
-                      <p>{patient.usuario.nombre}</p>
-                    </div>
+                    <p>{patient.usuario.nombre}</p>
                     <p className="text-xl text-gray-500">{patient.usuario.apellido}</p>
                   </div>
+                  <div className="flex flex-col items-right">
+                    <p className="text-gray-500">{obtenerIniciales(patient.usuario.tipo_documento)} {patient.usuario.numero_documento}</p>
+                    <p className="text-gray-500">{patient.lugar_nacimiento}</p>
+                  </div>
                 </div>
-                <div className="flex w-full items-center justify-between pt-4">
-                  <div className="flex justify-end gap-2">
+                <div className="flex w-full items-center justify-between">
+                  <div className="flex justify-end">
                     <ViewPatient id={patient.usuario.id} />
                   </div>
+                  <div className="flex justify-center ">
+                    <ViewMedicalRecord disabled={false} id={patient.ficha_medica_id} />
+                    </div>
                 </div>
               </div>
             ))}

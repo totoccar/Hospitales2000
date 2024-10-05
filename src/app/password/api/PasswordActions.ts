@@ -33,10 +33,8 @@ export async function authenticatePassword(
         const passwordMatch = await bcrypt.compare(param_contrasena, password);
 
         if (passwordMatch) {
-            console.log("Password correcta");
             return true; 
         } else {
-            console.log("Password incorrecta");
             return false;  
         }
     } catch (error) {

@@ -2,6 +2,7 @@
 
 import bcrypt from 'bcryptjs';
 import { changePassword, getPassword, getUserEmailByDocument, getUserIdByDocument } from './changePassword';
+import { z } from 'zod';
 
 
 export async function authenticateDocument(
@@ -28,15 +29,13 @@ export async function authenticatePassword(
         const passwordMatch = await bcrypt.compare(param_contrasena, password);
 
         if (passwordMatch) {
-            console.log("Password correcta");
-            return true;  // Retorna true si la contraseña coincide
+            return true; 
         } else {
-            console.log("Password incorrecta");
-            return false;  // Retorna false si la contraseña no coincide
+            return false;
         }
     } catch (error) {
         console.error('Error al autenticar la contraseña:', error);
-        return false;  // En caso de error, devuelve false
+        return false;  
     }
 
 }
@@ -45,6 +44,15 @@ export async function changePasswordAPI(
     param_nueva_contrasena: string,
     documento: string
 ): Promise<void> {
+
+    const passwordSchema = z.string().min(12).regex(/[A-Z]/).regex(/[a-z]/).regex(/[0-9]/).regex(/[^A-Za-z0-9]/);
+
+    const validationResult = passwordSchema.safeParse(param_nueva_contrasena);
+
+    if (!validationResult.success) {
+        throw new Error('VALIDATION_ERROR');
+    }
+
     await changePassword(param_nueva_contrasena, documento);
 }
 
@@ -52,9 +60,9 @@ export async function getUserEmail(user_document: string): Promise<string> {
     const user_email = await getUserEmailByDocument(user_document);
 
     if (user_email) {
-        return user_email;  // Retorna el correo electrónico del usuario
+        return user_email;
     } else {
-        return "";  // Retorna una cadena vacía si el usuario no existe
+        return "";  
     }
 }
 

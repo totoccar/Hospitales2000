@@ -40,8 +40,7 @@ export default function ChangePasswordForm() {
             } else {
 
                 const user_email = await getUserEmail(user_document,user_tipo_documento);
-                const link = `${window.location.origin}/password/recover/new/${user_id}`
-                console.log("EMAIL:",user_email)
+                const link = `${window.location.origin}/password/recover/new/${user_id}`;
                 if (user_email) {
                     const response = await fetch("api/contact", {
                         method: "POST",
