@@ -5,7 +5,6 @@ export function getPermission(pathname: string): string | null {
     '/admin/create/doctor': 'admin:access',
     '/admin/create/patient': 'admin:access',
     '/admin/create/secretary': 'admin:access',
-    '/password/recover': 'common:access',
     '/password/change': 'common:access',
     '/search/patient': 'medsec:access',
     '/search/doctor': 'medsec:access',
