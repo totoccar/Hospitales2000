@@ -13,7 +13,11 @@ export default function NavBarSecretary() {
             <Hospital className="h-8 w-8 text-[#04D99D]" />
             <span className="text-xl font-bold">Hospitales 2000</span>
           </Link>
+
           <div className="flex space-x-1">
+            <div className='flex items-center'>
+              <span className="text-md font-medium mr-4 ml-4 ">Secretaria</span>
+            </div>
             <Link
               href="/search/doctor"
               className="flex items-center px-3 py-2 rounded-md text-sm font-medium hover:bg-[#012623] hover:text-[#04D99D] transition-colors duration-200"
@@ -21,7 +25,7 @@ export default function NavBarSecretary() {
               <Search className="h-5 w-5 mr-2" />
               Buscar Medico
             </Link>
-            <span className="text-md font-medium">Secretaria</span>
+
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
@@ -29,7 +33,7 @@ export default function NavBarSecretary() {
                 window.location.reload();
               }}
             >
-              <button className="flex h-[48px] items-center justify-center gap-2 rounded-md p-3 text-sm font-medium hover:bg-[#012623]">
+              <button className="flex  items-center justify-center gap-2 rounded-md p-3 text-sm font-medium hover:bg-[#012623]">
                 <PowerIcon className="w-6" />
                 <div className="hidden md:block">Cerrar Sesión</div>
               </button>
