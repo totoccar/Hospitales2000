@@ -1,8 +1,11 @@
-'use server' ;
+'use server';
 
-import { signIn } from '@/src/auth';
 import { AuthError } from 'next-auth';
- 
+import { auth, signIn, signOut, unstable_update } from "@/src/auth";
+
+
+
+
 export async function authenticate(
   prevState: string | undefined,
   formData: FormData,
@@ -20,4 +23,14 @@ export async function authenticate(
     }
     throw error;
   }
+}
+
+export async function getDni(): Promise<string> {
+  const dni = (await auth())?.user.dni;
+  return dni;
+}
+
+export async function getRole(): Promise<string> {
+  const role = (await auth())?.user.role;
+  return role;
 }

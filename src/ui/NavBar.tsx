@@ -1,12 +1,14 @@
 "use client"
 
 import { useState } from 'react'
-import { Menu, X, Hospital, Home,Search, PowerIcon  } from 'lucide-react'
+import { Menu, X, Hospital, Home, Search, PowerIcon } from 'lucide-react'
 import Link from 'next/link'
 import cerrarSesion from '../lib/session'
+import { useSession } from 'next-auth/react'
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
+  const session = useSession();
 
   const navItems = [
     { name: 'Inicio', href: '/', icon: Home },
@@ -29,18 +31,18 @@ export default function Navbar() {
                 {item.name}
               </NavLink>
             ))}
-             <form
-                  onSubmit={async (e) => {
-                    e.preventDefault(); // Evitamos el comportamiento por defecto del formulario (redirección)
-                    await cerrarSesion(); // Ejecutamos la función de cierre de sesión
-                    window.location.reload(); // Refrescamos la página después de cerrar sesión
-                  }}
-                  >
-  <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md p-3 text-sm font-medium hover:bg-[#012623] md:flex-none md:justify-start md:p-2 md:px-3">
-    <PowerIcon className="w-6" />
-    <div className="hidden md:block">Cerrar Sesión</div>
-  </button>
-</form>
+            <form
+              onSubmit={async (e) => {
+                e.preventDefault(); // Evitamos el comportamiento por defecto del formulario (redirección)
+                await cerrarSesion(); // Ejecutamos la función de cierre de sesión
+                window.location.reload(); // Refrescamos la página después de cerrar sesión
+              }}
+            >
+              <button className="flex h-[48px] grow items-center justify-center gap-2 rounded-md p-3 text-sm font-medium hover:bg-[#012623] md:flex-none md:justify-start md:p-2 md:px-3">
+                <PowerIcon className="w-6" />
+                <div className="hidden md:block">Cerrar Sesión</div>
+              </button>
+            </form>
 
           </div>
           <button
