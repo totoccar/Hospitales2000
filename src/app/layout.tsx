@@ -29,18 +29,15 @@ export default async function RootLayout({
         'relative h-full font-sans antialiased',
         inter.className
       )}>
-        {/* <SessionProvider> */}
         <main className='relative flex flex-col min-h-screen'>
-          {/* <NavBarHandler /> */}
-          {role === 'Administrador' && <NavBarAdmin />} {/* Asumiendo que tienes un componente NavBarAdmin */}
-          {role === 'Medico' && <NavBarDoctor />} {/* Asumiendo que tienes un componente NavBarMedico */}
-          {role === 'Secretaria' && <NavBarSecretary />} {/* Asumiendo que tienes un componente NavBarSecretary */}
+          {role === 'Administrador' && <NavBarAdmin />} 
+          {role === 'Medico' && <NavBarDoctor />} 
+          {role === 'Secretaria' && <NavBarSecretary />} 
           {role === 'Paciente' && <NavBarPacient />}
           <div className='flex-grow flex-1'>
             {children}
           </div>
         </main>
-        {/* </SessionProvider> */}
       </body>
     </html>
   );

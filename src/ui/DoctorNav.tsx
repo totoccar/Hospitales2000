@@ -14,6 +14,10 @@ export default function NavBarDoctor() {
             <span className="text-xl font-bold">Hospitales 2000</span>
           </Link>
           <div className="flex space-x-1">
+            
+            <div className='flex items-center'>
+                            <span className="text-md font-medium mr-4 ml-4 ">Medico</span>
+            </div>
             <Link
               href="/search/patient"
               className="flex items-center px-3 py-2 rounded-md text-sm font-medium hover:bg-[#012623] hover:text-[#04D99D] transition-colors duration-200"
@@ -21,7 +25,6 @@ export default function NavBarDoctor() {
               <Search className="h-5 w-5 mr-2" />
               Buscar Paciente
             </Link>
-            <span className="text-md font-medium">Doctor</span>
             <form
               onSubmit={async (e) => {
                 e.preventDefault();
