@@ -22,6 +22,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const role = await getRole();
+  console.log('role:', role);
   return (
     <html lang='en' className='h-full'>
       <body className={cn(
@@ -31,7 +32,7 @@ export default async function RootLayout({
         {/* <SessionProvider> */}
         <main className='relative flex flex-col min-h-screen'>
           {/* <NavBarHandler /> */}
-          {role === 'Admin' && <NavBarAdmin />} {/* Asumiendo que tienes un componente NavBarAdmin */}
+          {role === 'Administrador' && <NavBarAdmin />} {/* Asumiendo que tienes un componente NavBarAdmin */}
           {role === 'Medico' && <NavBarDoctor />} {/* Asumiendo que tienes un componente NavBarMedico */}
           {role === 'Secretaria' && <NavBarSecretary />} {/* Asumiendo que tienes un componente NavBarSecretary */}
           {role === 'Paciente' && <NavBarPacient />}
