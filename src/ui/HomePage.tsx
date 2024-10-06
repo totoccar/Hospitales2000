@@ -6,7 +6,15 @@ import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import Link from "next/link"
 import { getTotalDoctors, getTotalMedicalRecords, getTotalPatients } from "../lib/homePageActiones"
 
-export default function HomePage() {
+import { getDni, getRole } from "../app/lib/actions"
+import NavBarAdmin from "./AdminNav"
+import NavBarSecretary from "./SecretaryNav"
+import NavBarDoctor from "./DoctorNav"
+import NavBarPacient from "./PacientNavBar"
+
+export default async function HomePage() {
+  const role = await getRole();
+
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1">
@@ -18,13 +26,13 @@ export default function HomePage() {
                   Hospitales <span className="text-acentos">2000</span>
                 </h1>
                 <h2 className="text-xl font-bold pt-4 sm:text-xl md:text-xl lg:text-2xl/none text-primario">
-                Gestión Hospitalaria Eficiente
+                  Gestión Hospitalaria Eficiente
                 </h2>
                 <p className="mx-auto max-w-[700px] text-gray-500 md:text-xl">
                   Administre médicos, pacientes y fichas médicas de manera sencilla y eficaz.
                 </p>
               </div>
-              
+
             </div>
             <div className="grid grid-cols-1 gap-2 mt-8 md:grid-cols-3 md:gap-4">
               <Link href="/admin/create/patient" passHref>
@@ -48,7 +56,7 @@ export default function HomePage() {
                   <UserRound className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <div className="text-2xl font-bold">{ getTotalDoctors()}</div>
+                  <div className="text-2xl font-bold">{getTotalDoctors()}</div>
                   <p className="text-xs text-muted-foreground">Esperando para atenderte</p>
                 </CardContent>
               </Card>
