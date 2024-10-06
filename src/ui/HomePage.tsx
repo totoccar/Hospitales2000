@@ -18,19 +18,6 @@ export default async function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1">
-        {role === 'Admin' && <NavBarAdmin />} {/* Asumiendo que tienes un componente NavBarAdmin */}
-        {role === 'Medico' && <NavBarDoctor />} {/* Asumiendo que tienes un componente NavBarMedico */}
-        {role === 'Secretaria' && <NavBarSecretary />} {/* Asumiendo que tienes un componente NavBarSecretary */}
-        {role === 'Paciente' && <NavBarPacient />}
-        <div>
-          {getDni()}
-          {getRole()}
-        </div>
-
-
-
-
-
         <section className="w-full py-8 md:pt-20 lg:pt-24 xl:pt-34">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
