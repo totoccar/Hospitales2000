@@ -3,6 +3,7 @@
 import { Hospital, Search, PowerIcon } from 'lucide-react';
 import Link from 'next/link';
 import cerrarSesion from '../lib/session';
+import UserOptionsButton from './UserOptionsButton';
 
 export default function NavBarPacient() {
     return (
@@ -18,18 +19,7 @@ export default function NavBarPacient() {
                         <div className='flex items-center'>
                             <span className="text-md font-medium mr-4 ml-4 ">Paciente</span>
                         </div>
-                        <form
-                            onSubmit={async (e) => {
-                                e.preventDefault();
-                                await cerrarSesion();
-                                window.location.reload();
-                            }}
-                        >
-                            <button className="flex  items-center justify-center gap-2 rounded-md p-3 text-sm font-medium hover:bg-[#012623]">
-                                <PowerIcon className="w-6" />
-                                <div className="hidden md:block">Cerrar Sesión</div>
-                            </button>
-                        </form>
+                        <UserOptionsButton />
                     </div>
                 </div>
             </div>

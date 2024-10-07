@@ -23,6 +23,26 @@ export async function getUsuarioById(usuarioId: string) {
     await prisma.$disconnect();
   }
 }
+
+export async function getUserNameByDNI(numero_documento: string) {
+  try {
+    const usuario = await prisma.usuario.findFirst({
+      where: { numero_documento },
+    });
+
+    if (!usuario) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    return usuario.nombre;  
+  } catch (error) {
+    console.error('Error al obtener el usuario:', error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
 export async function getObraSocialById(obraSocialId: string) {
   try {
     const obraSocial = await prisma.obraSocial.findUnique({

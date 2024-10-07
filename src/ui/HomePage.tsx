@@ -1,19 +1,11 @@
 
-import { UserRound, FileText, Search } from "lucide-react"
-import { Input } from "../components/ui/input"
+import { UserRound, FileText } from "lucide-react"
 import { Button } from "../components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "../components/ui/card"
 import Link from "next/link"
 import { getTotalDoctors, getTotalMedicalRecords, getTotalPatients } from "../lib/homePageActiones"
 
-import { getDni, getRole } from "../app/lib/actions"
-import NavBarAdmin from "./AdminNav"
-import NavBarSecretary from "./SecretaryNav"
-import NavBarDoctor from "./DoctorNav"
-import NavBarPacient from "./PacientNavBar"
-
 export default async function HomePage() {
-  const role = await getRole();
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -21,9 +13,6 @@ export default async function HomePage() {
         <section className="w-full py-8 md:pt-20 lg:pt-24 xl:pt-34">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
-              <Link href="/password/change" passHref>
-                <Button className="bg-primario w-full">Cambiar Contraseña</Button>
-              </Link>
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl/none">
                   Hospitales <span className="text-acentos">2000</span>
