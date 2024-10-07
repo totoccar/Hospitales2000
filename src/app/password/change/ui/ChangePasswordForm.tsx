@@ -6,7 +6,8 @@ import {
     KeyIcon,
 } from '@heroicons/react/24/outline';
 import { authenticatePassword, changePasswordAPI } from '@/src/lib/passwordActions';
-import { set } from 'zod';
+import { getDni } from '@/src/app/lib/actions';
+import { getsessionIdByDocument } from '../../api/changePassword';
 
 
 
@@ -16,12 +17,48 @@ export default function ChangePasswordForm() {
     const [isPending, setIsPending] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [isDisabled, setIsDisabled] = useState(false);
+    const [password, setPassword] = useState('');
 
-    const user_id = "4b2bb465-775b-4ee3-be15-3c335f9d3c2d";
+
+    const validatePassword = (pwd: string) => {
+        const minLength = /.{12,}/;  // Mínimo 12 caracteres
+        const uppercase = /[A-Z]/;   // Al menos una letra mayúscula
+        const lowercase = /[a-z]/;   // Al menos una letra minúscula
+        const number = /[0-9]/;      // Al menos un número
+        const specialChar = /[^A-Za-z0-9]/; // Al menos un carácter especial
+
+        if (!minLength.test(pwd)) {
+            return 'La contraseña debe tener al menos 12 caracteres.';
+        } else if (!uppercase.test(pwd)) {
+            return 'La contraseña debe tener al menos una letra mayúscula.';
+        } else if (!lowercase.test(pwd)) {
+            return 'La contraseña debe tener al menos una letra minúscula.';
+        } else if (!number.test(pwd)) {
+            return 'La contraseña debe tener al menos un número.';
+        } else if (!specialChar.test(pwd)) {
+            return 'La contraseña debe tener al menos un carácter especial.';
+        }
+
+        return '';
+    };
+
+    // Manejar el cambio en el input
+    const handlePasswordChange = (e) => {
+        const pwd = e.target.value;
+        setPassword(pwd);
+        const errorMsg = validatePassword(pwd);
+        setErrorMessage(errorMsg);
+    };
+
+
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
         const formData = new FormData(event.currentTarget);
+        const user_dni = await getDni();
+        const user_id = await getsessionIdByDocument(user_dni);
+
+
         setIsPending(true);
 
         const passwordMatch = await authenticatePassword(
@@ -119,6 +156,7 @@ export default function ChangePasswordForm() {
                                     type="password"
                                     name="nueva_contrasena"
                                     placeholder="Ingrese su nueva contraseña"
+                                    onChange={handlePasswordChange}
                                     required
                                     minLength={3}
                                     disabled={isDisabled}
@@ -162,6 +200,8 @@ export default function ChangePasswordForm() {
 
     );
 };
+
+
 
 function LoginButton({ isPending, isDisabled }: { isPending: boolean, isDisabled: boolean }) {
     return (
