@@ -3,10 +3,10 @@ import { Inter } from 'next/font/google'
 import "./globals.css";
 import { cn } from "../lib/utils";
 import { getRole } from "./lib/actions";
-import NavBarAdmin from "../ui/AdminNav";
 import NavBarDoctor from "../ui/DoctorNav";
 import NavBarSecretary from "../ui/SecretaryNav";
 import NavBarPacient from "../ui/PacientNavBar";
+import { NavBarAdmin } from "../ui/AdminNav";
 
 const inter = Inter({ subsets: ['latin'] })
 
