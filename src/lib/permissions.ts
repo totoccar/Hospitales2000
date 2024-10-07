@@ -1,5 +1,18 @@
-// Definición de permisos para las rutas
+
 export function getPermission(pathname: string): string | null {
+
+  if (pathname.startsWith('/view/doctor')) {
+    return 'adsec:access'; 
+  }
+  if (pathname.startsWith('/view/secretary')) {
+    return 'adsec:access'; 
+  }
+  if (pathname.startsWith('/view/patient')) {
+    return 'medsec:access'; 
+  }
+  if (pathname.startsWith('/view/medicalrecord')) {
+    return 'medico:access'; 
+  }
 
   const routePermissions: Record<string, string> = {
     '/admin/create/doctor': 'admin:access',
@@ -9,15 +22,11 @@ export function getPermission(pathname: string): string | null {
     '/search/patient': 'medsec:access',
     '/search/doctor': 'medsec:access',
     '/search/secretary': 'admin:access',
-    '/view/doctor/[id]': 'adsec:access',
-    '/view/secretary/[id]': 'adsec:access',
-    '/view/patient/[id]': 'medsec:access',
-    '/view/medicalrecord/[id]': 'medico:access',
     '/selectrole': 'common:access',
     '/403': 'common:access',
   };
 
-  return routePermissions[pathname] || null;  // Si no se encuentra, retorna null
+  return routePermissions[pathname] || null;  
 }
 
 
