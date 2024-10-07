@@ -16,9 +16,9 @@ export async function authenticateDocument(
     const userId = await getUserIdByDocument(documento, tipo_documento);
 
     if (userId) {
-        return true; 
+        return true;
     } else {
-        return false;  
+        return false;
     }
 }
 
@@ -33,13 +33,13 @@ export async function authenticatePassword(
         const passwordMatch = await bcrypt.compare(param_contrasena, password);
 
         if (passwordMatch) {
-            return true; 
+            return true;
         } else {
-            return false;  
+            return false;
         }
     } catch (error) {
         console.error('Error al autenticar la contraseña:', error);
-        return false;  
+        return false;
     }
 
 }
@@ -55,9 +55,9 @@ export async function getUserEmail(user_document: string, tipo_documento: TipoDo
     const user_email = await getUserEmailByDocument(user_document, tipo_documento);
 
     if (user_email) {
-        return user_email;  
+        return user_email;
     } else {
-        return ""; 
+        return "";
     }
 }
 
@@ -68,7 +68,8 @@ export async function getUserName(
     const user_email = await getUserEmailByDocument(user_document, tipo_documento);
 
     if (user_email) {
-        return user_email;     
+        return user_email;
 
     } else return "null";
 }
+
