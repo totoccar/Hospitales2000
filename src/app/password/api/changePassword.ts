@@ -22,16 +22,16 @@ export async function getPassword(user_id: string): Promise<string> {
 export async function getPasswordByDocument(documento: string, tipo_documento: TipoDocumentoEnum) {
     try {
         const user = await prisma.usuario.findUnique({
-            where: { 
+            where: {
                 numero_documento: documento,
                 tipo_documento: tipo_documento,
-            }, 
+            },
         });
 
         if (!user) {
             throw new Error('User not found.');
         }
-        return user.contrasena; 
+        return user.contrasena;
     } catch (error) {
         console.error('Failed to fetch user:', error);
         throw new Error('Failed to fetch user.');
@@ -63,16 +63,16 @@ export async function changePassword(
 export async function getUserIdByDocument(documento: string, tipo_documento: TipoDocumentoEnum) {
     try {
         const user = await prisma.usuario.findUnique({
-            where: { 
+            where: {
                 numero_documento: documento,
                 tipo_documento: tipo_documento,
-            }, 
+            },
         });
 
         if (!user) {
             return null;
         }
-        return user.id; 
+        return user.id;
     } catch (error) {
         console.error('Error fetching user:', error);
         return null;
@@ -84,10 +84,10 @@ export async function getUserIdByDocument(documento: string, tipo_documento: Tip
 export async function getUserEmailByDocument(documento: string, tipo_documento: TipoDocumentoEnum) {
     try {
         const user = await prisma.usuario.findUnique({
-            where: { 
+            where: {
                 numero_documento: documento,
                 tipo_documento: tipo_documento,
-            }, 
+            },
         });
 
         if (!user) {
@@ -103,10 +103,10 @@ export async function getUserEmailByDocument(documento: string, tipo_documento: 
 export async function getUserNameByDocument(documento: string, tipo_documento: TipoDocumentoEnum) {
     try {
         const user = await prisma.usuario.findUnique({
-            where: { 
+            where: {
                 numero_documento: documento,
                 tipo_documento: tipo_documento,
-            }, 
+            },
         });
         if (!user) {
             return null;
@@ -114,5 +114,22 @@ export async function getUserNameByDocument(documento: string, tipo_documento: T
     } catch (error) {
         console.error('Error fetching user:', error);
         return null;
+    }
+}
+
+export async function getsessionIdByDocument(documento: string): Promise<string> {
+    try {
+        const user = await prisma.usuario.findUnique({
+            where: {
+                numero_documento: documento,
+            },
+        });
+        if (!user) {
+            return "Ocurrio un Error en logeo";
+        }
+        return user.id;
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        return "Ocurrio un Error";
     }
 }

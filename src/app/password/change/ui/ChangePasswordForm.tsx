@@ -6,7 +6,9 @@ import {
     KeyIcon,
 } from '@heroicons/react/24/outline';
 import { authenticatePassword, changePasswordAPI } from '@/src/lib/passwordActions';
-import { set } from 'zod';
+import { getDni } from '@/src/app/lib/actions';
+import { getsessionIdByDocument } from '../../api/changePassword';
+import { TrendingUp } from 'lucide-react';
 
 
 
@@ -16,12 +18,65 @@ export default function ChangePasswordForm() {
     const [isPending, setIsPending] = useState(false);
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [isDisabled, setIsDisabled] = useState(false);
+    const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [isButtonDisabled, setButtonDisabled] = useState(true);
 
-    const user_id = "4b2bb465-775b-4ee3-be15-3c335f9d3c2d";
+
+    const validatePassword = (pwd: string) => {
+        const minLength = /.{12,}/;  // Mínimo 12 caracteres
+        const uppercase = /[A-Z]/;   // Al menos una letra mayúscula
+        const lowercase = /[a-z]/;   // Al menos una letra minúscula
+        const number = /[0-9]/;      // Al menos un número
+        const specialChar = /[^A-Za-z0-9]/; // Al menos un carácter especial
+
+
+        if (!minLength.test(pwd)) {
+            return 'La contraseña debe tener al menos 12 caracteres.';
+        } else if (!uppercase.test(pwd)) {
+            return 'La contraseña debe tener al menos una letra mayúscula.';
+        } else if (!lowercase.test(pwd)) {
+            return 'La contraseña debe tener al menos una letra minúscula.';
+        } else if (!number.test(pwd)) {
+            return 'La contraseña debe tener al menos un número.';
+        } else if (!specialChar.test(pwd)) {
+            return 'La contraseña debe tener al menos un carácter especial.';
+        }
+
+        return '';
+    };
+
+    // Manejar el cambio en el input
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const pwd = e.target.value;
+        setPassword(pwd);
+        const errorMsg = validatePassword(pwd);
+        setErrorMessage(errorMsg);
+    };
+
+    // Manejar el cambio en el input de la confirmación de contraseña
+    const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const confirmPwd = e.target.value;
+        setConfirmPassword(confirmPwd);
+
+        // Verificar si las contraseñas coinciden
+        if (confirmPwd !== password) {
+            setErrorMessage('Las contraseñas no coinciden.');
+        } else {
+            setErrorMessage('');
+            setButtonDisabled(false);
+        }
+    };
+
+
+
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-
         const formData = new FormData(event.currentTarget);
+        const user_dni = await getDni();
+        const user_id = await getsessionIdByDocument(user_dni);
+
+
         setIsPending(true);
 
         const passwordMatch = await authenticatePassword(
@@ -119,6 +174,7 @@ export default function ChangePasswordForm() {
                                     type="password"
                                     name="nueva_contrasena"
                                     placeholder="Ingrese su nueva contraseña"
+                                    onChange={handlePasswordChange}
                                     required
                                     minLength={3}
                                     disabled={isDisabled}
@@ -140,6 +196,7 @@ export default function ChangePasswordForm() {
                                     type="password"
                                     name="confirm_contrasena"
                                     placeholder="Confirme su nueva contraseña"
+                                    onChange={handleConfirmPasswordChange}
                                     required
                                     minLength={3}
                                     disabled={isDisabled}
@@ -149,7 +206,7 @@ export default function ChangePasswordForm() {
                         </div>
                     </div>
                     <div className="flex justify-center mt-6">
-                        <LoginButton isDisabled={isDisabled} isPending={isPending} />
+                        <LoginButton isDisabled={isDisabled} isPending={isPending} isButtonDisabled={isButtonDisabled} />
                     </div>
                     <div className="text-center mt-4">
                         <a href="/" className="text-sm text-gray-500 hover:underline">
@@ -163,13 +220,17 @@ export default function ChangePasswordForm() {
     );
 };
 
-function LoginButton({ isPending, isDisabled }: { isPending: boolean, isDisabled: boolean }) {
+
+
+function LoginButton({ isPending, isDisabled, isButtonDisabled }: { isPending: boolean, isDisabled: boolean, isButtonDisabled: boolean }) {
     return (
         <button
             type="submit"
-            disabled={isPending || isDisabled}
-            className={`rounded-md p-2 bg-[#025951] hover:bg-[#04D99D] text-white font-bold mt-4 w-full ${isPending || isDisabled ? 'cursor-not-allowed opacity-50' : ''
-                }`}
+            disabled={isPending || isDisabled || isButtonDisabled}
+            className={`rounded-md p-2 bg-[#025951] text-white font-bold mt-4 w-full 
+                ${isPending || isDisabled || isButtonDisabled
+                    ? 'opacity-50'
+                    : 'hover:bg-[#04D99D]'}`}
             aria-label="Cambiar Contraseña"
         >
             {isPending ? 'Cargando...' : isDisabled ? 'Contraseña Cambiada' : 'Cambiar Contraseña'}
