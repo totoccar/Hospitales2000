@@ -3,6 +3,7 @@
 import { Hospital, Search, PowerIcon } from 'lucide-react';
 import Link from 'next/link';
 import cerrarSesion from '../lib/session';
+import UserOptionsButton from './UserOptionsButton';
 
 export default function NavBarSecretary() {
   return (
@@ -31,18 +32,7 @@ export default function NavBarSecretary() {
             </Link>
 
             {/* Botón de Cerrar Sesión */}
-            <form
-              onSubmit={async (e) => {
-                e.preventDefault();
-                await cerrarSesion();
-                window.location.reload();
-              }}
-            >
-              <button className="flex items-center justify-center gap-2 rounded-md p-2 sm:p-3 text-sm font-medium hover:bg-[#012623] transition-colors">
-                <PowerIcon className="w-5 sm:w-6" />
-                <span className="hidden sm:block">Cerrar Sesión</span>
-              </button>
-            </form>
+            <UserOptionsButton />
           </div>
         </div>
       </div>
