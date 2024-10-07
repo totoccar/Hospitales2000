@@ -8,6 +8,7 @@ import {
 import { authenticatePassword, changePasswordAPI } from '@/src/lib/passwordActions';
 import { getDni } from '@/src/app/lib/actions';
 import { getsessionIdByDocument } from '../../api/changePassword';
+import { TrendingUp } from 'lucide-react';
 
 
 
@@ -18,6 +19,8 @@ export default function ChangePasswordForm() {
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [isDisabled, setIsDisabled] = useState(false);
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+    const [isButtonDisabled, setButtonDisabled] = useState(true);
 
 
     const validatePassword = (pwd: string) => {
@@ -26,6 +29,7 @@ export default function ChangePasswordForm() {
         const lowercase = /[a-z]/;   // Al menos una letra minúscula
         const number = /[0-9]/;      // Al menos un número
         const specialChar = /[^A-Za-z0-9]/; // Al menos un carácter especial
+
 
         if (!minLength.test(pwd)) {
             return 'La contraseña debe tener al menos 12 caracteres.';
@@ -43,11 +47,25 @@ export default function ChangePasswordForm() {
     };
 
     // Manejar el cambio en el input
-    const handlePasswordChange = (e) => {
+    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const pwd = e.target.value;
         setPassword(pwd);
         const errorMsg = validatePassword(pwd);
         setErrorMessage(errorMsg);
+    };
+
+    // Manejar el cambio en el input de la confirmación de contraseña
+    const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const confirmPwd = e.target.value;
+        setConfirmPassword(confirmPwd);
+
+        // Verificar si las contraseñas coinciden
+        if (confirmPwd !== password) {
+            setErrorMessage('Las contraseñas no coinciden.');
+        } else {
+            setErrorMessage('');
+            setButtonDisabled(false);
+        }
     };
 
 
@@ -178,6 +196,7 @@ export default function ChangePasswordForm() {
                                     type="password"
                                     name="confirm_contrasena"
                                     placeholder="Confirme su nueva contraseña"
+                                    onChange={handleConfirmPasswordChange}
                                     required
                                     minLength={3}
                                     disabled={isDisabled}
@@ -187,7 +206,7 @@ export default function ChangePasswordForm() {
                         </div>
                     </div>
                     <div className="flex justify-center mt-6">
-                        <LoginButton isDisabled={isDisabled} isPending={isPending} />
+                        <LoginButton isDisabled={isDisabled} isPending={isPending} isButtonDisabled={isButtonDisabled} />
                     </div>
                     <div className="text-center mt-4">
                         <a href="/" className="text-sm text-gray-500 hover:underline">
@@ -203,13 +222,15 @@ export default function ChangePasswordForm() {
 
 
 
-function LoginButton({ isPending, isDisabled }: { isPending: boolean, isDisabled: boolean }) {
+function LoginButton({ isPending, isDisabled, isButtonDisabled }: { isPending: boolean, isDisabled: boolean, isButtonDisabled: boolean }) {
     return (
         <button
             type="submit"
-            disabled={isPending || isDisabled}
-            className={`rounded-md p-2 bg-[#025951] hover:bg-[#04D99D] text-white font-bold mt-4 w-full ${isPending || isDisabled ? 'cursor-not-allowed opacity-50' : ''
-                }`}
+            disabled={isPending || isDisabled || isButtonDisabled}
+            className={`rounded-md p-2 bg-[#025951] text-white font-bold mt-4 w-full 
+                ${isPending || isDisabled || isButtonDisabled
+                    ? 'opacity-50'
+                    : 'hover:bg-[#04D99D]'}`}
             aria-label="Cambiar Contraseña"
         >
             {isPending ? 'Cargando...' : isDisabled ? 'Contraseña Cambiada' : 'Cambiar Contraseña'}
