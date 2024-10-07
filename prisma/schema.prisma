@@ -1,21 +1,110 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model Ubicacion {
+  id            String      @id @default(uuid())
+  calle         String
+  numero        String
+  codigo_postal String
+  ciudad        String
+  provincia     String
+  medico        Medico?
+  paciente      Paciente?
+  secretaria    Secretaria?
+}
+
+model Secretaria {
+  usuario_id      String    @id
+  numero_telefono String
+  ubicacion_id    String    @unique
+  ubicacion       Ubicacion @relation(fields: [ubicacion_id], references: [id])
+  usuario         Usuario   @relation(fields: [usuario_id], references: [id])
+}
+
+model Medico {
+  usuario_id       String            @id
+  tipo_matricula   TipoMatriculaEnum
+  numero_matricula String            @unique
+  numero_telefono  String
+  ubicacion_id     String            @unique
+  especialidad_id  String
+  descripcion      String?
+  especialidad     Especialidad      @relation(fields: [especialidad_id], references: [id])
+  ubicacion        Ubicacion         @relation(fields: [ubicacion_id], references: [id])
+  usuario          Usuario           @relation(fields: [usuario_id], references: [id])
+}
+
+model Paciente {
+  usuario_id          String      @id
+  fecha_nacimiento    DateTime
+  lugar_nacimiento    String
+  contacto_emergencia String
+  numero_telefono     String
+  ubicacion_id        String      @unique
+  obra_social_id      String
+  ficha_medica_id     String      @unique
+  ficha_medica        FichaMedica @relation(fields: [ficha_medica_id], references: [id])
+  obra_social         ObraSocial  @relation(fields: [obra_social_id], references: [id])
+  ubicacion           Ubicacion   @relation(fields: [ubicacion_id], references: [id])
+  usuario             Usuario     @relation(fields: [usuario_id], references: [id])
+}
+
+model Admin {
+  usuario_id String  @id
+  usuario    Usuario @relation(fields: [usuario_id], references: [id])
+}
+
+model Usuario {
+  id                 String            @id @default(uuid())
+  tipo_documento     TipoDocumentoEnum
+  numero_documento   String            @unique
+  nombre             String
+  apellido           String
+  correo_electronico String
+  contrasena         String
+  admin              Admin?
+  medico             Medico?
+  paciente           Paciente?
+  secretaria         Secretaria?
+}
+
+model FichaMedica {
+  id                     String    @id @default(uuid())
+  alergias               String
+  diagnostico            String
+  tratamientos           String
+  medicamentos_recetados String
+  paciente               Paciente?
+}
+
+model Especialidad {
+  id     String   @id @default(uuid())
+  nombre String   @unique
+  medico Medico[]
+}
+
+model ObraSocial {
+  id       String     @id @default(uuid())
+  nombre   String     @unique
+  paciente Paciente[]
+}
+
+enum TipoDocumentoEnum {
+  CEDULA_IDENTIDAD
+  DOCUMENTO_NACIONAL_IDENTIDAD
+  LIBRETA_CIVICA
+  LIBRETA_ENROLAMIENTO
+  PASAPORTE
+}
+
+enum TipoMatriculaEnum {
+  nacional
+  provincial
 }
