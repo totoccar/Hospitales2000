@@ -8,16 +8,14 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/src/comp
 import { Label } from "@/src/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/src/components/ui/select"
 import { RadioGroup, RadioGroupItem } from "@/src/components/ui/radio-group"
-import { getEspecialidadById, getUsuarioById } from "@/src/lib/getMedicoById"
-import { get } from "http"
+import TittleMedico from "../../ui/TittleMedico"
 
 
-export async function AppointmentBooking({ params }: { params: { id: string } }) {
+export default function AppointmentBooking({ params }: { params: { id: string } }) {
   const [date, setDate] = useState<Date | undefined>(new Date())
   const [timeSlot, setTimeSlot] = useState<string | undefined>()
   const [isFirstTime, setIsFirstTime] = useState<string | undefined>()
-  const name = await getUsuarioById(params.id);
-
+  
   // Mock function to get available time slots
   const getAvailableTimeSlots = (date: Date) => {
     // This should be replaced with actual logic to fetch available time slots
@@ -28,15 +26,10 @@ export async function AppointmentBooking({ params }: { params: { id: string } })
 
   return (
     <MaxWidthWrapper>
-      <Card className="mt-5">
+      <div className="mt-5 bg-fondo">
         <CardHeader>
           <CardTitle>Busca el horario y el día que desees</CardTitle>
-          <p className="text-sm">
-            Estás viendo los días disponibles del profesional: {name.nombre} {name.apellido}
-          </p>
-          <p className="text-sm">
-            Especialidad: {name.medico ? getEspecialidadById(name.medico.especialidad_id) : "N/A"}
-          </p>
+          <TittleMedico id={params.id}/>
         </CardHeader>
         <CardContent>
           <div className="grid gap-6 md:grid-cols-2">
@@ -84,9 +77,7 @@ export async function AppointmentBooking({ params }: { params: { id: string } })
         <CardFooter>
           <Button className="w-full bg-primario">Reservar cita</Button>
         </CardFooter>
-      </Card>
+      </div>
     </MaxWidthWrapper>
   )
 }
-
-export default AppointmentBooking
