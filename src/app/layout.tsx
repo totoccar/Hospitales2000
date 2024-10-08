@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import { Inter } from 'next/font/google'
 import "./globals.css";
 import { cn } from "../lib/utils";
-import { getRole } from "./lib/actions";
+import { getDni, getRole } from "./lib/actions";
 import NavBarDoctor from "../ui/DoctorNav";
 import NavBarSecretary from "../ui/SecretaryNav";
 import NavBarPacient from "../ui/PacientNavBar";
-import { NavBarAdmin } from "../ui/AdminNav";
+import NavBarAdmin from "../ui/AdminNav";
+import { getUserNameByDNI } from "../lib/getUsuarioById";
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,7 +24,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const role = await getRole();
-  console.log('role:', role);
+  const dni = await getDni();
+  const name = await getUserNameByDNI(dni);
+  console.log(name)
   return (
     <html lang='en' className='h-full'>
       <body className={cn(
@@ -30,10 +34,10 @@ export default async function RootLayout({
         inter.className
       )}>
         <main className='relative flex flex-col min-h-screen'>
-          {role === 'Administrador' && <NavBarAdmin />} 
-          {role === 'Medico' && <NavBarDoctor />} 
-          {role === 'Secretaria' && <NavBarSecretary />} 
-          {role === 'Paciente' && <NavBarPacient />}
+          {role === 'Administrador' && <NavBarAdmin userName={name} />} 
+          {role === 'Medico' && <NavBarDoctor userName={name} />} 
+          {role === 'Secretaria' && <NavBarSecretary userName={name} />} 
+          {role === 'Paciente' && <NavBarPacient userName={name} />}
           <div className='flex-grow flex-1'>
             {children}
           </div>
