@@ -130,59 +130,59 @@ interface SearchParamsAppoitment {
 }
 
 export async function findDoctorsAppointmentsByQuery({
-  dni,
-  apellido,
-  tipoDocumento,
-  especialidad,
-  currentPage,
-}: SearchParamsAppoitment) {
-  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
-  try {
-    const medicos = await prisma.medico.findMany({
-      where: {
-        AND: [
-          apellido
-            ? {
-                usuario: {
-                  apellido: {
-                    contains: apellido,
-                    mode: 'insensitive',
+    dni,
+    apellido,
+    tipoDocumento,
+    especialidad,
+    currentPage,
+  }: SearchParamsAppoitment) {
+    const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+    try {
+      const medicos = await prisma.medico.findMany({
+        where: {
+          AND: [
+            apellido
+              ? {
+                  usuario: {
+                    apellido: {
+                      contains: apellido,
+                      mode: 'insensitive',
+                    },
                   },
-                },
-              }
-            : {},
-          dni && tipoDocumento
-            ? {
-                usuario: {
-                  tipo_documento: tipoDocumento,
-                  numero_documento: {
-                    contains: dni,
-                    mode: 'insensitive',
+                }
+              : {},
+            dni && tipoDocumento
+              ? {
+                  usuario: {
+                    tipo_documento: tipoDocumento,
+                    numero_documento: {
+                      contains: dni,
+                      mode: 'insensitive',
+                    },
                   },
-                },
-              }
-            : {},
-          especialidad
-            ? {
-                especialidad_id: especialidad,
-              }
-            : {},
-        ],
-      },
-      include: {
-        usuario: true,
-      },
-      skip: offset,
-      take: ITEMS_PER_PAGE,
-    });
-    return medicos;
-  } catch (error) {
-    console.error("Error al buscar médicos:", error);
-    throw new Error("No se pudo buscar los médicos");
-  } finally {
-    await prisma.$disconnect();
+                }
+              : {},
+            especialidad
+              ? {
+                  especialidad_id: especialidad,
+                }
+              : {},
+          ],
+        },
+        include: {
+          usuario: true,
+        },
+        skip: offset,
+        take: ITEMS_PER_PAGE,
+      });
+      return medicos;
+    } catch (error) {
+      console.error("Error al buscar médicos:", error);
+      throw new Error("No se pudo buscar los médicos");
+    } finally {
+      await prisma.$disconnect();
+    }
   }
-}
 
 export async function getAmountAppointment({
   dni,
