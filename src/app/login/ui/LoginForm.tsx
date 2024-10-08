@@ -42,7 +42,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4 sm:p-6 lg:p-8">
+    <div className="min-h-screen flex items-center justify-center p-2 sm:p-2 lg:p-2">
       <form onSubmit={handleSubmit} className="space-y-3 w-full max-w-md">
         <div className="rounded-lg bg-gray-200 border border-gray-300 px-6 pb-4 pt-8 shadow-md">
           <h1 className="text-center mb-3 font-bold text-2xl sm:text-3xl text-[#025951]">
@@ -62,7 +62,7 @@ export default function LoginForm() {
               </label>
               <div className="relative">
                 <input
-                  className="peer block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm sm:text-base outline-2 placeholder:text-gray-500"
+                  className="peer block w-full rounded-md border border-primario py-2 pl-10 text-sm sm:text-base outline-2 placeholder:text-gray-500"
                   id="numero_documento"
                   type="text"
                   name="numero_documento"
@@ -82,7 +82,7 @@ export default function LoginForm() {
               </label>
               <div className="relative">
                 <input
-                  className="peer block w-full rounded-md border text-sm sm:text-base border-gray-200 py-2 pl-10 outline-2 placeholder:text-gray-500"
+                  className="peer block w-full rounded-md border text-sm sm:text-base border-primario py-2 pl-10 outline-2 placeholder:text-gray-500"
                   id="contrasena"
                   type="password"
                   name="contrasena"
@@ -103,12 +103,12 @@ export default function LoginForm() {
               </label>
               <div className="relative">
                 <select
-                  className="block w-full rounded-md border border-gray-200 py-2 pl-10 text-sm sm:text-base outline-2"
+                  className="block w-full rounded-md border border-primario py-2 text-sm text-center sm:text-base outline-2"
                   id="tipo_documento"
                   name="tipo_documento"
                   required
                 >
-                  <option value="DOCUMENTO_NACIONAL_IDENTIDAD">Documento Nacional de Identidad</option>
+                  <option value="DOCUMENTO_NACIONAL_IDENTIDAD">DNI</option>
                   <option value="CEDULA_IDENTIDAD">Cédula de identidad</option>
                   <option value="LIBRETA_CIVICA">Libreta Cívica</option>
                   <option value="LIBRETA_ENROLAMIENTO">Libreta de Enrolamiento</option>
@@ -123,7 +123,7 @@ export default function LoginForm() {
           </div>
           {/* Enlace de 'Olvidaste tu contraseña?' */}
           <div className="text-center mt-4">
-            <a href="/password/recover" className="text-sm text-gray-500 hover:underline">
+            <a href="/password/recover" className="text-sm text-primario hover:underline">
               ¿Olvidaste tu contraseña?
             </a>
           </div>
