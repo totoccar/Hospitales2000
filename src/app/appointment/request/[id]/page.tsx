@@ -29,7 +29,6 @@ export default function AppointmentBooking({ params }: { params: { id: string } 
       <div className="mt-5 bg-fondo">
         <CardHeader>
           <CardTitle>Busca el horario y el día que desees</CardTitle>
-          <TittleMedico id={params.id}/>
         </CardHeader>
         <CardContent>
           <div className="grid gap-6 md:grid-cols-2">
