@@ -1,4 +1,4 @@
-
+"use client"
 import cerrarSesion from "../lib/session";
 import {
     DropdownMenu,
@@ -9,21 +9,20 @@ import {
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import Link from "next/link";
-import { getUserNameByDNI } from "../lib/getUsuarioById";
-import { getDni } from "../app/lib/actions";
 
-export default async function UserOptionsButton() {
+export default function UserOptionsButton({ userName,rol }: { userName: string,rol:string }) {
 
     return (
         <DropdownMenu>
-        <DropdownMenuTrigger className="flex  items-center justify-center gap-2 rounded-md p-3 text-sm font-medium hover:bg-[#012623]">Mi Cuenta</DropdownMenuTrigger>
+        <DropdownMenuTrigger  className="flex text-center justify-center  gap-2 rounded-md md:p-3 lg:p-3 text-md lg:text-sm font-medium hover:bg-[#012623]">{userName}</DropdownMenuTrigger>
         <DropdownMenuContent>
-            <DropdownMenuLabel>Mi Cuenta</DropdownMenuLabel>
+            <DropdownMenuLabel className="text-center">{rol}</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem
-                onSelect={async () => {
-                    await cerrarSesion();
-                    window.location.reload();
+            <DropdownMenuItem 
+                onSelect={() => {
+                    cerrarSesion().then(() => {
+                        window.location.reload();
+                    });
                 }}
             >
                 Cerrar Sesion
