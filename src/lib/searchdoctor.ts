@@ -121,6 +121,131 @@ export async function getAmountDoctorsByQuery({
   }
 }
 
+interface SearchParamsAppoitment {
+  dni?: string;
+  apellido?: string;
+  especialidad?: string;
+  tipoDocumento?: TipoDocumentoEnum;
+  currentPage: number;
+}
+
+export async function findDoctorsAppointmentsByQuery({
+  dni,
+  apellido,
+  tipoDocumento,
+  especialidad,
+  currentPage,
+}: SearchParamsAppoitment) {
+  const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  try {
+    const medicos = await prisma.medico.findMany({
+      where: {
+        AND: [
+          apellido
+            ? {
+                usuario: {
+                  apellido: {
+                    contains: apellido,
+                    mode: 'insensitive',
+                  },
+                },
+              }
+            : {},
+          dni && tipoDocumento
+            ? {
+                usuario: {
+                  tipo_documento: tipoDocumento,
+                  numero_documento: {
+                    contains: dni,
+                    mode: 'insensitive',
+                  },
+                },
+              }
+            : {},
+          especialidad
+            ? {
+                especialidad_id: especialidad,
+              }
+            : {},
+        ],
+      },
+      include: {
+        usuario: true,
+      },
+      skip: offset,
+      take: ITEMS_PER_PAGE,
+    });
+    return medicos;
+  } catch (error) {
+    console.error("Error al buscar médicos:", error);
+    throw new Error("No se pudo buscar los médicos");
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export async function getAmountAppointment({
+  dni,
+  apellido,
+  tipoDocumento,
+  especialidad,
+  currentPage,
+}: SearchParamsAppoitment) {
+  try {
+    const count = await prisma.medico.count({
+      where: {
+        AND: [
+          apellido
+            ? {
+                usuario: {
+                  apellido: {
+                    contains: apellido,
+                    mode: 'insensitive',
+                  },
+                },
+              }
+            : {},
+          dni && tipoDocumento
+            ? {
+                usuario: {
+                  tipo_documento: tipoDocumento,
+                  numero_documento: {
+                    contains: dni,
+                    mode: 'insensitive',
+                  },
+                },
+              }
+            : {},
+          especialidad
+            ? {
+                especialidad_id: especialidad,
+              }
+            : {}, 
+        ],
+      },
+    });
+    const totalPages = Math.round(count / ITEMS_PER_PAGE);
+    return totalPages;
+  } catch (error) {
+    console.error("Error al buscar médicos:", error);
+    throw new Error("No se pudo buscar los médicos");
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export async function getEspecialidades() {
+  try {
+    const especialidades = await prisma.especialidad.findMany();
+    return especialidades;
+  } catch (error) {
+    console.error("Error al obtener las especialidades:", error);
+    throw new Error("No se pudo obtener las especialidades");
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
 export async function getEspecialidadById(especialidadId: string) {
   try {
     const especialidad = await prisma.especialidad.findUnique({
