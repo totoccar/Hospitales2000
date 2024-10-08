@@ -1,5 +1,6 @@
 
-import { Eye ,NotepadText  } from 'lucide-react';
+import { Button } from '@react-email/components';
+import { Eye ,NotepadText, SquareX, Trash, Trash2  } from 'lucide-react';
 import Link from 'next/link';
 
 export function ViewPatient({ id }: { id: string }) {
@@ -45,4 +46,13 @@ export function ViewMedicalRecord({ id, disabled }: { id: string; disabled?: boo
       <NotepadText className="w-5" />
     </Link>
   );
+}
+
+export function DeleteAppointment( {disabled} : {disabled?:boolean }){
+  return(
+    <Button className={`rounded-md border p-2 ${disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-red-100'}`}
+    >
+      <SquareX style={{ color: '#e85454', width: '32px', height: '32px' }} />
+    </Button>
+  )
 }
