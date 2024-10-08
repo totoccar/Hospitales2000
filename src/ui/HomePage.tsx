@@ -10,7 +10,7 @@ export default async function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
       <main className="flex-1">
-        <section className="w-full py-8 md:pt-20 lg:pt-24 xl:pt-34">
+        <section className="w-full py-8 md:pt-16 lg:pt-20 xl:pt-30">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center space-y-4 text-center">
               <div className="space-y-2">
@@ -26,20 +26,9 @@ export default async function HomePage() {
               </div>
 
             </div>
-            <div className="grid grid-cols-1 gap-2 mt-8 md:grid-cols-3 md:gap-4">
-              <Link href="/admin/create/patient" passHref>
-                <Button className="bg-primario w-full">Registrar Paciente</Button>
-              </Link>
-              <Link href="/admin/create/doctor" passHref>
-                <Button className="bg-primario w-full">Registrar Medico</Button>
-              </Link>
-              <Link href="/admin/create/secretary" passHref>
-                <Button className="bg-primario w-full">Registrar Secretaria</Button>
-              </Link>
-            </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32 rounded-xl bg-fondo2">
+        <section className="w-full py-12 md:py-24 lg:py-40 rounded-xl bg-fondo2">
           <div className="container px-4 md:px-6">
             <div className="grid gap-6 lg:grid-cols-3 lg:gap-12">
               <Card>

@@ -34,7 +34,7 @@ export async function getUserNameByDNI(numero_documento: string) {
       throw new Error('Usuario no encontrado');
     }
 
-    return usuario.nombre;  
+    return usuario.nombre + ' ' + usuario.apellido;  // Retorna el nombre completo del usuario
   } catch (error) {
     console.error('Error al obtener el usuario:', error);
     throw error;
