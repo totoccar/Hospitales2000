@@ -21,6 +21,7 @@ export function getPermission(pathname: string): string | null {
     '/password/change': 'common:access',
     '/search/patient': 'medsec:access',
     '/search/doctor': 'medsec:access',
+    '/appointment/view': 'paciente:access',
     '/search/secretary': 'admin:access',
     '/selectrole': 'common:access',
     '/403': 'common:access',
