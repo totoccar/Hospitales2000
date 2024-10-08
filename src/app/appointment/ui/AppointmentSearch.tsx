@@ -1,20 +1,20 @@
 'use client'
-
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { TipoDocumentoEnum } from '@prisma/client'
+import { Especialidad, TipoDocumentoEnum } from '@prisma/client'
 import { RadioGroup, RadioGroupItem } from '@/src/components/ui/radio-group'
 import { Label } from '@/src/components/ui/label'
 import { Input } from '@/src/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select'
 import { Button } from '@/src/components/ui/button'
-import { getEspecialidades } from '@/src/lib/searchdoctor'
+import { obtenerIniciales } from '@/src/lib/utils'
+import { RotateCcw } from 'lucide-react'
 
-export default function AppointmentSearch({especialidades}: {especialidades: string[]}) {
+export default function AppointmentSearch({especialidades}: {especialidades: Especialidad[]}) {
   const [searchType, setSearchType] = useState('dni')
   const [dni, setDni] = useState('')
   const [apellido, setApellido] = useState('')
-const [especialidad, setEspecialidad] = useState('')
+  const [especialidad, setEspecialidad] = useState('')
 
   const [tipoDocumento, setTipoDocumento] = useState<TipoDocumentoEnum>(TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD)
   const router = useRouter()
@@ -32,7 +32,7 @@ const [especialidad, setEspecialidad] = useState('')
       queryParams.append('especialidad', especialidad)
     }
 
-    router.push(`/search/doctor?${queryParams.toString()}`)
+    router.push(`/appointment/request?${queryParams.toString()}`)
   }
 
   return (
@@ -62,7 +62,7 @@ const [especialidad, setEspecialidad] = useState('')
           <Input
             id="apellido-input"
             placeholder="Apellido"
-            disabled={searchType === 'dni' || searchType === 'matricula'}
+            disabled={searchType === 'dni' || searchType === 'especialidad'}
             value={apellido}
             onChange={(e) => {
             const value = e.target.value;
@@ -72,43 +72,43 @@ const [especialidad, setEspecialidad] = useState('')
             }}
           />
           </div>
-          <div className="flex-1">
-          <Label htmlFor="matricula-input" className="sr-only">Especialidad</Label>
-          <Select disabled={searchType === 'apellido' || searchType === 'dni'} onValueChange={(value) => setEspecialidad(value as TipoDocumentoEnum)} defaultValue={TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD}>
-            <SelectTrigger id="document-type">
-            <SelectValue placeholder="Tipo de documento" />
+            <div className="flex-1">
+            <Label htmlFor="especialidad" className="sr-only">Especialidad</Label>
+            <Select disabled={searchType === 'apellido' || searchType === 'dni'} onValueChange={(value) => setEspecialidad(value)}>
+            <SelectTrigger id="esp</SelectTrigger>ecialidad">
+              <SelectValue placeholder="especialidad"></SelectValue>
             </SelectTrigger>
             <SelectContent>
-            {Object.values(especialidades).map((tipo) => (
-              <SelectItem key={tipo} value={tipo}>{tipo}</SelectItem>
-            ))}
+              {especialidades.map((especialidad) => (
+              <SelectItem key={especialidad.id} value={especialidad.id}>{especialidad.nombre}</SelectItem>))}
             </SelectContent>
-          </Select>
-          </div>
+            </Select>
+            </div>
+          
           <div className="flex-1">
           <Label htmlFor="dni-input" className="sr-only">DNI</Label>
           <Input
             id="dni-input"
             placeholder="DNI"
-            disabled={searchType === 'apellido' || searchType === 'matricula'}
+            disabled={searchType === 'apellido' || searchType === 'especialidad'}
             value={dni}
             onChange={(e) => {
-            const value = e.target.value;
-            if (/^\d{0,9}$/.test(value)) {
-              setDni(value);
-            }
-            }}
+              const value = e.target.value;
+              if (/^\d{0,9}$/.test(value)) {
+                setDni(value);
+              }
+              }}
           />
           </div>
           <div className="w-full md:w-48">
           <Label htmlFor="document-type" className="sr-only">Tipo de documento</Label>
-          <Select disabled={searchType === 'apellido' || searchType === 'matricula'} onValueChange={(value) => setTipoDocumento(value as TipoDocumentoEnum)} defaultValue={TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD}>
+          <Select disabled={searchType === 'apellido' || searchType === 'especialidad'} onValueChange={(value) => setTipoDocumento(value as TipoDocumentoEnum)} defaultValue={TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD}>
             <SelectTrigger id="document-type">
             <SelectValue placeholder="Tipo de documento" />
             </SelectTrigger>
             <SelectContent>
             {Object.values(TipoDocumentoEnum).map((tipo) => (
-              <SelectItem key={tipo} value={tipo}>{tipo}</SelectItem>
+              <SelectItem key={tipo} value={tipo}>{obtenerIniciales(tipo)}</SelectItem>
             ))}
             </SelectContent>
           </Select>
@@ -118,6 +118,17 @@ const [especialidad, setEspecialidad] = useState('')
         <Button type="submit" className='bg-primario md:w-20 w-48' size="icon">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-search"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
           <span className="sr-only">Buscar</span>
+        </Button>
+        <Button className='bg-primario md:w-20 w-48' 
+          onClick={() => {
+            setSearchType('dni');
+            setDni('');
+            setApellido('');
+            setEspecialidad('');
+            setTipoDocumento(TipoDocumentoEnum.DOCUMENTO_NACIONAL_IDENTIDAD);
+            router.push('/appointment/request');
+          }}>
+          <RotateCcw className="w-6 h-6" />
         </Button>
       </div>
       </form>
