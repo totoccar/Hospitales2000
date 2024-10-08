@@ -27,7 +27,7 @@ export function ViewDoctor({ id }: { id: string }) {
 export function RequestAppointment({ id }: { id: string }) {
   return (
     <Link
-      href={`/request/appointment/${id}`}
+      href={`/appointment/request/${id}`}
       className="flex rounded-md border p-2 w-20 items-center justify-center hover:bg-gray-100"
     >
       <CalendarPlus   className="w-10" />

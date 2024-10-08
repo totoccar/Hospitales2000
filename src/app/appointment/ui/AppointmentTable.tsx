@@ -82,7 +82,7 @@ export default async function AppointmentTable({
               <td className="whitespace-nowrap px-3 py-3">{getEspecialidadById(doctor.especialidad_id)}</td>
               <td className="whitespace-nowrap py-3 pr-3">
                 <div className="flex justify-center">
-                <RequestAppointment id={doctor.usuario.id} />
+                  <RequestAppointment id={doctor.usuario.id} />
                 </div>
               </td>
               </tr>
