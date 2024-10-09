@@ -1,5 +1,4 @@
-export default function viewCalendar() {
-
+export default function ViewCalendar() {
     return (
         <div>
             <h1>ViewCalendar</h1>
