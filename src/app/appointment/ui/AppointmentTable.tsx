@@ -1,6 +1,6 @@
 import { getEspecialidadById } from '@/src/lib/getMedicoById';
 import { findDoctorsAppointmentsByQuery, findDoctorsByQuery } from '@/src/lib/searchdoctor';
-import { RequestAppointment, ViewDoctor } from '@/src/ui/Buttons';
+import { RequestAppointment } from '@/src/ui/Buttons';
 import { TipoDocumentoEnum } from '@prisma/client';
 
 interface SearchParamsAppoitment {
@@ -46,8 +46,8 @@ export default async function AppointmentTable({
               </div>
               <p>{getEspecialidadById(doctor.especialidad_id)}</p>
             </div>
-            <div className="flex w-full">
-              <ViewDoctor id={doctor.usuario.id} />
+            <div className="">
+            <RequestAppointment id={doctor.usuario.id} />
             </div>
             </div>
           ))}
