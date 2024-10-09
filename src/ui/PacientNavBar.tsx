@@ -8,7 +8,7 @@ import UserOptionsButton from './UserOptionsButton';
 export default function NavBarPatient({ userName }: { userName: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const navItems = [
-    { name: 'Solicitar Cita', href: '', icon: Calendar },
+    { name: 'Solicitar Cita', href: '/appointment/request', icon: Calendar },
     { name: 'Ver citas', href: '', icon: Calendar },
   ];
 
