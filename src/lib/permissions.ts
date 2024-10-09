@@ -2,16 +2,20 @@
 export function getPermission(pathname: string): string | null {
 
   if (pathname.startsWith('/view/doctor')) {
-    return 'adsec:access'; 
+    return 'adsec:access';
   }
   if (pathname.startsWith('/view/secretary')) {
-    return 'adsec:access'; 
+    return 'adsec:access';
   }
   if (pathname.startsWith('/view/patient')) {
-    return 'medsec:access'; 
+    return 'medsec:access';
   }
   if (pathname.startsWith('/view/medicalrecord')) {
-    return 'medico:access'; 
+    return 'medico:access';
+  }
+
+  if (pathname.startsWith('/search/patient')) {
+    return 'medsec:access';
   }
 
   const routePermissions: Record<string, string> = {
@@ -23,10 +27,11 @@ export function getPermission(pathname: string): string | null {
     '/search/doctor': 'medsec:access',
     '/search/secretary': 'admin:access',
     '/selectrole': 'common:access',
+    '/appointment/calendar': 'medico:access',
     '/403': 'common:access',
   };
 
-  return routePermissions[pathname] || null;  
+  return routePermissions[pathname] || null;
 }
 
 

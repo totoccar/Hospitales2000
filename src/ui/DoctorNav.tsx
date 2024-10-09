@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { Menu, X, Hospital, Home, Search, PowerIcon, User2,Calendar,Clock } from 'lucide-react';
+import { Menu, X, Hospital, Home, Search, PowerIcon, User2, Calendar, Clock } from 'lucide-react';
 import Link from 'next/link';
 import UserOptionsButton from './UserOptionsButton';
 
@@ -10,17 +10,17 @@ export default function DoctorNav({ userName }: { userName: string }) {
   const navItems = [
     { name: 'Buscar Paciente', href: '/search/patient', icon: Search },
     { name: 'Buscar Medico', href: '/search/doctor', icon: Search },
-    {name : 'Establecer horario de atencion', href: '', icon: Clock},
-    {name : 'Ver calendario', href: '', icon: Calendar}
+    { name: 'Establecer horario de atencion', href: '', icon: Clock },
+    { name: 'Ver calendario', href: 'appointment/calendar', icon: Calendar }
   ];
 
   return (
     <nav className="bg-[#025951] text-[#F2F2F2] shadow-lg">
       <nav className='bg-secundario py-2'>
-       <Link href="/" className="flex justify-center items-center p-2 space-x-2">
-            <Hospital className="h-8 w-8 text-[#04D99D]" />
-            <span className="text-xl font-bold">Hospitales 2000</span>
-          </Link>
+        <Link href="/" className="flex justify-center items-center p-2 space-x-2">
+          <Hospital className="h-8 w-8 text-[#04D99D]" />
+          <span className="text-xl font-bold">Hospitales 2000</span>
+        </Link>
       </nav>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-center items-center w-full h-16">
@@ -31,7 +31,7 @@ export default function DoctorNav({ userName }: { userName: string }) {
                 {item.name}
               </NavLink>
             ))}
-            <UserOptionsButton rol="Medico" userName={userName}/>
+            <UserOptionsButton rol="Medico" userName={userName} />
           </div>
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -54,7 +54,7 @@ export default function DoctorNav({ userName }: { userName: string }) {
               </MobileNavLink>
             ))}
             <MobileNavLink href="/password/change" icon={PowerIcon}>
-            <UserOptionsButton rol="Medico" userName={userName}/>
+              <UserOptionsButton rol="Medico" userName={userName} />
             </MobileNavLink>
           </div>
         </div>
