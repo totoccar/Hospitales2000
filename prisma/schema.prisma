@@ -28,19 +28,20 @@ model Secretaria {
   usuario         Usuario   @relation(fields: [usuario_id], references: [id])
 }
 
-model Medico {
-  usuario_id       String            @id
-  tipo_matricula   TipoMatriculaEnum
-  numero_matricula String            @unique
-  numero_telefono  String
-  ubicacion_id     String            @unique
-  especialidad_id  String
-  descripcion      String?
-  duracion_cita    Int?
-  citas            Cita[]            @relation("MedicoCitas")
-  especialidad     Especialidad      @relation(fields: [especialidad_id], references: [id])
-  ubicacion        Ubicacion         @relation(fields: [ubicacion_id], references: [id])
-  usuario          Usuario           @relation(fields: [usuario_id], references: [id])
+  model Medico {
+    usuario_id       String              @id
+    tipo_matricula   TipoMatriculaEnum
+    numero_matricula String              @unique
+    numero_telefono  String
+    ubicacion_id     String              @unique
+    especialidad_id  String
+    descripcion      String?
+    especialidad     Especialidad        @relation(fields: [especialidad_id], references: [id])
+    ubicacion        Ubicacion           @relation(fields: [ubicacion_id], references: [id])
+    usuario          Usuario             @relation(fields: [usuario_id], references: [id])
+    citas            Cita[]              @relation("MedicoCitas")
+    duracion_cita    Int?
+    intervalos       IntervaloAtencion[] @relation("MedicoIntervalos")
 }
 
 model Paciente {
@@ -123,3 +124,21 @@ enum TipoMatriculaEnum {
   nacional
   provincial
 }
+
+
+    model IntervaloAtencion {
+        id          String   @id @default(uuid())
+        diaSemana   DiaSemanaEnum
+        horaInicio  DateTime
+        horaFin     DateTime
+        medico_id   String
+        medico      Medico?   @relation(fields: [medico_id], references: [usuario_id], name: "MedicoIntervalos")
+    }
+
+    enum DiaSemanaEnum {
+        LUNES
+        MARTES
+        MIERCOLES
+        JUEVES
+        VIERNES
+    }

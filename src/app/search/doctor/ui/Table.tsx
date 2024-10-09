@@ -1,7 +1,7 @@
 import { getEspecialidadById } from '@/src/lib/getMedicoById';
 import { findDoctorsByQuery } from '@/src/lib/searchdoctor';
 import { obtenerIniciales } from '@/src/lib/utils';
-import { ViewDoctor } from '@/src/ui/Buttons';
+import { SecretaryCalendar, ViewDoctor } from '@/src/ui/Buttons';
 import { TipoDocumentoEnum } from '@prisma/client';
 
 export default async function Table({
@@ -25,12 +25,11 @@ export default async function Table({
     currentPage,
   });
 
-
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
         <div className="rounded-lg bg-gray-50 p-2 md:pt-0">
-        <div className="md:hidden">
+          <div className="md:hidden">
             {doctors?.map((doctor) => (
               <div key={doctor.usuario.id} className="mb-2 w-full rounded-md bg-fondo p-4 border-b pb-4">
                 <div className="flex justify-between bg-fondo p-2 items-left">
@@ -45,6 +44,7 @@ export default async function Table({
                 </div>
                 <div className="flex w-full">
                   <ViewDoctor id={doctor.usuario.id} />
+                  <SecretaryCalendar id={doctor.usuario.id} />
                 </div>
               </div>
             ))}
@@ -58,39 +58,40 @@ export default async function Table({
                 <th scope="col" className="px-3 py-5 font-medium text-sm ">Numero de Matricula</th>
                 <th scope="col" className="px-3 py-5 font-medium text-sm ">Tipo De Documento</th>
                 <th scope="col" className="px-3 py-5 font-medium text-sm ">Numero de Documento</th>
-                <th scope="col" className="px-3 py-5 font-medium text-sm justify-center text-center ">Ver Datos Personales</th>
+                <th scope="col" className="px-3 py-5 font-medium text-sm justify-center text-center ">Acciones</th>
               </tr>
             </thead>
             <tbody className="bg-white">
-                {doctors?.length === 0 ? (
+              {doctors?.length === 0 ? (
                 <tr>
                   <td colSpan={6} className="text-center py-3">
-                  No hay doctores para mostrar con esos filtros
+                    No hay doctores para mostrar con esos filtros
                   </td>
                 </tr>
-                ) : (
+              ) : (
                 doctors?.map((doctor) => (
                   <tr
-                  key={doctor.usuario.id}
-                  className="w-full border-b py-3 text-md last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
+                    key={doctor.usuario.id}
+                    className="w-full border-b py-3 text-md last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
                   >
-                  <td className="whitespace-nowrap py-3 pl-6 pr-3">
-                    <div className="flex items-center gap-3">
-                    <p>{doctor.usuario.nombre}</p>
-                    </div>
-                  </td>
-                  <td className="whitespace-nowrap px-3 py-3">{doctor.usuario.apellido}</td>
-                  <td className="whitespace-nowrap px-3 py-3">{doctor.numero_matricula}</td>
-                  <td className="whitespace-nowrap px-3 py-3">{obtenerIniciales(doctor.usuario.tipo_documento)}</td>
-                  <td className="whitespace-nowrap px-3 py-3">{doctor.usuario.numero_documento}</td>
-                  <td className="whitespace-nowrap py-3 pr-3">
-                    <div className="flex justify-center">
-                    <ViewDoctor id={doctor.usuario.id} />
-                    </div>
-                  </td>
+                    <td className="whitespace-nowrap py-3 pl-6 pr-3">
+                      <div className="flex items-center gap-3">
+                        <p>{doctor.usuario.nombre}</p>
+                      </div>
+                    </td>
+                    <td className="whitespace-nowrap px-3 py-3">{doctor.usuario.apellido}</td>
+                    <td className="whitespace-nowrap px-3 py-3">{doctor.numero_matricula}</td>
+                    <td className="whitespace-nowrap px-3 py-3">{obtenerIniciales(doctor.usuario.tipo_documento)}</td>
+                    <td className="whitespace-nowrap px-3 py-3">{doctor.usuario.numero_documento}</td>
+                    <td className="whitespace-nowrap py-3 pr-3">
+                      <div className="flex justify-center gap-3">
+                        <ViewDoctor id={doctor.usuario.id} />
+                        <SecretaryCalendar id={doctor.usuario.id} />
+                      </div>
+                    </td>
                   </tr>
                 ))
-                )}
+              )}
             </tbody>
           </table>
         </div>
