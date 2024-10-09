@@ -67,7 +67,7 @@ export default function AppointmentBooking({
             <AppointmentCalendar />
 
 
-              <div className="w-full bg-white rounded-md m-3 p-3 ">
+              <div className="w-full bg-white rounded-lg shadow-sm m-3 p-3 ">
                 
               <Label className="mb-2 block text-center">Selecciona un horario</Label>
                 <Select value={timeSlot} required onValueChange={setTimeSlot}>
@@ -111,7 +111,7 @@ export default function AppointmentBooking({
             
             </div>
 
-            <div className=" bg-white rounded-md m-3 p-3">
+            <div className=" bg-white rounded-lg m-3 p-3 shadow-sm">
               <Label className="mb-2 block text-center">Descripción</Label>
               <textarea
                 id="description"
