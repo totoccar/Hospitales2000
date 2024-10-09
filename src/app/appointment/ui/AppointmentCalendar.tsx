@@ -19,8 +19,8 @@ export default function App() {
     isWeekend(date, locale)
 
   return (
-    <div className="w-full bg-fondo rounded-md my-1 py-2">
-      <div className="flex items-center justify-center">
+    <div className="md:mx-3 mx-auto bg-fondo rounded-md my-1 py-2 ">
+      <div className="flex justify-center ">
       <Calendar
         aria-label="Date (Unavailable)"
         isDateUnavailable={isDateUnavailable} 
