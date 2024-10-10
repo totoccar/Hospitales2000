@@ -90,6 +90,10 @@ export default function RequestAppointmentForm({
             <Label className="mb-2 block text-center">Selecciona un horario</Label>
             {loading ? (
               <div className="text-center">Cargando horarios...</div>
+            ) : intervalosPosibles.length === 0 ? (
+              <div className="text-center text-red-500">
+              El medico no establecio horarios de atencion para el dia seleccionado
+              </div>
             ) : (
               <select
               id="time"
@@ -102,15 +106,15 @@ export default function RequestAppointmentForm({
               }}
               >
               <option value="" disabled>
-                Selecciona un horario
+              Selecciona un horario
               </option>
               {intervalosPosibles.map((intervalo) => (
-                <option
-                key={intervalo.start.toISOString()}
-                value={intervalo.start.toISOString()}
-                >
-                {getUTCHoursAndMinutes(intervalo.start)}
-                </option>
+              <option
+              key={intervalo.start.toISOString()}
+              value={intervalo.start.toISOString()}
+              >
+              {getUTCHoursAndMinutes(intervalo.start)}
+              </option>
               ))}
               </select>
             )}
@@ -155,7 +159,7 @@ export default function RequestAppointmentForm({
             placeholder="Añadir una descripción o pequeña acalaración"
           />
         </div>
-        <Button type="submit" className="w-full bg-primario">
+        <Button type="submit" disabled={intervalosPosibles.length===0} className="w-full bg-primario">
           Solicitar cita
         </Button>
       </form>
