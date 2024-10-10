@@ -48,11 +48,12 @@ export function ViewMedicalRecord({ id, disabled }: { id: string; disabled?: boo
   );
 }
 
-export function DeleteAppointment( {disabled} : {disabled?:boolean }){
+export function DeleteAppointment( {id,disabled} : {id: string; disabled?:boolean }){
   return(
-    <Button className={`rounded-md border p-2 ${disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-red-100'}`}
+    <Link href={`/appointment/cancel/${id}`} 
+    className={`rounded-md border p-2 ${disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-red-100'}`}
     >
       <SquareX style={{ color: '#e85454', width: '32px', height: '32px' }} />
-    </Button>
+    </Link>
   )
 }

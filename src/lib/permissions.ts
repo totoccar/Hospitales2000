@@ -14,6 +14,10 @@ export function getPermission(pathname: string): string | null {
     return 'medico:access'; 
   }
 
+  if (pathname.startsWith('/appointment/cancel')) { 
+    return 'paciente:access';
+  }
+
   const routePermissions: Record<string, string> = {
     '/admin/create/doctor': 'admin:access',
     '/admin/create/patient': 'admin:access',

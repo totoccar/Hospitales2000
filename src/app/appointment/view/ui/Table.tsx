@@ -1,6 +1,5 @@
-"use client";
 import { getCitasById } from '@/src/lib/searchappointments';
-import { DeleteAppointment } from './DeleteAppointment';
+import { DeleteAppointment } from '@/src/ui/Buttons';
 
 export default async function Table({
   pacienteId,
@@ -29,7 +28,7 @@ export default async function Table({
                     <p className="text-gray-500">
                       {cita.nombre} {cita.apellido} ({cita.especialidad})
                     </p>
-                    <DeleteAppointment citaId={cita.id} /> {/* Pasar el id de la cita */}
+                    <DeleteAppointment id={cita.id}/> {/* Pasar el id de la cita */}
                   </div>
                 </div>
               </div>
@@ -71,7 +70,7 @@ export default async function Table({
 
                   {/* Acciones */}
                   <td className="py-3 px-3 text-center">
-                    <DeleteAppointment citaId={cita.id} /> {/* Pasar el id de la cita */}
+                    <DeleteAppointment id={cita.id}/> {/* Pasar el id de la cita */}
                   </td>
                 </tr>
               ))}
