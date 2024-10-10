@@ -17,4 +17,4 @@ export async function getTurnosByMedicoId(medicoId: string, fecha: Date | undefi
     });
 
     return citas;
-} s
+} 
