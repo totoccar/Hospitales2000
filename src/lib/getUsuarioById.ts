@@ -24,6 +24,28 @@ export async function getUsuarioById(usuarioId: string) {
   }
 }
 
+export async function getUsuarioMedicoById(usuarioId: string) {
+  try {
+    const usuario = await prisma.usuario.findUnique({
+      where: { id: usuarioId },
+      include: {
+        medico: true, 
+      },
+    });
+
+    if (!usuario?.medico) {
+      throw new Error('El usuario no es un medico o no existe.');
+    }
+
+    return usuario; 
+  } catch (error) {
+    console.error('Error al obtener el medico:', error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
 export async function getUsuarioByDNI(DNI: string) {
   try{
     const usuario = await prisma.usuario.findUnique({

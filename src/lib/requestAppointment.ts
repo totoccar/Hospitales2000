@@ -68,8 +68,8 @@ export async function createAppointment(
     console.error("Error al crear una cita:", error);
     throw error;
   }
-  revalidatePath("/search/doctor");
-  redirect("/search/doctor");
+  revalidatePath("appointment/request/[id]");
+  redirect(`/appointment/request/success/${medico_id}`);
 }
 
 export async function getDoctorIntervalsForIdAndDay(
