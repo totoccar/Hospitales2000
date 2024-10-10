@@ -1,5 +1,6 @@
+"use client";
 import { getCitasById } from '@/src/lib/searchappointments';
-import { DeleteAppointment, ViewDoctor } from '@/src/ui/Buttons';
+import { DeleteAppointment } from './DeleteAppointment';
 
 export default async function Table({
   pacienteId,
@@ -8,7 +9,9 @@ export default async function Table({
   pacienteId: string | null;
   currentPage: number;
 }) {
+  // Mantiene el componente como "async" para obtener los datos desde el servidor
   const citas = await getCitasById(pacienteId ?? "");
+
   return (
     <div className="mt-6 flow-root">
       <div className="inline-block min-w-full align-middle">
@@ -26,6 +29,7 @@ export default async function Table({
                     <p className="text-gray-500">
                       {cita.nombre} {cita.apellido} ({cita.especialidad})
                     </p>
+                    <DeleteAppointment citaId={cita.id} /> {/* Pasar el id de la cita */}
                   </div>
                 </div>
               </div>
@@ -43,42 +47,34 @@ export default async function Table({
               </tr>
             </thead>
             <tbody className="bg-white text-sm">
-              {citas?.length === 0 ? (
-                <tr>
-                  <td colSpan={4} className="text-center py-3">
-                    No hay citas para mostrar
+              {citas?.map((cita, index) => (
+                <tr
+                  key={index}
+                  className="w-full border-b border-gray-300 last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
+                >
+                  {/* Día */}
+                  <td className="whitespace-nowrap py-3 pl-4 pr-3 text-center">
+                    <div className="flex items-center justify-center">
+                      <p>{new Date(cita.fecha_hora).toLocaleDateString()}</p>
+                    </div>
+                  </td>
+
+                  {/* Horario */}
+                  <td className="whitespace-nowrap px-3 py-3 text-center">
+                    {new Date(cita.fecha_hora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </td>
+
+                  {/* Médico */}
+                  <td className="whitespace-nowrap px-3 py-3 text-center">
+                    {cita.nombre} {cita.apellido} <span className="text-gray-500">({cita.especialidad})</span>
+                  </td>
+
+                  {/* Acciones */}
+                  <td className="py-3 px-3 text-center">
+                    <DeleteAppointment citaId={cita.id} /> {/* Pasar el id de la cita */}
                   </td>
                 </tr>
-              ) : (
-                citas?.map((cita, index) => (
-                  <tr
-                    key={index}
-                    className="w-full border-b border-gray-300 last-of-type:border-none [&:first-child>td:first-child]:rounded-tl-lg [&:first-child>td:last-child]:rounded-tr-lg [&:last-child>td:first-child]:rounded-bl-lg [&:last-child>td:last-child]:rounded-br-lg"
-                  >
-                    {/* Día */}
-                    <td className="whitespace-nowrap py-3 pl-4 pr-3 text-center">
-                      <div className="flex items-center justify-center">
-                        <p>{new Date(cita.fecha_hora).toLocaleDateString()}</p>
-                      </div>
-                    </td>
-
-                    {/* Horario */}
-                    <td className="whitespace-nowrap px-3 py-3 text-center">
-                      {new Date(cita.fecha_hora).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                    </td>
-
-                    {/* Médico */}
-                    <td className="whitespace-nowrap px-3 py-3 text-center">
-                      {cita.nombre} {cita.apellido} <span className="text-gray-500">({cita.especialidad})</span>
-                    </td>
-
-                    {/* Acciones */}
-                    <td className="py-3 px-3 text-center">
-                        <DeleteAppointment />
-                    </td>
-                  </tr>
-                ))
-              )}
+              ))}
             </tbody>
           </table>
         </div>
