@@ -5,48 +5,58 @@ import { Label } from "@/src/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/src/components/ui/radio-group";
 import {
   AppointmentState,
+  computeAvailableTimeslots,
   createAppointment,
+  getAllAppointmentsByDoctorIDByDate,
+  getAppointmentDuration,
   getDoctorIntervalsForIdAndDay,
 } from "@/src/lib/requestAppointment";
 import { useFormState } from "react-dom";
 import { Calendar } from "@/components/ui/calendar";
-import { isWeekend } from "date-fns";
+import { isWeekend, set } from "date-fns";
 import { IntervaloAtencion } from "@prisma/client";
 import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
-import { getDni } from "../../lib/actions";
-import { getUsuarioById } from "@/src/lib/getMedicoById";
+import { getUTCHoursAndMinutes } from "@/src/lib/utils";
 
 interface RequestAppointmentFormProps {
-  doctor_id: string;
-  patient_id: string;
+  medico_id: string;
+  paciente_id: string;
+  duracion_cita?: number;
 }
 
 export default function RequestAppointmentForm({
-  doctor_id,
-  patient_id,
+  medico_id,
+  paciente_id,
+  duracion_cita,
 }: RequestAppointmentFormProps) {
   const initialState: AppointmentState = { message: null, errors: {} };
   const [state, formAction] = useFormState(createAppointment, initialState);
 
   const [date, setDate] = useState<Date | undefined>(new Date());
-  const [availableTimeSlots, setAvailableTimeSlots] = useState<IntervaloAtencion[]>([]);
   const [isFirstTime, setIsFirstTime] = useState<string | undefined>();
   const [selectedTime, setSelectedTime] = useState<string | undefined>();
   const [fecha_hora, setFecha_hora] = useState<string | null>(null);
+  const [intervalosPosibles, setIntervalosPosibles] = useState<{ start: Date; end: Date }[]>([]);
+
+  const [loading, setLoading] = useState(false);
 
   const fetchDoctorIntervals = async (date: Date) => {
+    setLoading(true);
     try {
-      const intervals = await getDoctorIntervalsForIdAndDay(doctor_id, date);
-      setAvailableTimeSlots(intervals);
+      console.log("FRAN RATA")
+      const intervalos = await computeAvailableTimeslots(medico_id, date, duracion_cita ?? 30);
+      setIntervalosPosibles(intervalos);
     } catch (error) {
       console.error("Error fetching doctor intervals:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const computeFechaHora = (selectedDate: Date | undefined, timeString: string | undefined) => {
     if (selectedDate && timeString) {
-      const time = new Date(timeString); 
-      const combinedDateTime = new Date(selectedDate); 
+      const time = new Date(timeString);
+      const combinedDateTime = new Date(selectedDate);
 
       combinedDateTime.setHours(time.getHours());
       combinedDateTime.setMinutes(time.getMinutes());
@@ -67,61 +77,79 @@ export default function RequestAppointmentForm({
             selected={date}
             onSelect={(selectedDate) => {
               setDate(selectedDate);
-              if (selectedDate) fetchDoctorIntervals(selectedDate);
-              computeFechaHora(selectedDate, selectedTime); 
+              if (selectedDate) 
+                fetchDoctorIntervals(selectedDate);
+                computeFechaHora(selectedDate, selectedTime);
             }}
             className="rounded-xl shadow border m-3 bg-white"
             disabled={(date) => isWeekend(date) || date < new Date()}
             required
           />
 
-          <div className="w-full rounded-xl shadow bg-white m-3 p-3">
+            <div className="w-full rounded-xl shadow bg-white m-3 p-3">
             <Label className="mb-2 block text-center">Selecciona un horario</Label>
-            <select
+            {loading ? (
+              <div className="text-center">Cargando horarios...</div>
+            ) : (
+              <select
               id="time"
-              name="Horario"
+              name="fecha_hora"
               className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+              value={selectedTime || ""}
               onChange={(e) => {
                 setSelectedTime(e.target.value); 
-                computeFechaHora(date, e.target.value); 
+                computeFechaHora(date, e.target.value);
               }}
-            >
-              <option value="" disabled selected>
+              >
+              <option value="" disabled>
                 Selecciona un horario
               </option>
-              {availableTimeSlots.map((slot) => (
-                <option key={slot.horaInicio.toISOString()} value={slot.horaInicio.toISOString()}>
-                  {slot.horaInicio.toLocaleTimeString("es-ES")}
+              {intervalosPosibles.map((intervalo) => (
+                <option
+                key={intervalo.start.toISOString()}
+                value={intervalo.start.toISOString()}
+                >
+                {getUTCHoursAndMinutes(intervalo.start)}
                 </option>
               ))}
-            </select>
+              </select>
+            )}
+
             <div className="mt-3 text-center items-center justify-center">
               <Label>¿Es la primera vez que se atiende?</Label>
               <RadioGroup value={isFirstTime} onValueChange={setIsFirstTime} required>
-                <div className="flex mt-4 items-center space-x-2">
-                  <RadioGroupItem value="yes" id="yes" />
-                  <Label htmlFor="yes">Sí</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="no" id="no" />
-                  <Label htmlFor="no">No</Label>
-                </div>
+              <div className="flex mt-4 items-center space-x-2">
+                <RadioGroupItem value="yes" id="yes" />
+                <Label htmlFor="yes">Sí</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <RadioGroupItem value="no" id="no" />
+                <Label htmlFor="no">No</Label>
+              </div>
               </RadioGroup>
             </div>
-          </div>
+            </div>
 
           <div className="bg-white text-center w-full rounded-xl shadow m-3 p-3 text-gray-500">
             <h1 className="text-xl ">Resumen de tu cita</h1>
             <p>Fecha: {date?.toLocaleDateString("es-ES")}</p>
-            <p>Hora: {selectedTime ? new Date(selectedTime).toLocaleTimeString("es-ES") : "No seleccionada"}</p>
-            <p>Fecha y Hora Completa: {fecha_hora ? new Date(fecha_hora).toLocaleString("es-ES") : "No seleccionada"}</p>
+            <p>
+              Hora:{" "}
+              {selectedTime && date ? selectedTime : "No seleccionada"}
+            </p>
+            <p>La duracion del turno es de: {duracion_cita} minutos</p>
+            
           </div>
         </div>
+
+        <input type="hidden" name="paciente_id" required value={paciente_id} />
+        <input type="hidden" name="medico_id" required value={medico_id} />
 
         <div className="w-full md:w-auto lg:w-auto bg-white m-3 p-3 rounded-xl shadow">
           <Label className="mb-2 block text-center">Descripción</Label>
           <textarea
             id="description"
+            name="description"  
             className="w-full p-2 border rounded-md resize-none"
             rows={4}
             placeholder="Añadir una descripción o pequeña acalaración"
