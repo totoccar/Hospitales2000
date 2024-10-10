@@ -44,18 +44,18 @@ function Calendar({
         ),
         day_range_end: "day-range-end",
         day_selected:
-          "bg-neutral-900 text-neutral-50 hover:bg-neutral-900 hover:text-neutral-50 focus:bg-neutral-900 focus:text-neutral-50 dark:bg-neutral-50 dark:text-neutral-900 dark:hover:bg-neutral-50 dark:hover:text-neutral-900 dark:focus:bg-neutral-50 dark:focus:text-neutral-900",
-        day_today: "bg-neutral-100 text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50",
+          "bg-primario text-neutral-50 hover:bg-acentos hover:text-neutral-50 focus:bg-neutral-900 focus:text-neutral-50 dark:bg-neutral-50 dark:text-neutral-900 dark:hover:bg-neutral-50 dark:hover:text-neutral-900 dark:focus:bg-neutral-50 dark:focus:text-neutral-900",
+        day_today: "bg-fondo text-neutral-900 dark:bg-neutral-800 dark:text-neutral-50",
         day_outside:
           "day-outside text-neutral-500 opacity-50 aria-selected:bg-neutral-100/50 aria-selected:text-neutral-500 aria-selected:opacity-30 dark:text-neutral-400 dark:aria-selected:bg-neutral-800/50 dark:aria-selected:text-neutral-400",
         day_disabled: "text-neutral-500 opacity-50 dark:text-neutral-400",
         day_range_middle:
-          "aria-selected:bg-neutral-100 aria-selected:text-neutral-900 dark:aria-selected:bg-neutral-800 dark:aria-selected:text-neutral-50",
+          "aria-selected:bg-neutral-100 aria-selected:text-neutral-900 dark:aria-selected:bg-primario dark:aria-selected:text-neutral-50",
         day_hidden: "invisible",
         ...classNames,
       }}
       components={{
-        IconLeft: ({ ...props }) => <ChevronLeft className="h-4 w-4" />,
+        IconLeft: ({ ...props }) => <ChevronLeft className=" h-4 w-4" />,
         IconRight: ({ ...props }) => <ChevronRight className="h-4 w-4" />,
       }}
       {...props}
