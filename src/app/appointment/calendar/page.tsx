@@ -1,9 +1,12 @@
-import ViewCalendar from "./ui/ViewCalendar";
+import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
+import MedicViewCalendar from "./ui/MedicViewCalendar";
 
 
 export default function calendarMedico() {
 
     return (
-        <ViewCalendar />
+        <MaxWidthWrapper>
+            <MedicViewCalendar />
+        </MaxWidthWrapper>
     );
 }

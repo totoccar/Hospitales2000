@@ -1,67 +1,82 @@
-"use client"
-
-import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
-import { getTurnosByMedicoId } from "@/src/lib/getMedicoById";
+"use client";
+import React, { useState, useEffect } from "react";
 import { Calendar } from "@/components/ui/calendar";
-import { useState } from "react";
+import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
+import { Button } from "@/src/components/ui/button";
+import { Label } from "@/src/components/ui/label";
 
-export default async  function SecCalendar({ params }: { params: { id: string } }) {
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(undefined);
+import { isWeekend } from "date-fns/isWeekend";
+import { getTurnosByMedicoId } from "@/src/lib/calendarActions";
+
+export default function SecCalendar({ params }: { params: { id: string } }) {
+  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const [turnos, setTurnos] = useState<any[]>([]);
-  const [loading, setLoading] = useState<boolean>(false); 
-  const [error, setError] = useState<string | null>(null); 
-  
-  // const handleDateSelect = async (date: Date) => {
-  //   setSelectedDate(date);
-  //   setLoading(true); 
-  //   setError(null); 
 
-  //   try {
-  //     const fetchedTurnos = await getTurnosByMedicoId(params.id, date);
-  //     setTurnos(fetchedTurnos);
-  //   } catch (err) {
-  //     setError("Error al cargar los turnos.");
-  //   } finally {
-  //     setLoading(false); 
-  //   }
-  // };
+  // Función para hacer el fetch de turnos del médico
+  const fetchDoctorTurns = async (selectedDate: Date | undefined) => {
+    if (!selectedDate) return; // Verifica que la fecha no sea undefined
+    setLoading(true);
 
-  
- 
-  // return (
-  //   <MaxWidthWrapper>
-  //   <div className="m-6 bg-fondo rounded-md p-6 mt-5">
-  //     <h2 className="text-xl font-bold mb-2">Selecciona el día y el horario que desees</h2>
-  //     <div className="md:flex flex-row gap-4">
-  //       <div className="flex-1">
-  //         <Calendar 
-  //           selected={selectedDate}
-  //           onSelect={handleDateSelect} 
-  //         />
-  //       </div>
-  //       <div className="flex-1">
-  //         {loading ? (
-  //           <p>Cargando turnos...</p>
-  //         ) : error ? (
-  //           <p className="text-red-500">{error}</p>
-  //         ) : turnos.length > 0 ? (
-  //           <ul>
-  //             {turnos.map((turno) => (
-  //               <li key={turno.id} className="p-2 bg-neutral-100 mb-2 rounded-md">
-  //                 <p><strong>Hora:</strong> {turno.hora}</p>
-  //                 <p><strong>Paciente:</strong> {turno.paciente}</p>
-  //               </li>
-  //             ))}
-  //           </ul>
-  //         ) : selectedDate ? (
-  //           <p>No hay turnos disponibles para este día.</p>
-  //         ) : (
-  //           <p>Selecciona un día para ver los turnos disponibles.</p>
-  //         )}
-  //       </div>
-  //     </div>
-  //   </div>
-  // </MaxWidthWrapper>
-);
-  
+    try {
+      console.log("Fetching turnos for medicoId:", params.id, " and date:", selectedDate);
+      const turnos = await getTurnosByMedicoId(params.id, selectedDate);
+      setTurnos(turnos); // Actualizar el estado de turnos
+      console.log("Turnos del médico obtenidos:", turnos);
+    } catch (error) {
+      console.error("Error al cargar los turnos:", error);
+      setError("Error al cargar los turnos.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
+  return (
+    <MaxWidthWrapper className="border-gray-500">
+      <h2 className="text-xl font-bold">Selecciona el día y el horario que desees</h2>
+      <h3 className="text-md">Puedes agregar una aclaración para tu médico</h3>
+
+      <div className="md:flex flex-row gap-4">
+        <Calendar
+          mode="single"
+          selected={date}
+          onSelect={(selectedDate) => {
+            setDate(selectedDate);
+            if (selectedDate) fetchDoctorTurns(selectedDate);
+          }}
+          className="rounded-xl shadow border m-3 bg-white"
+          disabled={(date) => isWeekend(date) || date < new Date()}
+          required
+        />
+
+        <div className="bg-white text-center w-full rounded-xl shadow m-3 p-3 text-gray-500">
+          <h1 className="text-xl">Resumen de tu cita</h1>
+          {turnos.length > 0 ? (
+            <div>
+              {turnos.map((turno, index) => (
+                <div key={index}>{`Turno ${index + 1}: ${JSON.stringify(turno)}`}</div>
+              ))}
+            </div>
+          ) : (
+            <p>No hay turnos disponibles.</p>
+          )}
+        </div>
+      </div>
+
+      <div className="w-full md:w-auto lg:w-auto bg-white m-3 p-3 rounded-xl shadow">
+        <Label className="mb-2 block text-center">Descripción</Label>
+        <textarea
+          id="description"
+          className="w-full p-2 border rounded-md resize-none"
+          rows={4}
+          placeholder="Añadir una descripción o pequeña aclaración"
+        />
+      </div>
+      <Button type="submit" className="w-full bg-primario">
+        Solicitar cita
+      </Button>
+    </MaxWidthWrapper>
+  );
 }

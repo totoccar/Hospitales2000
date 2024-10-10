@@ -1,4 +1,4 @@
-export default function ViewCalendar() {
+export default function MedicViewCalendar() {
     return (
         <div>
             <h1>ViewCalendar</h1>

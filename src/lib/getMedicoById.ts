@@ -60,4 +60,3 @@ export async function getUbicacionById(ubicacionId: string) {
   }
 }
 
-export async function getTurnosByMedicoId(usuarioId: string, fecha:Date) {}
