@@ -1,30 +1,34 @@
-"use client";
-import { deleteCitaById } from "@/src/lib/searchappointments";
-import { Button } from "@react-email/components";
-import { SquareX } from "lucide-react";
+// File: src/ui/Buttons.tsx
+'use client';
 
-export function DeleteAppointment({
-  citaId
-}: {
-  citaId: string;
-}) {
+import { deleteCitaById } from '@/src/lib/searchappointments';
+import { useState } from 'react';
+
+export function DeleteAppointment({ citaId, onDelete }: { citaId: string, onDelete: (id: string) => void }) {
+  const [isDeleting, setIsDeleting] = useState(false);
+
   const handleDelete = async () => {
+    setIsDeleting(true);
     try {
-      console.log("INTENTANDO ELIMINAR CITA");
-      await deleteCitaById(citaId); // Llama a la función de eliminación
-      // Refresca o actualiza el contenido según sea necesario
-      window.location.reload(); // Actualiza la página para reflejar los cambios
-    } catch (error) {
-      console.error("Error al eliminar la cita:", error);
+      const response = deleteCitaById(citaId);
+
+    if (!response) {
+      console.error('Error al eliminar la cita');
+    } else {
+      console.log('Cita eliminada exitosamente');
+    }
+    } finally {
+      setIsDeleting(false);
     }
   };
 
   return (
-    <Button
-      className="rounded-md border p-2 hover:bg-red-100"
-      onClick={handleDelete} // Llama a la función de eliminación al hacer clic
+    <button
+      onClick={handleDelete}
+      disabled={isDeleting}
+      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
     >
-      <SquareX style={{ color: "#e85454", width: "32px", height: "32px" }} />
-    </Button>
+      {isDeleting ? 'Eliminando...' : 'Eliminar'}
+    </button>
   );
 }

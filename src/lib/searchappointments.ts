@@ -73,21 +73,19 @@ export async function getIdByDni(dni: string): Promise<string | null> {
 
   export async function deleteCitaById(citaId: string) {
     try {
-      const deletedCita = await prisma.cita.delete({
-        where: {
-          id: citaId, // Identifica la cita a eliminar por su ID
-        },
-      });
-  
-      return {
-        message: 'Cita eliminada exitosamente',
-        deletedCita,
-      };
+        const deletedCita = await prisma.cita.delete({
+            where: { id: citaId },
+        });
+
+        return {
+            message: 'Cita eliminada exitosamente',
+            deletedCita,
+        };
     } catch (error) {
-      console.error('Error al eliminar cita:', error);
-      return {
-        message: 'Error al eliminar la cita',
-        error,
-      };
+        console.error('Error al eliminar cita:', error);
+        return {
+            message: 'Error al eliminar la cita',
+            error,
+        };
     }
-  }
+}
