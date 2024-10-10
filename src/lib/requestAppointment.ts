@@ -1,21 +1,22 @@
-import { hash } from "bcryptjs";
+"use server"
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
-import { date } from "zod";
 import prisma from "./db";
+import { DiaSemanaEnum } from "@prisma/client";
 
 export type AppointmentState = {
     errors?: {
-        date?: string[];
-        time?: string[];
-        isFirstTime?: boolean;
+        fecha_hora?: string[];
+        patient_id?: string[]; 
+        doctor_id?: string[];  
+        isFirstTime?: boolean[];
     };
     message?: string | null;
 };
 
 const AppointmentFormScheme = z.object({
-    fecha_hora: z.string(),
+    fecha_hora: z.string().datetime(),
     patient_id: z.string(),
     doctor_id: z.string(),
 });
@@ -24,21 +25,10 @@ const CreateAppointment = AppointmentFormScheme;
 
 export async function createAppointment(prevState: AppointmentState, formData: FormData) {
     const validatedFields = CreateAppointment.safeParse({
-        typeId: formData.get('tipo_documento'),
-        numberId: formData.get('numero_documento'),
-        regType: formData.get('tipo_matricula'),
-        regNumber: formData.get('numero_matricula'),
-        doctorName: formData.get('nombre'),
-        doctorLastName: formData.get('apellido'),
-        phoneNumber: formData.get('numero_telefono'),
-        city: formData.get('ciudad'),
-        streetName: formData.get('calle'),
-        streetNumber: formData.get('numero'),
-        postalCode: formData.get('codigo_postal'),
-        cityState: formData.get('provincia'),
-        email: formData.get('correo_electronico'),
-        specialty: formData.get('especialidad'),
-        description: formData.get('descripcion'),
+        fecha_hora: formData.get('fecha_hora') as string,
+        patient_id: formData.get('patient_id') as string,
+        doctor_id: formData.get('doctor_id') as string,
+        description: formData.get('descripcion') as string,
     });
 
     console.log(formData);
@@ -70,4 +60,38 @@ export async function createAppointment(prevState: AppointmentState, formData: F
     }
     revalidatePath('/search/doctor'); 
     redirect('/search/doctor'); 
+}
+
+export async function getDoctorIntervalsForIdAndDay(doctorId: string, date: Date) {
+
+    const doctor = await prisma.medico.findUnique({
+        where: { usuario_id: doctorId },
+        include: {
+            intervalos: {
+                where: {
+                    diaSemana: convertDayToDiaSemanaEnum(date.getDay()),
+                },
+            },
+        },
+    });
+
+    if (!doctor) {
+        return [];
+    }
+    return doctor.intervalos;
+}
+
+function convertDayToDiaSemanaEnum(day: number) {
+    switch (day) {
+        case 1:
+            return DiaSemanaEnum.LUNES;
+        case 2:
+            return DiaSemanaEnum.MARTES;
+        case 3:
+            return DiaSemanaEnum.MIERCOLES;
+        case 4:
+            return DiaSemanaEnum.JUEVES;
+        case 5:
+            return DiaSemanaEnum.VIERNES;
+    }
 }
