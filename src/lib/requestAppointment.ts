@@ -1,4 +1,4 @@
-"use server"
+"use server";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -6,92 +6,212 @@ import prisma from "./db";
 import { DiaSemanaEnum } from "@prisma/client";
 
 export type AppointmentState = {
-    errors?: {
-        fecha_hora?: string[];
-        patient_id?: string[]; 
-        doctor_id?: string[];  
-        isFirstTime?: boolean[];
-    };
-    message?: string | null;
+  errors?: {
+    fecha_hora?: string[];
+    paciente_id?: string[];
+    medico_id?: string[];
+    description?: string[];
+  };
+  message?: string | null;
 };
 
 const AppointmentFormScheme = z.object({
-    fecha_hora: z.string().datetime(),
-    patient_id: z.string(),
-    doctor_id: z.string(),
+  id: z.string(),
+  fecha_hora: z
+    .string()
+    .datetime({
+      message: "Fecha y hora inválida. Debe estar en formato ISO 8601.",
+    }),
+  paciente_id: z
+    .string()
+    .min(1, { message: "El ID del paciente es obligatorio." }),
+  medico_id: z.string().min(1, { message: "El ID del doctor es obligatorio." }),
+  description: z.string().optional(),
 });
 
-const CreateAppointment = AppointmentFormScheme;
+const CreateAppointment = AppointmentFormScheme.omit({ id: true });
 
-export async function createAppointment(prevState: AppointmentState, formData: FormData) {
-    const validatedFields = CreateAppointment.safeParse({
-        fecha_hora: formData.get('fecha_hora') as string,
-        patient_id: formData.get('patient_id') as string,
-        doctor_id: formData.get('doctor_id') as string,
-        description: formData.get('descripcion') as string,
-    });
+export async function createAppointment(
+  prevState: AppointmentState,
+  formData: FormData
+) {
+  const validatedFields = CreateAppointment.safeParse({
+    fecha_hora: formData.get("fecha_hora"),
+    paciente_id: formData.get("paciente_id"),
+    medico_id: formData.get("medico_id"),
+    description: formData.get("description"),
+  });
 
-    console.log(formData);
+  if (!validatedFields.success) {
+    console.log("error on validatedFields.");
+    console.log(validatedFields.error.flatten().fieldErrors);
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Campos incompletos. Error al crear una nueva cita medica.",
+    };
+  }
 
-    if (!validatedFields.success) {
-        console.log("error on validatedFields.");
-        return {
-            errors: validatedFields.error.flatten().fieldErrors,
-            message: 'Campos incompletos. Error al crear un doctor nuevo.',
-        };
-    }
+  const { fecha_hora, paciente_id, medico_id, description } =
+    validatedFields.data;
 
-    console.log('validatedFields: ', validatedFields);
-
-    const { fecha_hora,patient_id,doctor_id  } = validatedFields.data; 
-
-    try {
+  try {
     const newAppointment = await prisma.cita.create({
-        data: {
-            fecha_hora: fecha_hora,
-            paciente_id: patient_id,
-            medico_id: doctor_id,
-        },
+      data: {
+        fecha_hora: fecha_hora,
+        paciente_id: paciente_id,
+        medico_id: medico_id,
+        description: description,
+      },
     });
-        
-    } catch (error) {
-        console.error('Error al crear un doctor:', error);
-        throw error;
-    }
-    revalidatePath('/search/doctor'); 
-    redirect('/search/doctor'); 
+    console.log("Cita creada:", newAppointment);
+  } catch (error) {
+    console.error("Error al crear una cita:", error);
+    throw error;
+  }
+  revalidatePath("/search/doctor");
+  redirect("/search/doctor");
 }
 
-export async function getDoctorIntervalsForIdAndDay(doctorId: string, date: Date) {
-
-    const doctor = await prisma.medico.findUnique({
-        where: { usuario_id: doctorId },
-        include: {
-            intervalos: {
-                where: {
-                    diaSemana: convertDayToDiaSemanaEnum(date.getDay()),
-                },
-            },
+export async function getDoctorIntervalsForIdAndDay(
+  doctorId: string,
+  date: Date
+) {
+  const doctor = await prisma.medico.findUnique({
+    where: { usuario_id: doctorId },
+    include: {
+      intervalos: {
+        where: {
+          diaSemana: convertDayToDiaSemanaEnum(date.getDay()),
         },
-    });
+      },
+    },
+  });
 
-    if (!doctor) {
-        return [];
-    }
-    return doctor.intervalos;
+  if (!doctor) {
+    return [];
+  }
+  return doctor.intervalos;
 }
 
 function convertDayToDiaSemanaEnum(day: number) {
-    switch (day) {
-        case 1:
-            return DiaSemanaEnum.LUNES;
-        case 2:
-            return DiaSemanaEnum.MARTES;
-        case 3:
-            return DiaSemanaEnum.MIERCOLES;
-        case 4:
-            return DiaSemanaEnum.JUEVES;
-        case 5:
-            return DiaSemanaEnum.VIERNES;
-    }
+  switch (day) {
+    case 1:
+      return DiaSemanaEnum.LUNES;
+    case 2:
+      return DiaSemanaEnum.MARTES;
+    case 3:
+      return DiaSemanaEnum.MIERCOLES;
+    case 4:
+      return DiaSemanaEnum.JUEVES;
+    case 5:
+      return DiaSemanaEnum.VIERNES;
+  }
+}
+
+export async function getAppointmentDuration(doctorId: string) {
+  const doctor = await prisma.medico.findUnique({
+    where: { usuario_id: doctorId },
+  });
+
+  if (!doctor) {
+    return 0;
+  }
+  return doctor.duracion_cita;
+}
+
+export async function getAllAvalailableAppointmentsForDoctor(doctorId: string) {
+  const doctor = await prisma.medico.findUnique({
+    where: { usuario_id: doctorId },
+    include: {
+      citas: true,
+    },
+  });
+
+  if (!doctor) {
+    return [];
+  }
+
+  const duration = (await getAppointmentDuration(doctorId)) ?? 0;
+
+  const appointments = doctor.citas.map((cita) => {
+    const date = new Date(cita.fecha_hora);
+    const end = new Date(date.getTime() + (duration ?? 0) * 60000);
+    return { start: date, end };
+  });
+
+  return appointments;
+}
+
+export async function getAllAppointmentsByDoctorIDByDate(
+  doctorId: string,
+  date: Date
+) {
+  const adjustToLocalTime = (date: Date) => {
+    const timezoneOffset = date.getTimezoneOffset();
+    date.setMinutes(date.getMinutes() - timezoneOffset);
+    return date;
+  };
+
+  const startOfDay = new Date(date);
+  startOfDay.setHours(0, 0, 0, 0);
+  const adjustedStartOfDay = adjustToLocalTime(startOfDay);
+
+  const endOfDay = new Date(date);
+  endOfDay.setHours(23, 59, 59, 999);
+  const adjustedEndOfDay = adjustToLocalTime(endOfDay);
+
+
+  const doctor = await prisma.medico.findUnique({
+    where: { usuario_id: doctorId },
+    include: {
+      citas: {
+        where: {
+          fecha_hora: {
+            gte: adjustedStartOfDay,
+            lte: adjustedEndOfDay,
+          },
+        },
+      },
+    },
+  });
+
+  return doctor?.citas || []; 
+}
+
+export async function computeAvailableTimeslots(doctor_id: string, date: Date, duracion_cita: number) {
+    const intervals = await getDoctorIntervalsForIdAndDay(doctor_id, date);
+    intervals.forEach(interval => {
+        console.log("Interval:", interval);
+    });
+    
+    const appointments = await getAllAppointmentsByDoctorIDByDate(doctor_id, date);
+
+    const availableTimeslots: { start: Date; end: Date }[] = [];
+
+    intervals.forEach(interval => {
+        let start = new Date(date);
+        start.setHours(interval.horaInicio.getHours(), interval.horaInicio.getMinutes(), 0, 0);
+
+        let end = new Date(date);
+        end.setHours(interval.horaFin.getHours(), interval.horaFin.getMinutes(), 0, 0);
+
+        while (start < end) {
+            const slotEnd = new Date(start.getTime() + duracion_cita * 60000);
+
+            if (slotEnd > end) break;
+
+            const isOverlapping = appointments.some(appointment => {
+                const appointmentStart = new Date(appointment.fecha_hora);
+                const appointmentEnd = new Date(appointmentStart.getTime() + duracion_cita * 60000);
+                return (start >= appointmentStart && start < appointmentEnd) || (slotEnd > appointmentStart && slotEnd <= appointmentEnd);
+            });
+
+            if (!isOverlapping) {
+                availableTimeslots.push({ start: new Date(start), end: new Date(slotEnd) });
+            }
+
+            start = new Date(slotEnd);
+        }
+    });
+    return availableTimeslots;
 }

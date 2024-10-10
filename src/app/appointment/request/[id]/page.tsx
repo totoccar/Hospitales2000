@@ -1,15 +1,26 @@
 import { getDni } from "@/src/app/lib/actions";
 import RequestAppointmentForm from "../../ui/RequestAppointment-Form";
-import { getUsuarioById } from "@/src/lib/getMedicoById";
+import { getUsuarioByDNI } from "@/src/lib/getUsuarioById";
+import { getAppointmentDuration } from "@/src/lib/requestAppointment";
+
 
 export default async function AppointmentBooking({ params,}: {params: { id: string };}) {
   
   const user_dni = await getDni();
-  const user = await getUsuarioById(user_dni);
+  let user;
+  try{
+    user = await getUsuarioByDNI(user_dni);
+  }
+  catch (error){
+    console.error('Error al obtener el usuario:', error);
+    throw error;
+  }
+
+  const duracion_cita = (await getAppointmentDuration(params.id)) ?? undefined;
 
   return (
     <>
-      <RequestAppointmentForm doctor_id={params.id} patient_id={user.id}/>  
+      <RequestAppointmentForm medico_id={params.id} paciente_id={user.id} duracion_cita={duracion_cita}/>  
     </>
   );
 }
