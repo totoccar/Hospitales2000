@@ -1,5 +1,5 @@
 import { getCitasById } from '@/src/lib/searchappointments';
-import { DeleteAppointment } from '@/src/ui/Buttons';
+import DeleteAppointment from './DeleteAppointment';
 
 export default async function Table({
   pacienteId,
@@ -21,14 +21,15 @@ export default async function Table({
               <div key={index} className="mb-2 w-full rounded-md bg-fondo p-4 border-b pb-4">
                 <div className="flex justify-between bg-fondo p-2 items-left">
                   <div>
-                    <p>{new Date(cita.fecha_hora).toLocaleDateString()}</p>
-                    <p className="text-xl text-gray-500">{new Date(cita.fecha_hora).toLocaleTimeString()}</p>
+                    <p className="text-xl text-gray-500">Dia: {new Date(cita.fecha_hora).toLocaleDateString()}</p>
+                    <p className="text-xl text-gray-500">Hora: {new Date(cita.fecha_hora).toLocaleTimeString()}</p>
+                    <p className="text-xl text-gray-500">
+                      Medico: {cita.nombre} {cita.apellido} ({cita.especialidad})
+                    </p>
                   </div>
                   <div className="flex flex-col items-right">
-                    <p className="text-gray-500">
-                      {cita.nombre} {cita.apellido} ({cita.especialidad})
-                    </p>
-                    <DeleteAppointment id={cita.id}/> {/* Pasar el id de la cita */}
+                    
+                    <DeleteAppointment params={{ id: cita.id }}/>
                   </div>
                 </div>
               </div>
@@ -70,7 +71,7 @@ export default async function Table({
 
                   {/* Acciones */}
                   <td className="py-3 px-3 text-center">
-                    <DeleteAppointment id={cita.id}/> {/* Pasar el id de la cita */}
+                    <DeleteAppointment params={{ id: cita.id }}/>
                   </td>
                 </tr>
               ))}
