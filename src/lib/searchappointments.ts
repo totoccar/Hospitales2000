@@ -1,6 +1,8 @@
 import prisma from "./db";
 import { getEspecialidadById } from "./searchdoctor";
 
+
+const ITEMS_PER_PAGE = 6;
 export async function getIdByDni(dni: string): Promise<string | null> {
     try {
       const usuario = await prisma.usuario.findUnique({
@@ -88,4 +90,22 @@ export async function getIdByDni(dni: string): Promise<string | null> {
             error,
         };
     }
+}
+
+export async function getAmountCitasById(pacienteId: string) {
+  try {
+      const count = await prisma.cita.count({
+          where: {
+              paciente_id: pacienteId,
+          },
+      });
+      const totalPages = Math.round(count / ITEMS_PER_PAGE);
+      return totalPages;
+  } catch (error) {
+      console.error('Error al obtener la cantidad de citas:', error);
+      return {
+          message: 'Error al obtener la cantidad de citas',
+          error,
+      };
+  }
 }
