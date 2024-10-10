@@ -1,34 +1,37 @@
 // File: src/ui/Buttons.tsx
 'use client';
+import MaxWidthWrapper from '@/src/ui/MaxWidthWrapper';
+import { SquareX } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
-import { deleteCitaById } from '@/src/lib/searchappointments';
-import { useState } from 'react';
-
-export function DeleteAppointment({ citaId, onDelete }: { citaId: string, onDelete: (id: string) => void }) {
-  const [isDeleting, setIsDeleting] = useState(false);
-
+export default function CancelComponent({ params }: { params: { id: string } }) {
+  const router = useRouter();
   const handleDelete = async () => {
-    setIsDeleting(true);
-    try {
-      const response = deleteCitaById(citaId);
+      const confirmation = confirm('¿Estás seguro que deseas cancelar esta cita?');
+      if (!confirmation) return;
 
-    if (!response) {
-      console.error('Error al eliminar la cita');
-    } else {
-      console.log('Cita eliminada exitosamente');
-    }
-    } finally {
-      setIsDeleting(false);
-    }
+      try {
+          const response = await fetch(`/api/deleteCita?id=${params.id}`, {
+              method: 'DELETE',
+          });
+
+          if (!response.ok) {
+              const { message } = await response.json();
+              alert(`Error: ${message}`);
+              return;
+          }
+
+          alert('Cita eliminada exitosamente');
+          router.push('/'); 
+      } catch (error) {
+          console.error('Error al eliminar la cita:', error);
+          alert('Ocurrió un error al intentar eliminar la cita');
+      }
   };
 
   return (
-    <button
-      onClick={handleDelete}
-      disabled={isDeleting}
-      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-    >
-      {isDeleting ? 'Eliminando...' : 'Eliminar'}
-    </button>
-  );
+            <button onClick={handleDelete} className=" hover:bg-red-200 text-white font-bold py-2 px-4 rounded">
+                <SquareX style={{ color: '#e85454', width: '32px', height: '32px' }} />
+            </button>
+)
 }
