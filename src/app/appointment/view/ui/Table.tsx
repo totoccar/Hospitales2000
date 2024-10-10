@@ -3,10 +3,8 @@ import DeleteAppointment from './DeleteAppointment';
 
 export default async function Table({
   pacienteId,
-  currentPage,
 }: {
   pacienteId: string | null;
-  currentPage: number;
 }) {
   // Mantiene el componente como "async" para obtener los datos desde el servidor
   const citas = await getCitasById(pacienteId ?? "");
