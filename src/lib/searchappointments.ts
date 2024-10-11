@@ -24,7 +24,9 @@ export async function getIdByDni(dni: string): Promise<string | null> {
     }
   }
   
-  export async function getCitasById(pacienteId: string) {
+  export async function getCitasByIdPaginated(pacienteId: string, currentPage: number) {
+    const offset = (currentPage - 1) * ITEMS_PER_PAGE;
+  
     try {
       const citas = await prisma.cita.findMany({
         where: {
@@ -51,11 +53,13 @@ export async function getIdByDni(dni: string): Promise<string | null> {
             },
           },
         },
+        skip: offset,  // Desplazamiento según la página
+        take: ITEMS_PER_PAGE,  // Limitar el número de resultados por página
       });
   
       const citasConEspecialidad = await Promise.all(
         citas.map(async (cita) => {
-          const especialidad = await getEspecialidadById(cita.medico.especialidad_id); 
+          const especialidad = await getEspecialidadById(cita.medico.especialidad_id);
           return {
             id: cita.id,
             fecha_hora: cita.fecha_hora,

@@ -22,7 +22,7 @@ export default function CancelComponent({ params }: { params: { id: string } }) 
           }
 
           alert('Cita eliminada exitosamente');
-          router.push('/'); 
+          router.refresh();
       } catch (error) {
           console.error('Error al eliminar la cita:', error);
           alert('Ocurrió un error al intentar eliminar la cita');

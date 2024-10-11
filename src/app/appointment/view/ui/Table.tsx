@@ -1,13 +1,15 @@
-import { getCitasById } from '@/src/lib/searchappointments';
+import {getCitasByIdPaginated } from '@/src/lib/searchappointments';
 import DeleteAppointment from './DeleteAppointment';
 
 export default async function Table({
   pacienteId,
+  currentPage,
 }: {
   pacienteId: string | null;
+  currentPage: number;
 }) {
   // Mantiene el componente como "async" para obtener los datos desde el servidor
-  const citas = await getCitasById(pacienteId ?? "");
+  const citas = await getCitasByIdPaginated(pacienteId ?? "",currentPage);
 
   return (
     <div className="mt-6 flow-root">
