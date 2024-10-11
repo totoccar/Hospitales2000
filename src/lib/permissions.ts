@@ -24,7 +24,7 @@ export function getPermission(pathname: string): string | null {
     '/search/secretary': 'admin:access',
     '/selectrole': 'common:access',
     '/403': 'common:access',
-    '/appointment': 'medsec:access',
+    '/appointment/setschedule': 'medsec:access',
   };
 
   return routePermissions[pathname] || null;  

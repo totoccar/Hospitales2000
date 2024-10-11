@@ -10,7 +10,7 @@ export default function DoctorNav({ userName }: { userName: string }) {
   const navItems = [
     { name: 'Buscar Paciente', href: '/search/patient', icon: Search },
     { name: 'Buscar Medico', href: '/search/doctor', icon: Search },
-    {name : 'Establecer horario de atencion', href: '', icon: Clock},
+    {name : 'Establecer horario de atencion', href: '/appointment/setschedule', icon: Clock},
     {name : 'Ver calendario', href: '', icon: Calendar}
   ];
 
