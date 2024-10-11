@@ -8,13 +8,22 @@ export async function getTurnosByMedicoId(medicoId: string, fecha: Date | undefi
             medico_id: medicoId,
             fecha_hora: {
                 gte: new Date(fecha!.setHours(0, 0, 0, 0)),
-                lt: new Date(fecha!.setHours(23, 59, 59, 999))
+                lt: new Date(fecha!.setHours(23, 59, 59, 999)),
             },
         },
         include: {
-            paciente: true,
-        }
+            paciente: {
+                include: {
+                    usuario: {
+                        select: {
+                            nombre: true,
+                            apellido: true,
+                        },
+                    },
+                },
+            },
+        },
     });
 
     return citas;
-} 
+}

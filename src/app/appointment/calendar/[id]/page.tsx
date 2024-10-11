@@ -2,11 +2,12 @@
 import React, { useState, useEffect } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
-import { Button } from "@/src/components/ui/button";
-import { Label } from "@/src/components/ui/label";
-
 import { isWeekend } from "date-fns/isWeekend";
 import { getTurnosByMedicoId } from "@/src/lib/calendarActions";
+import { Button } from "@/src/components/ui/button";
+import Link from "next/link";
+import { CircleX, Pencil } from "lucide-react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 
 export default function SecCalendar({ params }: { params: { id: string } }) {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -32,14 +33,13 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
     }
   };
 
-
   return (
     <MaxWidthWrapper>
-      <div className="mt-10 bg-white text-center w-full rounded-xl shadow  border m-3 p-6">
-        <h2 className="text-xl font-bold mb-2">Seleccione el dia que quiera visualizar</h2>
-        <h3 className="text-md mb-4">Podra ver los turnos disponibles para el dia seleccionado</h3>
+      <div className="mt-10 bg-white text-center w-full rounded-xl shadow border m-3 p-6">
+        <h2 className="text-xl font-bold mb-2">Seleccione el día que quiera visualizar</h2>
+        <h3 className="text-md mb-4">Podrá ver los turnos disponibles para el día seleccionado</h3>
 
-        <div className="md:flex flex-row gap-4">
+        <div className="flex flex-col md:flex-row gap-4">
           <Calendar
             mode="single"
             selected={date}
@@ -47,34 +47,57 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
               setDate(selectedDate);
               if (selectedDate) fetchDoctorTurns(selectedDate);
             }}
-            className=" rounded-xl shadow border m-3 bg-white"
+            className="rounded-xl shadow border m-3 bg-white flex-1"
             disabled={(date) => isWeekend(date) || date < new Date()}
             required
           />
 
-          <div className="bg-white  text-center w-full rounded-xl shadow m-3 p-3 text-gray-500">
-            <h1 className="text-xl">Resumen de tu cita</h1>
-            {turnos.length > 0 ? (
-              <div>
-                {turnos.map((turno, index) => (
-                  <div key={index}>{`Turno ${index + 1}: ${JSON.stringify(turno)}`}</div>
-                ))}
-              </div>
+          <div className="bg-white text-center w-full rounded-xl shadow m-3 p-3 text-gray-500 flex-1">
+            <h1 className="text-xl m-2">Citas</h1>
+            {loading ? (
+              <p>Cargando turnos...</p>
             ) : (
-              <p>No hay turnos disponibles.</p>
+              <>
+                {turnos.length > 0 ? (
+                  <div className="space-y-4">
+                    {turnos.map((turno, index) => (
+                      <div key={index} className="p-4 border rounded-lg shadow-md bg-white flex justify-between items-center">
+                        <div>
+                          <h3 className="font-bold text-lg">{`Turno ${index + 1}`}</h3>
+                          <p className="text-gray-700">
+                            <strong>Fecha y Hora:</strong> {new Date(turno.fecha_hora).toLocaleString()}<br />
+                            <strong>Paciente:</strong> {turno.paciente?.usuario ? `${turno.paciente.usuario.nombre} ${turno.paciente.usuario.apellido}` : 'Desconocido'}<br />
+                          </p>
+                        </div>
+                        <div className="flex space-x-2">
+                          <Link
+                            href={'/'}
+                            className="rounded-md border p-2 hover:bg-gray-100"
+                          >
+                            <Pencil className="w-5" />
+                          </Link>
+                          <Link
+                            href={'/'}
+                            className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400"
+                          >
+                            <CircleX className="w-5" />
+                          </Link>
+
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-center text-gray-500">No hay turnos disponibles.</p>
+                )}
+
+              </>
             )}
+            {error && <p className="text-red-500">{error}</p>}
           </div>
         </div>
 
-        <div className="w-full md:w-auto lg:w-auto bg-white m-3 p-3 rounded-xl shadow">
-          <Label className="mb-2 block text-center">Descripción</Label>
-          <textarea
-            id="description"
-            className="w-full p-2 border rounded-md resize-none"
-            rows={4}
-            placeholder="Añadir una descripción o pequeña aclaración"
-          />
-        </div>
+
       </div>
     </MaxWidthWrapper>
   );
