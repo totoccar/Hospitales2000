@@ -68,11 +68,16 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
                 if (selectedDate) fetchDoctorTurns(selectedDate);
               }}
               className="rounded-xl shadow border bg-white"
-              disabled={(date) =>
-                isWeekend(date) ||
-                date < new Date() ||
-                !availableDates.some(d => d.toDateString() === date.toDateString()) // Comparar las fechas como Date sin convertir a otro formato
-              }
+              disabled={(date) => {
+                const currentDate = new Date(); // Fecha actual
+                const normalizedDate = new Date(date.toISOString().split('T')[0]); // Normalizar la fecha a UTC sin la hora
+
+                return (
+                  isWeekend(normalizedDate) ||
+                  normalizedDate < new Date(currentDate.toISOString().split('T')[0]) || // Comparar fechas normalizadas a UTC
+                  !availableDates.some(d => new Date(d.toISOString().split('T')[0]).getTime() === normalizedDate.getTime())
+                );
+              }}
               required
             />
           </div>
