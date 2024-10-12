@@ -71,7 +71,7 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
               disabled={(date) =>
                 isWeekend(date) ||
                 date < new Date() ||
-                !availableDates.some((d) => d.toDateString() === date.toDateString()) // Solo habilitar fechas disponibles
+                !availableDates.some(d => d.toDateString() === date.toDateString()) // Comparar las fechas como Date sin convertir a otro formato
               }
               required
             />
