@@ -2,20 +2,36 @@
 import React, { useState, useEffect } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
-import { isWeekend } from "date-fns/isWeekend";
-import { getTurnosByMedicoId } from "@/src/lib/calendarActions";
-import { Button } from "@/src/components/ui/button";
+import { getFechasTurnosByMedicoId, getTurnosByMedicoId } from "@/src/lib/calendarActions";
 import Link from "next/link";
 import { CircleX, Pencil } from "lucide-react";
-import { XMarkIcon } from "@heroicons/react/24/outline";
+import { isWeekend } from "date-fns/isWeekend";
 
 export default function SecCalendar({ params }: { params: { id: string } }) {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [turnos, setTurnos] = useState<any[]>([]);
+  const [availableDates, setAvailableDates] = useState<Date[]>([]);
 
-  // Función para hacer el fetch de turnos del médico
+  useEffect(() => {
+    const fetchDoctorTurns = async () => {
+      setLoading(true);
+      try {
+        console.log("Fetching fechas for medicoId:", params.id);
+        const turnos = await getFechasTurnosByMedicoId(params.id);
+        setAvailableDates(turnos); // Establecer fechas disponibles
+      } catch (error) {
+        console.error("Error al cargar las fechas:", error);
+        setError("Error al cargar las fechas.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDoctorTurns();
+  }, [params.id]);
+
   const fetchDoctorTurns = async (selectedDate: Date | undefined) => {
     if (!selectedDate) return; // Verifica que la fecha no sea undefined
     setLoading(true);
@@ -49,7 +65,11 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
                 if (selectedDate) fetchDoctorTurns(selectedDate);
               }}
               className="rounded-xl shadow border bg-white"
-              disabled={(date) => isWeekend(date) || date < new Date()}
+              disabled={(date) =>
+                isWeekend(date) ||
+                date < new Date() ||
+                !availableDates.some((d) => d.toDateString() === date.toDateString()) // Solo habilitar fechas disponibles
+              }
               required
             />
           </div>
@@ -90,8 +110,6 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
             {error && <p className="text-red-500">{error}</p>}
           </div>
         </div>
-
-
       </div>
     </MaxWidthWrapper>
   );
