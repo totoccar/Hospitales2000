@@ -34,18 +34,21 @@ export async function getTurnosByMedicoId(medicoId: string, fecha: Date | undefi
 }
 
 export async function getFechasTurnosByMedicoId(medicoId: string) {
-    // Obtener todas las citas del médico
     const citas = await prisma.cita.findMany({
         where: {
             medico_id: medicoId,
         },
         select: {
-            fecha_hora: true, // Solo seleccionamos la fecha y hora
+            fecha_hora: true, // Esto retorna un array de objetos con la propiedad fecha_hora
         },
     });
 
-    // Extraer las fechas únicas
-    const fechasUnicas = Array.from(new Set(citas.map(cita => new Date(cita.fecha_hora).toDateString())));
+    // Extraer fechas únicas sin convertir a ISO
+    const fechasDisponibles = Array.from(
+        new Set(citas.map(cita => new Date(cita.fecha_hora).toDateString())) // Asegúrate de que cita.fecha_hora sea un Date
+    ).map(fecha => new Date(fecha)); // Convertir de nuevo a Date
 
-    return fechasUnicas.map(fecha => new Date(fecha)); // Convertir las fechas de vuelta a objetos Date
+    return fechasDisponibles;
 }
+
+
