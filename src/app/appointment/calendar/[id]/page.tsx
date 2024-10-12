@@ -20,6 +20,8 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
       try {
         console.log("Fetching fechas for medicoId:", params.id);
         const turnos = await getFechasTurnosByMedicoId(params.id);
+
+        // Aquí turnos ya es un array de objetos Date
         setAvailableDates(turnos); // Establecer fechas disponibles
       } catch (error) {
         console.error("Error al cargar las fechas:", error);
@@ -31,6 +33,7 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
 
     fetchDoctorTurns();
   }, [params.id]);
+
 
   const fetchDoctorTurns = async (selectedDate: Date | undefined) => {
     if (!selectedDate) return; // Verifica que la fecha no sea undefined
