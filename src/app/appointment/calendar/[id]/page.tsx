@@ -40,26 +40,27 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
         <h3 className="text-md mb-4">Podrá ver los turnos disponibles para el día seleccionado</h3>
 
         <div className="flex flex-col md:flex-row gap-4">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={(selectedDate) => {
-              setDate(selectedDate);
-              if (selectedDate) fetchDoctorTurns(selectedDate);
-            }}
-            className="rounded-xl shadow border m-3 bg-white flex-1"
-            disabled={(date) => isWeekend(date) || date < new Date()}
-            required
-          />
-
+          <div>
+            <Calendar
+              mode="single"
+              selected={date}
+              onSelect={(selectedDate) => {
+                setDate(selectedDate);
+                if (selectedDate) fetchDoctorTurns(selectedDate);
+              }}
+              className="rounded-xl shadow border bg-white"
+              disabled={(date) => isWeekend(date) || date < new Date()}
+              required
+            />
+          </div>
           <div className="bg-white text-center w-full rounded-xl shadow m-3 p-3 text-gray-500 flex-1">
-            <h1 className="text-xl m-2">Citas</h1>
+            <h1 className="text-xl m-2 font-bold">Citas</h1>
             {loading ? (
               <p>Cargando turnos...</p>
             ) : (
               <>
                 {turnos.length > 0 ? (
-                  <div className="space-y-4">
+                  <div className="space-y-4 overflow-auto max-h-[400px]">
                     {turnos.map((turno, index) => (
                       <div key={index} className="p-4 border rounded-lg shadow-md bg-white flex justify-between items-center">
                         <div>
@@ -67,22 +68,16 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
                           <p className="text-gray-700">
                             <strong>Fecha y Hora:</strong> {new Date(turno.fecha_hora).toLocaleString()}<br />
                             <strong>Paciente:</strong> {turno.paciente?.usuario ? `${turno.paciente.usuario.nombre} ${turno.paciente.usuario.apellido}` : 'Desconocido'}<br />
+                            <strong>Obra Social:</strong> {turno.paciente?.obra_social.nombre ? `${turno.paciente.obra_social.nombre}` : 'Desconocido'}<br />
                           </p>
                         </div>
                         <div className="flex space-x-2">
-                          <Link
-                            href={'/'}
-                            className="rounded-md border p-2 hover:bg-gray-100"
-                          >
+                          <Link href={'/'} className="rounded-md border p-2 hover:bg-gray-100">
                             <Pencil className="w-5" />
                           </Link>
-                          <Link
-                            href={'/'}
-                            className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400"
-                          >
+                          <Link href={'/'} className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400">
                             <CircleX className="w-5" />
                           </Link>
-
                         </div>
                       </div>
                     ))}
@@ -90,7 +85,6 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
                 ) : (
                   <p className="text-center text-gray-500">No hay turnos disponibles.</p>
                 )}
-
               </>
             )}
             {error && <p className="text-red-500">{error}</p>}

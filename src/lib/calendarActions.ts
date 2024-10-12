@@ -20,6 +20,11 @@ export async function getTurnosByMedicoId(medicoId: string, fecha: Date | undefi
                             apellido: true,
                         },
                     },
+                    obra_social: {
+                        select: {
+                            nombre: true,
+                        },
+                    },
                 },
             },
         },
