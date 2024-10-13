@@ -27,7 +27,7 @@ export async function deletePatient(id: string) {
             where: {paciente_id: user?.paciente?.usuario_id}
         });
         await prisma.fichaMedica.delete({
-            where: { id: user?.paciente?.ficha_medica_id },
+            where: {id: user?.paciente?.ficha_medica_id},
         });
         await prisma.ubicacion.delete({
             where: {id: user?.paciente?.ubicacion.id}
@@ -66,6 +66,8 @@ export async function deleteDoctor(id: string) {
             },
         });
 
+        console.log(id);
+        console.log(user);
         //Delete all related fields.
         await prisma.ubicacion.delete({
             where: {id: user?.medico?.ubicacion.id}
@@ -77,6 +79,7 @@ export async function deleteDoctor(id: string) {
             where: {medico_id: user?.medico?.usuario_id}
         });
     } catch(error) {
+        console.log(error);
         return {
             message: 'Database Error: Failed to Delete Doctor.',
         }
@@ -99,11 +102,15 @@ export async function deleteSecretary(id: string) {
                 },
             },
         });
+
+        console.log(id);
+        console.log(user);
         //Delete all related fields.
         await prisma.ubicacion.delete({
             where: {id: user?.secretaria?.ubicacion.id}
         });
     } catch(error) {
+        console.log(error);
         return {
             message: 'Database Error: Failed to Delete Secretary.',
         }
