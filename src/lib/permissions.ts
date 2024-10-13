@@ -28,7 +28,7 @@ export function getPermission(pathname: string): string | null {
 
   const routePermissions: Record<string, string> = {
     '/admin/create/doctor': 'admin:access',
-    '/admin/create/patient': 'admin:access',
+    '/admin/create/patient': 'adsec:access',
     '/admin/create/secretary': 'admin:access',
     '/password/change': 'common:access',
     '/search/patient': 'medsec:access',
@@ -37,12 +37,12 @@ export function getPermission(pathname: string): string | null {
     '/selectrole': 'common:access',
     '/appointment/calendar': 'medico:access',
     '/403': 'common:access',
+    '/appointment/setschedule': 'medsec:access',
     '/appointment/request': 'paciente:access',
     '/appointment/search': 'common:access',
     '/appointment/view': 'common:access',
     '/appointment/view/doctor': 'common:access',
     '/appointment/view/patient': 'common:access',
-
   };
 
   return routePermissions[pathname] || null;
