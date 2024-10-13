@@ -100,8 +100,8 @@ export default function MedCalendar() {
                 {turnos.length > 0 ? (
                   <div className="space-y-4 overflow-auto max-h-[400px]">
                     {turnos.map((turno, index) => (
-                      <div key={index} className="p-4 border rounded-lg shadow-md bg-white flex justify-between items-center">
-                        <div>
+                      <div key={index} className="p-4 border rounded-lg shadow-md bg-white flex flex-col justify-center items-center">
+                        <div className="text-center">
                           <h3 className="font-bold text-lg">{`Turno ${index + 1}`}</h3>
                           <p className="text-gray-700">
                             <strong>Fecha y Hora:</strong> {new Date(turno.fecha_hora).toLocaleString()}<br />
@@ -109,8 +109,8 @@ export default function MedCalendar() {
                             <strong>Obra Social:</strong> {turno.paciente?.obra_social.nombre ? `${turno.paciente.obra_social.nombre}` : "Desconocido"}<br />
                           </p>
                         </div>
-
                       </div>
+
                     ))}
                   </div>
                 ) : (
