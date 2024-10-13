@@ -26,14 +26,14 @@ export async function deletePatient(id: string) {
         await prisma.cita.deleteMany({
             where: {paciente_id: user?.paciente?.usuario_id}
         });
+        await prisma.paciente.delete({
+            where: {usuario_id: user?.paciente?.usuario_id}
+        });
         await prisma.fichaMedica.delete({
             where: {id: user?.paciente?.ficha_medica_id},
         });
         await prisma.ubicacion.delete({
             where: {id: user?.paciente?.ubicacion.id}
-        });
-        await prisma.paciente.delete({
-            where: {usuario_id: user?.paciente?.usuario_id}
         });
         await prisma.usuario.delete({
             where: {id: id},
@@ -47,7 +47,7 @@ export async function deletePatient(id: string) {
     }
 
     revalidatePath('/search/patient');
-    redirect('search/patient');
+    redirect('/search/patient');
 }
 
 export async function deleteDoctor(id: string) {
@@ -69,14 +69,20 @@ export async function deleteDoctor(id: string) {
         console.log(id);
         console.log(user);
         //Delete all related fields.
-        await prisma.ubicacion.delete({
-            where: {id: user?.medico?.ubicacion.id}
-        });
         await prisma.cita.deleteMany({
             where: {medico_id: user?.medico?.usuario_id}
         });
+        await prisma.medico.delete({
+            where: {usuario_id: user?.medico?.usuario_id}
+        });
+        await prisma.ubicacion.delete({
+            where: {id: user?.medico?.ubicacion.id}
+        });
         await prisma.intervaloAtencion.deleteMany({
             where: {medico_id: user?.medico?.usuario_id}
+        });
+        await prisma.usuario.delete({
+            where: {id: id},
         });
     } catch(error) {
         console.log(error);
@@ -86,7 +92,7 @@ export async function deleteDoctor(id: string) {
     }
 
     revalidatePath('/search/doctor');
-    redirect('search/doctor');
+    redirect('/search/doctor');
 }
 
 export async function deleteSecretary(id: string) {
@@ -106,8 +112,14 @@ export async function deleteSecretary(id: string) {
         console.log(id);
         console.log(user);
         //Delete all related fields.
+        await prisma.secretaria.delete({
+            where: {usuario_id: user?.secretaria?.usuario_id}
+        })
         await prisma.ubicacion.delete({
             where: {id: user?.secretaria?.ubicacion.id}
+        });
+        await prisma.usuario.delete({
+            where: {id: id},
         });
     } catch(error) {
         console.log(error);
@@ -117,5 +129,5 @@ export async function deleteSecretary(id: string) {
     }
 
     revalidatePath('/search/secretary');
-    redirect('search/secretary');
+    redirect('/search/secretary');
 }

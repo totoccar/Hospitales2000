@@ -1,6 +1,6 @@
 import { Button } from "@/src/components/ui/button";
 import { getUbicacionById, getUsuarioById } from "@/src/lib/getSecretariaById";
-
+import ClientButtons from "@/src/components/temp/deleteSecretaryButton";
 
 export default async function Component({ params }: { params: { id: string } }) {
 
@@ -37,8 +37,7 @@ export default async function Component({ params }: { params: { id: string } }) 
         <DisplayField label="Correo electrónico" value={usuario.correo_electronico} />
       </div>
       <div className="flex justify-end space-x-4 mt-6">
-        <Button disabled={true} variant="outline">Editar</Button>
-        <Button disabled={true} variant="destructive">Eliminar</Button>
+        <ClientButtons id={id} />
       </div>
       <p className="text-sm text-gray-500 mt-4">Solo disponible para rol de administrador</p>
     </div>
