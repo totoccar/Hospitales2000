@@ -1,11 +1,12 @@
 import { Button } from "@/src/components/ui/button";
-import { getUbicacionById, getUsuarioById } from "@/src/lib/getSecretariaById";
-
+import { getUbicacionById, getUsuarioById,  getUsuarioConRolesById } from "@/src/lib/getSecretariaById";
+import Link from "next/link";
 
 export default async function Component({ params }: { params: { id: string } }) {
 
   const id = params.id as string;
   const usuario = await getUsuarioById(id);
+  const usuarioAdmi = await getUsuarioConRolesById(id); 
   let ubicacionUsuario = null;
   if (usuario.secretaria) {
     ubicacionUsuario = await getUbicacionById(usuario.secretaria.ubicacion_id);
@@ -37,10 +38,14 @@ export default async function Component({ params }: { params: { id: string } }) 
         <DisplayField label="Correo electrónico" value={usuario.correo_electronico} />
       </div>
       <div className="flex justify-end space-x-4 mt-6">
-        <Button disabled={true} variant="outline">Editar</Button>
+        {usuarioAdmi && (  // Verifica si el usuario tiene el rol de secretaria
+          <Link href={`/view/patient/${id}/editPatient`}>
+            <Button variant="outline">Editar</Button>
+          </Link>
+        )}
         <Button disabled={true} variant="destructive">Eliminar</Button>
       </div>
-      <p className="text-sm text-gray-500 mt-4">Solo disponible para rol de administrador</p>
+      <p className="text-sm text-gray-500 mt-4">Solo disponible para rol de secretaria</p>
     </div>
   );
 }
