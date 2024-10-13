@@ -1,6 +1,6 @@
 import { Button } from "@/src/components/ui/button";
 import { getObraSocialById, getUbicacionById, getUsuarioById } from "@/src/lib/getUsuarioById";
-
+import ClientButtons from "@/src/components/temp/deletePatientButton";
 
 export default async function Component({ params }: { params: { id: string } }) {
   const id = params.id as string;
@@ -41,8 +41,7 @@ export default async function Component({ params }: { params: { id: string } }) 
         
       </div>
       <div className="flex justify-end space-x-4 mt-6">
-        <Button disabled={true} variant="outline">Editar</Button>
-        <Button disabled={true} variant="destructive">Eliminar</Button>
+        <ClientButtons id={id} />
       </div>
       <p className="text-sm text-gray-500 mt-4">Solo disponible para rol de secretaria</p>
     </div>
