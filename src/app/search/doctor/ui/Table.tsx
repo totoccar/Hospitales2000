@@ -1,7 +1,7 @@
 import { getEspecialidadById } from '@/src/lib/getMedicoById';
 import { findDoctorsByQuery } from '@/src/lib/searchdoctor';
 import { obtenerIniciales } from '@/src/lib/utils';
-import { SecretaryCalendar, ViewDoctor } from '@/src/ui/Buttons';
+import { SecretaryCalendar, ViewDoctor, ViewSchedule } from '@/src/ui/Buttons';
 import { TipoDocumentoEnum } from '@prisma/client';
 
 export default async function Table({
@@ -45,6 +45,7 @@ export default async function Table({
                 <div className="flex w-full">
                   <ViewDoctor id={doctor.usuario.id} />
                   <SecretaryCalendar id={doctor.usuario.id} />
+                  <ViewSchedule id={doctor.usuario.id} />
                 </div>
               </div>
             ))}
@@ -87,6 +88,7 @@ export default async function Table({
                       <div className="flex justify-center gap-3">
                         <ViewDoctor id={doctor.usuario.id} />
                         <SecretaryCalendar id={doctor.usuario.id} />
+                        <ViewSchedule id={doctor.usuario.id} />
                       </div>
                     </td>
                   </tr>

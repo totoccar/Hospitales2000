@@ -19,8 +19,16 @@ interface HorariosDia {
   [key: string]: Intervalo[];
 }
 
-export default function MedicalScheduler({ userRole }: { userRole: string }) {
-  const [selectedDoctorId, setSelectedDoctorId] = useState<string>("");
+export default function MedicalScheduler({
+  userRole,
+  selectedDoctorId, // Añadimos la prop para el id del médico
+}: {
+  userRole: string;
+  selectedDoctorId?: string;
+}) {
+  const [selectedDoctorIdState, setSelectedDoctorId] = useState<string>(
+    selectedDoctorId || ""
+  );
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [duracionTurno, setDuracionTurno] = useState<number>(15);
   const [horarios, setHorarios] = useState<HorariosDia>({});
@@ -28,7 +36,7 @@ export default function MedicalScheduler({ userRole }: { userRole: string }) {
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [respuesta, setRespuesta] = useState<{
-    tipo: 'success' | 'error' | null;
+    tipo: "success" | "error" | null;
     mensaje: string | null;
   }>({ tipo: null, mensaje: null });
   const [guardarHabilitado, setGuardarHabilitado] = useState(false);
@@ -38,23 +46,26 @@ export default function MedicalScheduler({ userRole }: { userRole: string }) {
       setCargando(true);
       setError(null);
       try {
-        if (userRole === 'Secretaria') {
+        if (userRole === "Secretaria") {
           const doctorsList = await getDoctors();
           setDoctors(doctorsList);
-        } else if (userRole === 'Medico') {
+          if (selectedDoctorId) {
+            setSelectedDoctorId(selectedDoctorId);
+          }
+        } else if (userRole === "Medico") {
           const { schedules, appointmentDuration } = await getDoctorSchedule();
           setHorarios(schedules);
           setDuracionTurno(appointmentDuration);
         }
       } catch (error) {
-        setError('Error al cargar los datos iniciales');
+        setError("Error al cargar los datos iniciales");
       } finally {
         setCargando(false);
       }
     }
 
     loadInitialData();
-  }, [userRole]);
+  }, [userRole, selectedDoctorId]);
 
   useEffect(() => {
     if (selectedDoctorId && userRole === 'Secretaria') {

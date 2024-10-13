@@ -12,7 +12,6 @@ export default function NavBarSecretary({ userName }: { userName: string }) {
     { name: 'Registrar Medico', href: '/admin/create/doctor', icon: User2 },
     { name: 'Buscar Paciente', href: '/search/patient', icon: Search },
     { name: 'Buscar Medico', href: '/search/doctor', icon: Search },
-    {name : 'Establecer horario de atencion', href: '/appointment/setschedule', icon: Clock},
   ];
 
   return (
