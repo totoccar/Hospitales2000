@@ -1,12 +1,12 @@
 import { Button } from "@/src/components/ui/button";
-import { getEspecialidadById, getUbicacionById, getUsuarioById } from "@/src/lib/getMedicoById";
-import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
-
+import { getEspecialidadById, getUbicacionById, getUsuarioById,getUsuarioConRolesById } from "@/src/lib/getMedicoById";
+import Link from "next/link";
 
 export default async function Component({ params }: { params: { id: string } }) {
 
   const id = params.id as string;
   const usuario = await getUsuarioById(id);
+  const usuarioAdmi = await getUsuarioConRolesById(id); 
   let ubicacionUsuario = null;
   if (usuario.medico) {
     ubicacionUsuario = await getUbicacionById(usuario.medico.ubicacion_id);
@@ -22,7 +22,6 @@ export default async function Component({ params }: { params: { id: string } }) 
   );
 
   return (
-    <MaxWidthWrapper>
     <div className="w-full max-w-3xl mx-auto p-6 bg-fondo mt-5 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-center">Vista de datos personales del médico</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -42,12 +41,14 @@ export default async function Component({ params }: { params: { id: string } }) 
         <DisplayField label="Correo electrónico" value={usuario.correo_electronico} />
       </div>
       <div className="flex justify-end space-x-4 mt-6">
-        <Button disabled={true} variant="outline">Editar</Button>
+        {usuarioAdmi && (  // Verifica si el usuario tiene el rol de admi
+          <Link href={`/view/patient/${id}/editPatient`}>
+            <Button variant="outline">Editar</Button>
+          </Link>
+        )}
         <Button disabled={true} variant="destructive">Eliminar</Button>
       </div>
-      <p className="text-sm text-gray-500 mt-4">Solo disponible para rol de administrador</p>
+      <p className="text-sm text-gray-500 mt-4">Solo disponible para rol de Administrador</p>
     </div>
-    </MaxWidthWrapper>
   );
 }
-
