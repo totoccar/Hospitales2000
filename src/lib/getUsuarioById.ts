@@ -79,3 +79,22 @@ export async function getUbicacionById(ubicacionId: string) {
     await prisma.$disconnect();
   }
 }
+
+export async function getUserNameById(id: string) {
+  try {
+    const usuario = await prisma.usuario.findFirst({
+      where: { id: id},
+    });
+
+    if (!usuario) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    return usuario.nombre + ' ' + usuario.apellido;  // Retorna el nombre completo del usuario
+  } catch (error) {
+    console.error('Error al obtener el usuario:', error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
