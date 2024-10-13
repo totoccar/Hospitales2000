@@ -20,22 +20,27 @@ export async function deletePatient(id: string) {
             },
         });
 
+        console.log(id);
+        console.log(user);
         //Delete all related fields.
-        await prisma.fichaMedica.delete({
-            where: {id: user?.paciente?.ficha_medica.id}
+        await prisma.cita.deleteMany({
+            where: {paciente_id: user?.paciente?.usuario_id}
         });
-
+        await prisma.fichaMedica.delete({
+            where: { id: user?.paciente?.ficha_medica_id },
+        });
         await prisma.ubicacion.delete({
             where: {id: user?.paciente?.ubicacion.id}
         });
-        await prisma.cita.deleteMany({
-            where: {paciente_id: user?.paciente?.usuario_id}
+        await prisma.paciente.delete({
+            where: {usuario_id: user?.paciente?.usuario_id}
         });
         await prisma.usuario.delete({
             where: {id: id},
         });
         console.log('User deleted succesfully.');
     } catch(error) {
+        console.log(error);
         return {
             message: 'Database Error: Failed to Delete Patient.',
         }
