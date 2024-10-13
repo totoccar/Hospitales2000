@@ -2,38 +2,56 @@
 import React, { useState, useEffect } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
+import { getFechasTurnosByMedicoId, getMedicoIdByDNI, getTurnosByMedicoId } from "@/src/lib/calendarActions";
+import Link from "next/link";
+import { CircleX, Pencil } from "lucide-react";
 import { isWeekend } from "date-fns";
-import { getTurnosByMedicoId } from "@/src/lib/calendarActions";
-import { getMedicoByDNI, getUserNameById} from "@/src/lib/getUsuarioById";
 import { getDni } from "../../lib/actions";
 
 
-export default  function MedCalendar() {
+export default function MedCalendar() {
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [turnos, setTurnos] = useState<any[]>([]);
   const [availableDates, setAvailableDates] = useState<Date[]>([]);
+  const [medicoId, setMedicoId] = useState<string | null>(null);
 
- 
+
+
+  useEffect(() => {
+    const fetchMedicoData = async () => {
+      setLoading(true);
+      try {
+
+        const dni = await getDni();
+        const id_medico = await getMedicoIdByDNI(dni);
+
+        console.log("Fetching fechas for medicoId:", id_medico);
+        const turnos = await getFechasTurnosByMedicoId(id_medico);
+        setAvailableDates(turnos);
+      } catch (error) {
+        console.error("Error al cargar las fechas:", error);
+        setError("Error al cargar las fechas.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchMedicoData();
+  }, []);
+
   const fetchDoctorTurns = async (selectedDate: Date | undefined) => {
-    if (!selectedDate) return; 
+    if (!selectedDate) return; // Verifica que la fecha no sea undefined
     setLoading(true);
-    const dni = await getDni();
-    const medico = await getMedicoByDNI(dni); 
-    const medico_id = medico.id
-    try {
-      console.log("Fetching turnos for medicoId:", medico_id, " and date:", selectedDate);
-      const fetchedTurnos = await getTurnosByMedicoId(medico_id, selectedDate);
-      const turnosWithPatients = await Promise.all(
-        fetchedTurnos.map(async (turno) => {
-          const patientName = await getUserNameById(turno.paciente_id);
-          return { ...turno, nombre: patientName };
-        })
-      );
 
-      setTurnos(turnosWithPatients); // Actualizar el estado de turnos
-      console.log("Turnos con nombres de pacientes:", turnosWithPatients);
+    try {
+      const dni = await getDni();
+      const id_medico = await getMedicoIdByDNI(dni);
+      console.log("Fetching turnos for medicoId:", id_medico, " and date:", selectedDate);
+      const turnos = await getTurnosByMedicoId(id_medico, selectedDate);
+      setTurnos(turnos); // Actualizar el estado de turnos
+      console.log("Turnos del médico obtenidos:", turnos);
     } catch (error) {
       console.error("Error al cargar los turnos:", error);
       setError("Error al cargar los turnos.");
@@ -59,20 +77,22 @@ export default  function MedCalendar() {
               }}
               className="rounded-xl shadow border bg-white"
               disabled={(date) => {
-                const currentDate = new Date(); // Fecha actual
-                const normalizedDate = new Date(date.toISOString().split('T')[0]); // Normalizar la fecha a UTC sin la hora
+                const currentDate = new Date();
+                const normalizedDate = new Date(date.toISOString().split("T")[0]);
 
                 return (
                   isWeekend(normalizedDate) ||
-                  normalizedDate < new Date(currentDate.toISOString().split('T')[0]) || // Comparar fechas normalizadas a UTC
-                  !availableDates.some(d => new Date(d.toISOString().split('T')[0]).getTime() === normalizedDate.getTime())
+                  normalizedDate < new Date(currentDate.toISOString().split("T")[0]) ||
+                  !availableDates.some(
+                    (d) => new Date(d.toISOString().split("T")[0]).getTime() === normalizedDate.getTime()
+                  )
                 );
               }}
               required
             />
           </div>
           <div className="bg-white text-center w-full rounded-xl shadow m-3 p-3 text-gray-500 flex-1">
-            <h1 className="text-xl m-2 font-bold">Turnos</h1>
+            <h1 className="text-xl m-2 font-bold">Citas</h1>
             {loading ? (
               <p>Cargando turnos...</p>
             ) : (
@@ -85,9 +105,17 @@ export default  function MedCalendar() {
                           <h3 className="font-bold text-lg">{`Turno ${index + 1}`}</h3>
                           <p className="text-gray-700">
                             <strong>Fecha y Hora:</strong> {new Date(turno.fecha_hora).toLocaleString()}<br />
-                            <strong>Paciente:</strong> {turno.paciente?.usuario ? `${turno.paciente.usuario.nombre} ${turno.paciente.usuario.apellido}` : 'Desconocido'}<br />
-                            <strong>Obra Social:</strong> {turno.paciente?.obra_social.nombre ? `${turno.paciente.obra_social.nombre}` : 'Desconocido'}<br />
+                            <strong>Paciente:</strong> {turno.paciente?.usuario ? `${turno.paciente.usuario.nombre} ${turno.paciente.usuario.apellido}` : "Desconocido"}<br />
+                            <strong>Obra Social:</strong> {turno.paciente?.obra_social.nombre ? `${turno.paciente.obra_social.nombre}` : "Desconocido"}<br />
                           </p>
+                        </div>
+                        <div className="flex space-x-2">
+                          <Link href={'/'} className="rounded-md border p-2 hover:bg-gray-100">
+                            <Pencil className="w-5" />
+                          </Link>
+                          <Link href={'/'} className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400">
+                            <CircleX className="w-5" />
+                          </Link>
                         </div>
                       </div>
                     ))}

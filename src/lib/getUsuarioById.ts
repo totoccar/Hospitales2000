@@ -25,7 +25,7 @@ export async function getUsuarioById(usuarioId: string) {
 }
 
 export async function getMedicoByDNI(DNI: string) {
-  try{
+  try {
     const usuario = await prisma.usuario.findUnique({
       where: { numero_documento: DNI },
       include: {
@@ -39,7 +39,7 @@ export async function getMedicoByDNI(DNI: string) {
 
     return usuario;
   }
-  catch (error){
+  catch (error) {
     console.error('Error al obtener el medico:', error);
     throw error;
   } finally {
@@ -107,7 +107,7 @@ export async function getUbicacionById(ubicacionId: string) {
 export async function getUserNameById(id: string) {
   try {
     const usuario = await prisma.usuario.findFirst({
-      where: { id: id},
+      where: { id: id },
     });
 
     if (!usuario) {
