@@ -69,6 +69,29 @@ export async function getUsuarioByDNI(DNI: string) {
   }
 }
 
+export async function getMedicoByDNI(DNI: string) {
+  try{
+    const usuario = await prisma.usuario.findUnique({
+      where: { numero_documento: DNI },
+      include: {
+        medico: true,
+      },
+    });
+
+    if (!usuario?.medico) {
+      throw new Error('El usuario no es un medico o no existe.');
+    }
+
+    return usuario;
+  }
+  catch (error){
+    console.error('Error al obtener el medico:', error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
 export async function getUserNameByDNI(numero_documento: string) {
   try {
     const usuario = await prisma.usuario.findFirst({
@@ -116,9 +139,28 @@ export async function getUbicacionById(ubicacionId: string) {
       throw new Error('Ubicación no encontrada');
     }
 
-    return ubicacion; // Retorna la ubicación si existe
+    return ubicacion; 
   } catch (error) {
     console.error('Error al obtener la ubicación:', error);
+    throw error;
+  } finally {
+    await prisma.$disconnect();
+  }
+}
+
+export async function getUserNameById(id: string) {
+  try {
+    const usuario = await prisma.usuario.findFirst({
+      where: { id: id },
+    });
+
+    if (!usuario) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    return usuario.nombre + ' ' + usuario.apellido;  
+  } catch (error) {
+    console.error('Error al obtener el usuario:', error);
     throw error;
   } finally {
     await prisma.$disconnect();

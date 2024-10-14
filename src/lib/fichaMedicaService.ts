@@ -150,3 +150,34 @@ export async function getFichaMedicaByPacienteIdAlergia(pacienteId: string) {
       await prisma.$disconnect();
     }
   }
+
+  
+  export async function updateFichaMedica(id: string, data: { 
+    alergias: string;
+    diagnostico: string;
+    tratamientos: string;
+    medicamentos_recetados: string;
+  }) {
+    try {
+      // Verificación opcional para asegurarte de que el ID sea un UUID válido
+      if (!id) {
+        throw new Error("El ID es requerido para actualizar la ficha médica.");
+      }
+  
+      const updatedFichaMedica = await prisma.fichaMedica.update({
+        where: { id },
+        data: {
+          alergias: data.alergias,
+          diagnostico: data.diagnostico,
+          tratamientos: data.tratamientos,
+          medicamentos_recetados: data.medicamentos_recetados,
+        },
+      });
+  
+      return updatedFichaMedica;
+    } catch (error) {
+      console.error("Error al actualizar la ficha médica:", error);
+      throw new Error("Error al actualizar la ficha médica");
+    }
+  }
+  
