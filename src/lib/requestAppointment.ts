@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { z } from "zod";
 import prisma from "./db";
 import { DiaSemanaEnum } from "@prisma/client";
+import { lastDayOfMonth } from "date-fns";
 
 export type AppointmentState = {
   errors?: {
@@ -93,7 +94,7 @@ export async function getDoctorIntervalsForIdAndDay(
   return doctor.intervalos;
 }
 
-function convertDayToDiaSemanaEnum(day: number) {
+function convertDayToDiaSemanaEnum(day: number): DiaSemanaEnum | undefined {
   switch (day) {
     case 1:
       return DiaSemanaEnum.LUNES;
@@ -105,6 +106,8 @@ function convertDayToDiaSemanaEnum(day: number) {
       return DiaSemanaEnum.JUEVES;
     case 5:
       return DiaSemanaEnum.VIERNES;
+    default:
+      return undefined;
   }
 }
 
@@ -258,4 +261,36 @@ export async function isActiveDay(doctorId: string, date: Date): Promise<boolean
   }
 
   return activeDays.includes(diaSemana);
+}
+
+export async function fetchDoctorUnavailableDates(medicoId: string, month: number, year: number) {
+
+  const doctor = await prisma.medico.findUnique({
+    where: { usuario_id: medicoId },
+    include: {
+      intervalos: true,
+    },
+  });
+
+  if (!doctor) {
+    return [];
+  }
+
+  const activeDays = doctor.intervalos.map((intervalo) => {
+    return intervalo.diaSemana;
+  });
+
+  const unavailableDates: Date[] = [];
+
+  for (let day = 1; day <= lastDayOfMonth(new Date(year, month - 1)).getDate(); day++) {
+    const date = new Date();
+    date.setMonth(month);
+    date.setDate(day);
+    const diaSemana = convertDayToDiaSemanaEnum(date.getDay());
+    if (diaSemana && !activeDays.includes(diaSemana)) {
+      unavailableDates.push(date);
+    }
+  }
+  return unavailableDates;
+   
 }
