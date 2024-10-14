@@ -180,9 +180,6 @@ export async function getAllAppointmentsByDoctorIDByDate(
 
 export async function computeAvailableTimeslots(doctor_id: string, date: Date, duracion_cita: number) {
     const intervals = await getDoctorIntervalsForIdAndDay(doctor_id, date);
-    intervals.forEach(interval => {
-        console.log("Interval:", interval);
-    });
     
     const appointments = await getAllAppointmentsByDoctorIDByDate(doctor_id, date);
 
@@ -214,4 +211,51 @@ export async function computeAvailableTimeslots(doctor_id: string, date: Date, d
         }
     });
     return availableTimeslots;
+}
+
+export async function getDoctorWeekActiveDays(doctorId: string) {
+  const doctor = await prisma.medico.findUnique({
+    where: { usuario_id: doctorId },
+    include: {
+      intervalos: true,
+    },
+  });
+
+  if (!doctor) {
+    return [];
+  }
+
+  const activeDays = doctor.intervalos.map((intervalo) => {
+    return intervalo.diaSemana;
+  });
+
+  return activeDays;
+}
+
+export async function getNonActiveDays(doctorId: string) {
+  const activeDays = await getDoctorWeekActiveDays(doctorId);
+  const allDays = [
+    DiaSemanaEnum.LUNES,
+    DiaSemanaEnum.MARTES,
+    DiaSemanaEnum.MIERCOLES,
+    DiaSemanaEnum.JUEVES,
+    DiaSemanaEnum.VIERNES,
+  ];
+  return allDays.filter((day) => !activeDays.includes(day));
+}
+
+export async function isActiveDay(doctorId: string, date: Date): Promise<boolean> {
+  const day = date.getDay();
+  const activeDays = await getDoctorWeekActiveDays(doctorId);
+
+  if (activeDays.length === 0) {
+    return false;
+  }
+
+  const diaSemana = convertDayToDiaSemanaEnum(day);
+  if (!diaSemana) {
+    return false; 
+  }
+
+  return activeDays.includes(diaSemana);
 }
