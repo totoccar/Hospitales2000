@@ -7,14 +7,10 @@ import {
   AppointmentState,
   computeAvailableTimeslots,
   createAppointment,
-  getAllAppointmentsByDoctorIDByDate,
-  getAppointmentDuration,
-  getDoctorIntervalsForIdAndDay,
 } from "@/src/lib/requestAppointment";
 import { useFormState } from "react-dom";
 import { Calendar } from "@/components/ui/calendar";
 import { isWeekend, set } from "date-fns";
-import { IntervaloAtencion } from "@prisma/client";
 import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
 import { getUTCHoursAndMinutes } from "@/src/lib/utils";
 
@@ -139,7 +135,7 @@ export default function RequestAppointmentForm({
             <p>Fecha: {date?.toLocaleDateString("es-ES")}</p>
             <p>
               Hora:{" "}
-              {selectedTime && date ? selectedTime : "No seleccionada"}
+              {selectedTime && date && fecha_hora ? formatTimeToHs(fecha_hora) : "No seleccionada"}
             </p>
             <p>La duracion del turno es de: {duracion_cita} minutos</p>
             
@@ -165,4 +161,10 @@ export default function RequestAppointmentForm({
       </form>
     </MaxWidthWrapper>
   );
+}
+
+function formatTimeToHs(datetime: string): string {
+  const date = new Date(datetime);
+  date.setHours(date.getHours() + 3);
+  return date.toLocaleTimeString("es-AR", { hour: '2-digit', minute: '2-digit', hour12: false });
 }
