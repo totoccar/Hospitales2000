@@ -2,16 +2,32 @@
 export function getPermission(pathname: string): string | null {
 
   if (pathname.startsWith('/view/doctor')) {
-    return 'adsec:access'; 
+    return 'adsec:access';
   }
   if (pathname.startsWith('/view/secretary')) {
-    return 'adsec:access'; 
+    return 'adsec:access';
   }
   if (pathname.startsWith('/view/patient')) {
-    return 'medsec:access'; 
+    return 'medsec:access';
   }
   if (pathname.startsWith('/view/medicalrecord')) {
-    return 'medico:access'; 
+    return 'medico:access';
+  }
+
+  if (pathname.startsWith('/search/patient')) {
+    return 'medsec:access';
+  }
+
+  if (pathname.startsWith('/appointment/request')) {
+    return 'paciente:access';
+  }
+
+  if (pathname.startsWith('/appointment/secretarycalendar')) {
+    return 'secretaria:access'; //esto estaria mal el medico no puede acceder al calendario de la secretaria.
+  }
+
+  if (pathname.startsWith('/appointment/setschedule')) {
+    return 'medsec:access';
   }
 
   if (pathname.startsWith('/appointment/cancel')) { 
@@ -20,7 +36,7 @@ export function getPermission(pathname: string): string | null {
 
   const routePermissions: Record<string, string> = {
     '/admin/create/doctor': 'admin:access',
-    '/admin/create/patient': 'admin:access',
+    '/admin/create/patient': 'adsec:access',
     '/admin/create/secretary': 'admin:access',
     '/password/change': 'common:access',
     '/search/patient': 'medsec:access',
@@ -28,10 +44,17 @@ export function getPermission(pathname: string): string | null {
     '/appointment/view': 'paciente:access',
     '/search/secretary': 'admin:access',
     '/selectrole': 'common:access',
+    '/appointment/calendar': 'medico:access',
     '/403': 'common:access',
+    '/appointment/request': 'paciente:access',
+    '/appointment/search': 'common:access',
+    '/appointment/view': 'common:access',
+    '/appointment/view/doctor': 'common:access',
+    '/appointment/view/patient': 'common:access',
+    '/appointment/medicalcalendar': 'medico:access'
   };
 
-  return routePermissions[pathname] || null;  
+  return routePermissions[pathname] || null;
 }
 
 
