@@ -70,6 +70,7 @@ export function DeleteAppointment( {id,disabled} : {id: string; disabled?:boolea
       <SquareX style={{ color: '#e85454', width: '32px', height: '32px' }} />
     </Link>
   )
+}
 export function SecretaryCalendar ({ id }: { id: string }) {
   return (
     <Link
