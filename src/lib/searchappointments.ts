@@ -53,12 +53,21 @@ export async function getIdByDni(dni: string): Promise<string | null> {
             },
           },
         },
-        skip: offset,  // Desplazamiento según la página
-        take: ITEMS_PER_PAGE,  // Limitar el número de resultados por página
+        skip: offset,  
+        take: ITEMS_PER_PAGE, 
       });
   
       const citasConEspecialidad = await Promise.all(
         citas.map(async (cita) => {
+          if (!cita.medico) {
+            return {
+              id: cita.id,
+              fecha_hora: cita.fecha_hora,
+              nombre: null,
+              apellido: null,
+              especialidad: null,
+            };
+          }
           const especialidad = await getEspecialidadById(cita.medico.especialidad_id);
           return {
             id: cita.id,
