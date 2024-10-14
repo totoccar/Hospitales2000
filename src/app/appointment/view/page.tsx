@@ -21,13 +21,11 @@ export default async function AppointmentView({searchParams,
 
   return (
     <MaxWidthWrapper>
-    <div className="bg-fondo rounded-lg shadow-md p-6 mt-5">
-        <h2 className="text-xl font-bold mb-4">Citas Asignadas</h2>
-        <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-        </div>
+    <div className="bg-fondo rounded-lg shadow-md p-6 mt-5 ">
+        <h2 className="text-xl font-bold ">Citas Asignadas</h2>
         <Table pacienteId={id} currentPage={currentPage}/>
         </div>
-        <div className="mt-5 flex w-full justify-center">
+        <div className="flex w-full justify-center">
          <Pagination totalPages={count as number} /> 
       </div>
     </MaxWidthWrapper>
