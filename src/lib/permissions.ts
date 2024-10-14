@@ -39,7 +39,7 @@ export function getPermission(pathname: string): string | null {
   }
 
   const routePermissions: Record<string, string> = {
-    '/admin/create/doctor': 'admin:access',
+    '/admin/create/doctor': 'adsec:access',
     '/admin/create/patient': 'adsec:access',
     '/admin/create/secretary': 'admin:access',
     '/password/change': 'common:access',
