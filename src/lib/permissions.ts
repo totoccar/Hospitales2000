@@ -22,8 +22,8 @@ export function getPermission(pathname: string): string | null {
     return 'paciente:access';
   }
 
-  if (pathname.startsWith('/appointment/calendar')) {
-    return 'medsec:access';
+  if (pathname.startsWith('/appointment/secretarycalendar')) {
+    return 'secretaria:access'; //esto estaria mal el medico no puede acceder al calendario de la secretaria.
   }
 
   if (pathname.startsWith('/appointment/setschedule')) {
@@ -46,6 +46,7 @@ export function getPermission(pathname: string): string | null {
     '/appointment/view': 'common:access',
     '/appointment/view/doctor': 'common:access',
     '/appointment/view/patient': 'common:access',
+    '/appointment/medicalcalendar': 'medico:access'
   };
 
   return routePermissions[pathname] || null;

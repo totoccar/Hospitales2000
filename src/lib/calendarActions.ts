@@ -52,5 +52,29 @@ export async function getFechasTurnosByMedicoId(medicoId: string) {
 }
 
 
+export async function getMedicoIdByDNI(DNI: string) {
+    try {
+        const usuario = await prisma.usuario.findUnique({
+            where: { numero_documento: DNI },
+            include: {
+                medico: true,
+            },
+        });
+
+        if (!usuario?.medico) {
+            throw new Error('El usuario no es un paciente o no existe.');
+        }
+
+        return usuario.id;
+    }
+    catch (error) {
+        console.error('Error al obtener el medico:', error);
+        throw error;
+    } finally {
+        await prisma.$disconnect();
+    }
+}
+
+
 
 
