@@ -62,7 +62,7 @@ export default function MedCalendar() {
 
   return (
     <MaxWidthWrapper>
-      <div className="mt-10 bg-white text-center w-full rounded-xl shadow border m-3 p-6">
+      <div className="mt-10 bg-fondo w-full rounded-xl shadow border m-3 p-6">
         <h2 className="text-xl font-bold mb-2">Seleccione el día que quiera visualizar</h2>
         <h3 className="text-md mb-4">Podrá ver los turnos disponibles para el día seleccionado</h3>
 
@@ -91,7 +91,7 @@ export default function MedCalendar() {
               required
             />
           </div>
-          <div className="bg-white text-center w-full rounded-xl shadow m-3 p-3 text-gray-500 flex-1">
+          <div className="bg-white text-center w-full rounded-xl shadow-md m-3 p-3 text-gray-500 flex-1">
             <h1 className="text-xl m-2 font-bold">Citas</h1>
             {loading ? (
               <p>Cargando turnos...</p>
