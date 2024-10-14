@@ -54,7 +54,8 @@ export function getPermission(pathname: string): string | null {
     '/appointment/view': 'common:access',
     '/appointment/view/doctor': 'common:access',
     '/appointment/view/patient': 'common:access',
-    '/appointment/medicalcalendar': 'medico:access'
+    '/appointment/medicalcalendar': 'medico:access',
+    'appointment/setschedule': 'medsec:access',
   };
 
   return routePermissions[pathname] || null;
