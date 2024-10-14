@@ -1,7 +1,8 @@
 
 import { Button } from '@react-email/components';
-import { Eye ,NotepadText, SquareX, Trash, Trash2  } from 'lucide-react';
+import { Eye ,NotepadText,CalendarPlus,ArrowRight,CalendarDays, CalendarClock,SquareX, Trash, Trash2    } from 'lucide-react';
 import Link from 'next/link';
+ 
 
 export function ViewPatient({ id }: { id: string }) {
   return (
@@ -21,6 +22,18 @@ export function ViewDoctor({ id }: { id: string }) {
       className="rounded-md border p-2 hover:bg-gray-100"
     >
       <Eye  className="w-5" />
+    </Link>
+  );
+}
+
+export function RequestAppointment({ id }: { id: string }) {
+  return (
+    <Link
+      href={`/appointment/request/${id}`}
+      className="flex rounded-md border p-2 w-20 items-center justify-center hover:bg-gray-100"
+    >
+      <CalendarPlus   className="w-10" />
+      <ArrowRight className="w-10" />
     </Link>
   );
 }
@@ -48,6 +61,7 @@ export function ViewMedicalRecord({ id, disabled }: { id: string; disabled?: boo
   );
 }
 
+
 export function DeleteAppointment( {id,disabled} : {id: string; disabled?:boolean }){
   return(
     <Link href={`/appointment/cancel/${id}`} 
@@ -56,4 +70,26 @@ export function DeleteAppointment( {id,disabled} : {id: string; disabled?:boolea
       <SquareX style={{ color: '#e85454', width: '32px', height: '32px' }} />
     </Link>
   )
+export function SecretaryCalendar ({ id }: { id: string }) {
+  return (
+    <Link
+    href={`/appointment/secretarycalendar/${id}`}
+   className="rounded-md border p-2 hover:bg-gray-100"
+  >
+    <CalendarDays className="w-5 " />
+  
+  </Link>
+  );
+}
+
+export function ViewSchedule ({ id }: { id: string }) {
+  return (
+    <Link
+    href={`/appointment/setschedule/${id}`}
+   className="rounded-md border p-2 hover:bg-gray-100"
+  >
+    <CalendarClock className="w-5 " />
+  
+  </Link>
+  );
 }
