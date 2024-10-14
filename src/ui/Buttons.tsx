@@ -63,7 +63,7 @@ export function ViewMedicalRecord({ id, disabled }: { id: string; disabled?: boo
 export function SecretaryCalendar ({ id }: { id: string }) {
   return (
     <Link
-    href={`/appointment/calendar/${id}`}
+    href={`/appointment/secretarycalendar/${id}`}
    className="rounded-md border p-2 hover:bg-gray-100"
   >
     <CalendarDays className="w-5 " />
