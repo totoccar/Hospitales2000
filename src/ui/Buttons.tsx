@@ -1,5 +1,5 @@
 
-import { Eye ,NotepadText,CalendarPlus,ArrowRight,CalendarDays    } from 'lucide-react';
+import { Eye ,NotepadText,CalendarPlus,ArrowRight,CalendarDays, CalendarClock    } from 'lucide-react';
 import Link from 'next/link';
  
 
@@ -67,6 +67,18 @@ export function SecretaryCalendar ({ id }: { id: string }) {
    className="rounded-md border p-2 hover:bg-gray-100"
   >
     <CalendarDays className="w-5 " />
+  
+  </Link>
+  );
+}
+
+export function ViewSchedule ({ id }: { id: string }) {
+  return (
+    <Link
+    href={`/appointment/setschedule/${id}`}
+   className="rounded-md border p-2 hover:bg-gray-100"
+  >
+    <CalendarClock className="w-5 " />
   
   </Link>
   );

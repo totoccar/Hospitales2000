@@ -26,9 +26,13 @@ export function getPermission(pathname: string): string | null {
     return 'secretaria:access'; //esto estaria mal el medico no puede acceder al calendario de la secretaria.
   }
 
+  if (pathname.startsWith('/appointment/setschedule')) {
+    return 'medsec:access';
+  }
+
   const routePermissions: Record<string, string> = {
     '/admin/create/doctor': 'admin:access',
-    '/admin/create/patient': 'admin:access',
+    '/admin/create/patient': 'adsec:access',
     '/admin/create/secretary': 'admin:access',
     '/password/change': 'common:access',
     '/search/patient': 'medsec:access',
@@ -43,7 +47,6 @@ export function getPermission(pathname: string): string | null {
     '/appointment/view/doctor': 'common:access',
     '/appointment/view/patient': 'common:access',
     '/appointment/medicalcalendar': 'medico:access'
-
   };
 
   return routePermissions[pathname] || null;
