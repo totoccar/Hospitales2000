@@ -19,7 +19,7 @@ export function getPermission(pathname: string): string | null {
   }
 
   if (pathname.startsWith('/appointment/request')) {
-    return 'paciente:access';
+    return 'common:access';
   }
 
   if (pathname.startsWith('/appointment/secretarycalendar')) {
@@ -35,7 +35,11 @@ export function getPermission(pathname: string): string | null {
   }
 
   if(pathname.startsWith('/appointment/request')) {
-    return 'paciente:access';
+    return 'common:access';
+  }
+
+  if(pathname.startsWith('/appointment/assign')) {
+    return 'secretaria:access';
   }
 
   const routePermissions: Record<string, string> = {
@@ -56,6 +60,7 @@ export function getPermission(pathname: string): string | null {
     '/appointment/view/patient': 'common:access',
     '/appointment/medicalcalendar': 'medico:access',
     'appointment/setschedule': 'medsec:access',
+    
   };
 
   return routePermissions[pathname] || null;
