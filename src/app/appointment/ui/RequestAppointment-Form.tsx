@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/src/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/src/components/ui/radio-group";
@@ -7,12 +7,14 @@ import {
   AppointmentState,
   computeAvailableTimeslots,
   createAppointment,
+  fetchDoctorUnavailableDates,
 } from "@/src/lib/requestAppointment";
 import { useFormState } from "react-dom";
 import { Calendar } from "@/components/ui/calendar";
-import { isWeekend, set } from "date-fns";
+import { getMonth, getYear, isWeekend, set } from "date-fns";
 import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
 import { getUTCHoursAndMinutes } from "@/src/lib/utils";
+import { get } from "http";
 
 interface RequestAppointmentFormProps {
   medico_id: string;
@@ -32,6 +34,9 @@ export default function RequestAppointmentForm({
   const [isFirstTime, setIsFirstTime] = useState<string | undefined>();
   const [selectedTime, setSelectedTime] = useState<string | undefined>();
   const [fecha_hora, setFecha_hora] = useState<string | null>(null);
+  const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
+  const [currentMonth, setCurrentMonth] = useState<number>(new Date().getMonth() + 1); // Mes actual
+  const [currentYear, setCurrentYear] = useState<number>(new Date().getFullYear());
   const [intervalosPosibles, setIntervalosPosibles] = useState<{ start: Date; end: Date }[]>([]);
 
   const [loading, setLoading] = useState(false);
@@ -61,6 +66,21 @@ export default function RequestAppointmentForm({
     }
   };
 
+  useEffect(() => {
+    const fetchUnavailableDates = async () => {
+      // const dates = await fetchDoctorUnavailableDates(medico_id, currentYear, currentMonth);
+      // setUnavailableDates(dates);
+    };
+    fetchUnavailableDates();
+  }, [medico_id, currentMonth, currentYear]);
+
+  const isDateDisabled = (date: Date) => {
+    if (isWeekend(date)) return true;
+    if (date < new Date()) return true;
+    if (unavailableDates.some(d => d.toDateString() === date.toDateString())) return true;
+    return false;
+  };
+
   return (
     <MaxWidthWrapper>
       <form action={formAction} className="m-6 bg-fondo rounded-md p-6 mt-5">
@@ -68,19 +88,24 @@ export default function RequestAppointmentForm({
         <h3 className="text-md">Puedes agregar una acalaración para tu médico</h3>
 
         <div className="md:flex flex-row gap-4 ">
-          <Calendar
-            mode="single"
-            selected={date}
-            onSelect={(selectedDate) => {
-              setDate(selectedDate);
-              if (selectedDate) 
-                fetchDoctorIntervals(selectedDate);
-                computeFechaHora(selectedDate, selectedTime);
-            }}
-            className="rounded-xl shadow border m-3 bg-white"
-            disabled={(date) => isWeekend(date) || date < new Date()}
-            required
-          />
+        <Calendar
+          mode="single"
+          selected={date}
+          onSelect={(selectedDate) => {
+            setDate(selectedDate);
+            if (selectedDate) {
+              fetchDoctorIntervals(selectedDate);
+            }
+            computeFechaHora(selectedDate, selectedTime);
+          }}
+          className="rounded-xl shadow border m-3 bg-white"
+          disabled={isDateDisabled}
+          onMonthChange={(date: Date) => {
+            setCurrentMonth(getMonth(date) + 1);
+            setCurrentYear(getYear(date));
+          }}
+          required
+        />
 
             <div className="w-full rounded-xl shadow bg-white m-3 p-3">
             <Label className="mb-2 block text-center">Selecciona un horario</Label>
