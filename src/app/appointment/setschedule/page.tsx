@@ -7,7 +7,7 @@ export default async function AppointmentPage() {
   const userRole = await getRole();
   return (
     <MaxWidthWrapper>
-      <MedicalSchedulerWrapper />;
+      <MedicalSchedulerWrapper />
     </MaxWidthWrapper>
   );
 }
