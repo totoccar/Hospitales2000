@@ -6,6 +6,7 @@ import { Button } from "src/components/ui/button";
 import { Label } from "src/components/ui/label";
 import { Loader2, Check, AlertCircle } from "lucide-react";
 import { getDoctors, getDoctorSchedule, saveScheduleForDoctor, Doctor } from "src/lib/saveSchedule";
+import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
 
 const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
 const duracionesTurno = [5, 10, 15, 20, 30, 60];
@@ -255,7 +256,8 @@ export default function MedicalScheduler({
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <MaxWidthWrapper>
+    <div className="p-6 max-w-4xl mx-auto bg-fondo mt-5">
       <h1 className="text-2xl font-bold mb-4">Horario de Atención Ajustable</h1>
 
       {respuesta.mensaje && (
@@ -317,7 +319,7 @@ export default function MedicalScheduler({
             <div key={dia} className="mb-6">
               <div className="flex items-center justify-between">
                 <h2 className="text-xl font-semibold mb-2">{dia}</h2>
-                <Button onClick={() => agregarIntervalo(dia)}>Agregar Intervalo</Button>
+                <Button className="bg-primario" onClick={() => agregarIntervalo(dia)}>Agregar Intervalo</Button>
               </div>
               {horarios[dia]?.map((intervalo, index) => (
                 <div key={index} className="flex items-center space-x-2 mb-2">
@@ -355,6 +357,7 @@ export default function MedicalScheduler({
                   <Button 
                     onClick={() => eliminarIntervalo(dia, index)}
                     variant="destructive"
+                    
                   >
                     Eliminar
                   </Button>
@@ -365,7 +368,7 @@ export default function MedicalScheduler({
 
           <Button 
             onClick={guardarHorarios} 
-            className="mt-6 w-full"
+            className="mt-6 w-full bg-primario"
             disabled={guardando || !guardarHabilitado}
           >
             {guardando ? (
@@ -380,5 +383,6 @@ export default function MedicalScheduler({
         </>
       )}
     </div>
+    </MaxWidthWrapper>
   );
 }
