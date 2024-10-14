@@ -139,41 +139,46 @@ export async function findDoctorsAppointmentsByQuery({
     const offset = (currentPage - 1) * ITEMS_PER_PAGE;
     try {
       const medicos = await prisma.medico.findMany({
-        where: {
-          AND: [
-            apellido
-              ? {
-                  usuario: {
-                    apellido: {
-                      contains: apellido,
-                      mode: 'insensitive',
-                    },
-                  },
-                }
-              : {},
-            dni && tipoDocumento
-              ? {
-                  usuario: {
-                    tipo_documento: tipoDocumento,
-                    numero_documento: {
-                      contains: dni,
-                      mode: 'insensitive',
-                    },
-                  },
-                }
-              : {},
-            especialidad
-              ? {
-                  especialidad_id: especialidad,
-                }
-              : {},
-          ],
+      where: {
+        AND: [
+        apellido
+          ? {
+            usuario: {
+            apellido: {
+              contains: apellido,
+              mode: 'insensitive',
+            },
+            },
+          }
+          : {},
+        dni && tipoDocumento
+          ? {
+            usuario: {
+            tipo_documento: tipoDocumento,
+            numero_documento: {
+              contains: dni,
+              mode: 'insensitive',
+            },
+            },
+          }
+          : {},
+        especialidad
+          ? {
+            especialidad_id: especialidad,
+          }
+          : {},
+        {
+          intervalos: {
+          some: {},
+          },
         },
-        include: {
-          usuario: true,
-        },
-        skip: offset,
-        take: ITEMS_PER_PAGE,
+        ],
+      },
+      include: {
+        usuario: true,
+      },
+      skip: offset,
+      take: ITEMS_PER_PAGE,
       });
       return medicos;
     } catch (error) {
@@ -195,32 +200,37 @@ export async function getAmountAppointment({
     const count = await prisma.medico.count({
       where: {
         AND: [
-          apellido
-            ? {
-                usuario: {
-                  apellido: {
-                    contains: apellido,
-                    mode: 'insensitive',
-                  },
-                },
-              }
-            : {},
-          dni && tipoDocumento
-            ? {
-                usuario: {
-                  tipo_documento: tipoDocumento,
-                  numero_documento: {
-                    contains: dni,
-                    mode: 'insensitive',
-                  },
-                },
-              }
-            : {},
-          especialidad
-            ? {
-                especialidad_id: especialidad,
-              }
-            : {}, 
+        apellido
+          ? {
+            usuario: {
+            apellido: {
+              contains: apellido,
+              mode: 'insensitive',
+            },
+            },
+          }
+          : {},
+        dni && tipoDocumento
+          ? {
+            usuario: {
+            tipo_documento: tipoDocumento,
+            numero_documento: {
+              contains: dni,
+              mode: 'insensitive',
+            },
+            },
+          }
+          : {},
+        especialidad
+          ? {
+            especialidad_id: especialidad,
+          }
+          : {},
+        {
+          intervalos: {
+          some: {},
+          },
+        },
         ],
       },
     });

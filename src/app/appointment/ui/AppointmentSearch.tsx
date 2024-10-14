@@ -76,7 +76,7 @@ export default function AppointmentSearch({especialidades}: {especialidades: Esp
             <Label htmlFor="especialidad" className="sr-only">Especialidad</Label>
             <Select disabled={searchType === 'apellido' || searchType === 'dni'} onValueChange={(value) => setEspecialidad(value)}>
             <SelectTrigger id="esp</SelectTrigger>ecialidad">
-              <SelectValue placeholder="especialidad"></SelectValue>
+              <SelectValue placeholder="Especialidad"></SelectValue>
             </SelectTrigger>
             <SelectContent>
               {especialidades.map((especialidad) => (
