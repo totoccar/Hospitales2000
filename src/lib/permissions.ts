@@ -23,7 +23,7 @@ export function getPermission(pathname: string): string | null {
   }
 
   if (pathname.startsWith('/appointment/secretarycalendar')) {
-    return 'secretaria:access'; //esto estaria mal el medico no puede acceder al calendario de la secretaria.
+    return 'secretaria:access';
   }
 
   if (pathname.startsWith('/appointment/setschedule')) {
@@ -31,6 +31,10 @@ export function getPermission(pathname: string): string | null {
   }
 
   if (pathname.startsWith('/appointment/cancel')) { 
+    return 'paciente:access';
+  }
+
+  if(pathname.startsWith('/appointment/request')) {
     return 'paciente:access';
   }
 
@@ -57,7 +61,6 @@ export function getPermission(pathname: string): string | null {
 }
 
 
-// Verifica si el rol tiene acceso a un permiso
 export function hasPermission(role: string, permission: string): boolean {
   const rolePermissions: Record<string, string[]> = {
     'Administrador': ['admin:access', 'adsec:access', 'common:access'],
@@ -67,5 +70,5 @@ export function hasPermission(role: string, permission: string): boolean {
   };
 
   const permissions = rolePermissions[role] || [];
-  return permissions.includes(permission); // Retorna true si el rol tiene el permiso
+  return permissions.includes(permission); 
 }
