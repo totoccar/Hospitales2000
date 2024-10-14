@@ -1,143 +1,144 @@
-generator client {
-  provider = "prisma-client-js"
+  generator client {
+    provider = "prisma-client-js"
+  }
+
+  datasource db {
+    provider  = "postgresql"
+    url       = env("POSTGRES_PRISMA_URL")
+    directUrl = env("POSTGRES_URL_NON_POOLING")
+  }
+
+  model Ubicacion {
+    id            String      @id @default(uuid())
+    calle         String
+    numero        String
+    codigo_postal String
+    ciudad        String
+    provincia     String
+    medico        Medico?
+    paciente      Paciente?
+    secretaria    Secretaria?
+  }
+
+  model Secretaria {
+    usuario_id      String    @id
+    numero_telefono String
+    ubicacion_id    String    @unique
+    ubicacion       Ubicacion @relation(fields: [ubicacion_id], references: [id])
+    usuario         Usuario   @relation(fields: [usuario_id], references: [id])
+  }
+
+  model Medico {
+    usuario_id       String              @id
+    tipo_matricula   TipoMatriculaEnum
+    numero_matricula String              @unique
+    numero_telefono  String
+    ubicacion_id     String              @unique
+    especialidad_id  String
+    descripcion      String?
+    especialidad     Especialidad        @relation(fields: [especialidad_id], references: [id])
+    ubicacion        Ubicacion           @relation(fields: [ubicacion_id], references: [id])
+    usuario          Usuario             @relation(fields: [usuario_id], references: [id])
+    citas            Cita[]              @relation("MedicoCitas")
+    duracion_cita    Int?
+    intervalos       IntervaloAtencion[] @relation("MedicoIntervalos")
 }
 
-datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
-}
+  model Paciente {
+    usuario_id          String      @id
+    fecha_nacimiento    DateTime
+    lugar_nacimiento    String
+    contacto_emergencia String
+    numero_telefono     String
+    ubicacion_id        String      @unique
+    obra_social_id      String
+    ficha_medica_id     String      @unique
+    ficha_medica        FichaMedica @relation(fields: [ficha_medica_id], references: [id])
+    obra_social         ObraSocial  @relation(fields: [obra_social_id], references: [id])
+    ubicacion           Ubicacion   @relation(fields: [ubicacion_id], references: [id])
+    usuario             Usuario     @relation(fields: [usuario_id], references: [id])
+    citas               Cita[]      @relation("PacienteCitas")
+  }
 
-model Ubicacion {
-  id            String      @id @default(uuid())
-  calle         String
-  numero        String
-  codigo_postal String
-  ciudad        String
-  provincia     String
-  medico        Medico?
-  paciente      Paciente?
-  secretaria    Secretaria?
-}
+  model Admin {
+    usuario_id String  @id
+    usuario    Usuario @relation(fields: [usuario_id], references: [id])
+  }
 
-model Secretaria {
-  usuario_id      String    @id
-  numero_telefono String
-  ubicacion_id    String    @unique
-  ubicacion       Ubicacion @relation(fields: [ubicacion_id], references: [id])
-  usuario         Usuario   @relation(fields: [usuario_id], references: [id])
-}
+  model Usuario {
+    id                 String            @id @default(uuid())
+    tipo_documento     TipoDocumentoEnum
+    numero_documento   String            @unique
+    nombre             String
+    apellido           String
+    correo_electronico String
+    contrasena         String
+    admin              Admin?
+    medico             Medico?
+    paciente           Paciente?
+    secretaria         Secretaria?
+    resetToken         String?           
+    resetTokenExpires  DateTime?         
+  }
 
-model Medico {
-  usuario_id       String              @id
-  tipo_matricula   TipoMatriculaEnum
-  numero_matricula String              @unique
-  numero_telefono  String
-  ubicacion_id     String              @unique
-  especialidad_id  String
-  descripcion      String?
-  duracion_cita    Int?
-  citas            Cita[]              @relation("MedicoCitas")
-  intervalos       IntervaloAtencion[] @relation("MedicoIntervalos")
-  especialidad     Especialidad        @relation(fields: [especialidad_id], references: [id])
-  ubicacion        Ubicacion           @relation(fields: [ubicacion_id], references: [id])
-  usuario          Usuario             @relation(fields: [usuario_id], references: [id])
-}
+  model FichaMedica {
+    id                     String    @id @default(uuid())
+    alergias               String
+    diagnostico            String
+    tratamientos           String
+    medicamentos_recetados String
+    paciente               Paciente?
+  }
 
-model Paciente {
-  usuario_id          String      @id
-  fecha_nacimiento    DateTime
-  lugar_nacimiento    String
-  contacto_emergencia String
-  numero_telefono     String
-  ubicacion_id        String      @unique
-  obra_social_id      String
-  ficha_medica_id     String      @unique
-  citas               Cita[]      @relation("PacienteCitas")
-  ficha_medica        FichaMedica @relation(fields: [ficha_medica_id], references: [id])
-  obra_social         ObraSocial  @relation(fields: [obra_social_id], references: [id])
-  ubicacion           Ubicacion   @relation(fields: [ubicacion_id], references: [id])
-  usuario             Usuario     @relation(fields: [usuario_id], references: [id])
-}
+  model Especialidad {
+    id     String   @id @default(uuid())
+    nombre String   @unique
+    medico Medico[]
+  }
 
-model Admin {
-  usuario_id String  @id
-  usuario    Usuario @relation(fields: [usuario_id], references: [id])
-}
+  model ObraSocial {
+    id       String     @id @default(uuid())
+    nombre   String     @unique
+    paciente Paciente[]
+  }
 
-model Usuario {
-  id                 String            @id @default(uuid())
-  tipo_documento     TipoDocumentoEnum
-  numero_documento   String            @unique
-  nombre             String
-  apellido           String
-  correo_electronico String
-  contrasena         String
-  resetToken         String?
-  resetTokenExpires  DateTime?
-  admin              Admin?
-  medico             Medico?
-  paciente           Paciente?
-  secretaria         Secretaria?
-}
+  model Cita {
+    id          String    @id @default(uuid())
+    fecha_hora  DateTime
+    medico_id   String
+    paciente_id String
+    medico      Medico?    @relation(fields: [medico_id], references: [usuario_id], name: "MedicoCitas")
+    paciente    Paciente?  @relation(fields: [paciente_id], references: [usuario_id], name: "PacienteCitas")
+    description String?
+  }
 
-model FichaMedica {
-  id                     String    @id @default(uuid())
-  alergias               String
-  diagnostico            String
-  tratamientos           String
-  medicamentos_recetados String
-  paciente               Paciente?
-}
+  enum TipoDocumentoEnum {
+    CEDULA_IDENTIDAD
+    DOCUMENTO_NACIONAL_IDENTIDAD
+    LIBRETA_CIVICA
+    LIBRETA_ENROLAMIENTO
+    PASAPORTE
+  }
 
-model Especialidad {
-  id     String   @id @default(uuid())
-  nombre String   @unique
-  medico Medico[]
-}
+  enum TipoMatriculaEnum {
+    nacional
+    provincial
+  }
 
-model ObraSocial {
-  id       String     @id @default(uuid())
-  nombre   String     @unique
-  paciente Paciente[]
-}
 
-model Cita {
-  id          String   @id @default(uuid())
-  fecha_hora  DateTime
-  medico_id   String
-  paciente_id String
-  description String?
-  medico      Medico   @relation("MedicoCitas", fields: [medico_id], references: [usuario_id])
-  paciente    Paciente @relation("PacienteCitas", fields: [paciente_id], references: [usuario_id])
-}
+    model IntervaloAtencion {
+        id          String   @id @default(uuid())
+        diaSemana   DiaSemanaEnum
+        horaInicio  DateTime
+        horaFin     DateTime
+        medico_id   String
+        medico      Medico?   @relation(fields: [medico_id], references: [usuario_id], name: "MedicoIntervalos")
+    }
 
-model IntervaloAtencion {
-  id         String        @id @default(uuid())
-  diaSemana  DiaSemanaEnum
-  horaInicio DateTime
-  horaFin    DateTime
-  medico_id  String
-  medico     Medico        @relation("MedicoIntervalos", fields: [medico_id], references: [usuario_id])
-}
-
-enum TipoDocumentoEnum {
-  CEDULA_IDENTIDAD
-  DOCUMENTO_NACIONAL_IDENTIDAD
-  LIBRETA_CIVICA
-  LIBRETA_ENROLAMIENTO
-  PASAPORTE
-}
-
-enum TipoMatriculaEnum {
-  nacional
-  provincial
-}
-
-enum DiaSemanaEnum {
-  LUNES
-  MARTES
-  MIERCOLES
-  JUEVES
-  VIERNES
-}
+    enum DiaSemanaEnum {
+        LUNES
+        MARTES
+        MIERCOLES
+        JUEVES
+        VIERNES
+    }
