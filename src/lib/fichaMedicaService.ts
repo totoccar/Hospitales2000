@@ -151,7 +151,6 @@ export async function getFichaMedicaByPacienteIdAlergia(pacienteId: string) {
     }
   }
 
-  
   export async function updateFichaMedica(id: string, data: { 
     alergias: string;
     diagnostico: string;
@@ -159,7 +158,6 @@ export async function getFichaMedicaByPacienteIdAlergia(pacienteId: string) {
     medicamentos_recetados: string;
   }) {
     try {
-      // Verificación opcional para asegurarte de que el ID sea un UUID válido
       if (!id) {
         throw new Error("El ID es requerido para actualizar la ficha médica.");
       }
@@ -179,5 +177,4 @@ export async function getFichaMedicaByPacienteIdAlergia(pacienteId: string) {
       console.error("Error al actualizar la ficha médica:", error);
       throw new Error("Error al actualizar la ficha médica");
     }
-  }
-  
+  }  
