@@ -15,7 +15,7 @@ export function getPermission(pathname: string): string | null {
   }
 
   if (pathname.startsWith('/search/patient')) {
-    return 'medsec:access';
+    return 'admedsec:access';
   }
 
   if (pathname.startsWith('/appointment/request')) {
