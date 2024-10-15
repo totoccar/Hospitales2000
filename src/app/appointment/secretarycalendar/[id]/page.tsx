@@ -15,8 +15,15 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
   const [availableDates, setAvailableDates] = useState<Date[]>([]);
 
   useEffect(() => {
-    const fetchDoctorTurns = async () => {
+    const fetchMedicoData = async () => {
       setLoading(true);
+
+      const fetchInitialTurnos = async () => {
+        await fetchDoctorTurns(date);
+      };
+
+      fetchInitialTurnos();
+
       try {
         console.log("Fetching fechas for medicoId:", params.id);
         const turnos = await getFechasTurnosByMedicoId(params.id);
@@ -31,8 +38,8 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
       }
     };
 
-    fetchDoctorTurns();
-  }, [params.id]);
+    fetchMedicoData();
+  }, [params.id, date]);
 
 
   const fetchDoctorTurns = async (selectedDate: Date | undefined) => {
