@@ -21,13 +21,6 @@ export default function UserOptionsButton({ userName,rol }: { userName: string,r
                 <DropdownMenuLabel className="text-center">{rol}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
     
-                {(rol === "Medico" || rol === "Secretaria")&& (
-                    <DropdownMenuItem asChild>
-                        <Link href="/appointment/setschedule" passHref>
-                            Editar horarios
-                        </Link>
-                    </DropdownMenuItem>
-                )}
     
                 <DropdownMenuItem asChild>
                     <Link href="/password/change" passHref>

@@ -1,5 +1,6 @@
 
-import { Eye ,NotepadText,CalendarPlus,ArrowRight,CalendarDays, CalendarClock    } from 'lucide-react';
+import { Button } from '@react-email/components';
+import { Eye ,NotepadText,CalendarPlus,ArrowRight,CalendarDays, CalendarClock,SquareX, Trash, Trash2    } from 'lucide-react';
 import Link from 'next/link';
  
 
@@ -60,10 +61,20 @@ export function ViewMedicalRecord({ id, disabled }: { id: string; disabled?: boo
   );
 }
 
+
+export function DeleteAppointment( {id,disabled} : {id: string; disabled?:boolean }){
+  return(
+    <Link href={`/appointment/cancel/${id}`} 
+    className={`rounded-md border p-2 ${disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-red-100'}`}
+    >
+      <SquareX style={{ color: '#e85454', width: '32px', height: '32px' }} />
+    </Link>
+  )
+}
 export function SecretaryCalendar ({ id }: { id: string }) {
   return (
     <Link
-    href={`/appointment/calendar/${id}`}
+    href={`/appointment/secretarycalendar/${id}`}
    className="rounded-md border p-2 hover:bg-gray-100"
   >
     <CalendarDays className="w-5 " />
