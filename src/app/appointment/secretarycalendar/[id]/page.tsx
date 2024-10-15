@@ -100,10 +100,10 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
                           </p>
                         </div>
                         <div className="flex space-x-2">
-                          <Link href={'/'} className="rounded-md border p-2 hover:bg-gray-100">
+                          <Link href={'#'} className="rounded-md border p-2 hover:bg-gray-100">
                             <Pencil className="w-5" />
                           </Link>
-                          <Link href={'/'} className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400">
+                          <Link href={'#'} className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400">
                             <CircleX className="w-5" />
                           </Link>
                         </div>
