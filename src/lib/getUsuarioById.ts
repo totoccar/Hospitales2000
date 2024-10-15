@@ -1,17 +1,7 @@
 
 
 import prisma from "./db";
-export async function getUsuarioConRolesById(id: string) {
-  return prisma.usuario.findUnique({
-    where: { id },
-    include: {
-      secretaria: true,  // Incluir el rol de secretaria
-      medico: false,      // Incluir el rol de medico
-      paciente: false,    // Incluir el rol de paciente
-      admin: false,       // Incluir el rol de admin
-    },
-  });
-}
+
 export async function getUsuarioById(usuarioId: string) {
   try {
     const usuario = await prisma.usuario.findUnique({

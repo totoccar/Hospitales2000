@@ -1,5 +1,6 @@
 import { Button } from "@/src/components/ui/button";
 import { getEspecialidadById, getUbicacionById, getUsuarioById,getUsuarioConRolesById } from "@/src/lib/getMedicoById";
+
 import Link from "next/link";
 
 export default async function Component({ params }: { params: { id: string } }) {
@@ -22,6 +23,7 @@ export default async function Component({ params }: { params: { id: string } }) 
   );
 
   return (
+
     <div className="w-full max-w-3xl mx-auto p-6 bg-fondo mt-5 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-center">Vista de datos personales del médico</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

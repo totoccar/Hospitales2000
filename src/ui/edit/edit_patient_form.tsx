@@ -74,15 +74,20 @@ export default function PatientEditForm({ usuario, ubicacionUsuario, obrasSocial
             </div>
 
             <div className="space-y-2">
-            <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">Fecha de Nacimiento</label>
-            <Input 
-                id="dateOfBirth" 
-                name="fecha_nacimiento"
-                type="date" 
-                defaultValue={usuario.paciente?.fecha_nacimiento.toDateString() || ""}
-                required
-            />
+                <label htmlFor="dateOfBirth" className="block text-sm font-medium text-gray-700">Fecha de Nacimiento</label>
+                <Input 
+                    id="dateOfBirth" 
+                    name="fecha_nacimiento"
+                    type="date"
+                    // Conversión manual de la fecha para evitar problemas de zona horaria
+                    defaultValue={usuario.paciente?.fecha_nacimiento 
+                        ? new Date(usuario.paciente.fecha_nacimiento).toLocaleDateString('en-CA')  // 'en-CA' formato ISO sin afectar zona horaria
+                        : ""
+                    }
+                    required
+                />
             </div>
+
 
             <div className="space-y-2">
             <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700">Número de Teléfono</label>
