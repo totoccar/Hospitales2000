@@ -1,4 +1,4 @@
-"use client"; // Asegúrate de agregar esto al principio
+"use client"
 
 import { useState } from "react";
 import { Button } from "@/src/components/ui/button";
@@ -51,9 +51,11 @@ export default function FichaMedica({ fichaMedica }: FichaMedicaProps) {
     fichaMedica.medicamentos_recetados
   );
 
+  const [originalData, setOriginalData] = useState(fichaMedica);
+
   const handleSave = async () => {
     try {
-      const response = await fetch(`/view/medicalrecord/${fichaMedica.id}/api`, {
+      const response = await fetch(`/api/${fichaMedica.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -67,7 +69,13 @@ export default function FichaMedica({ fichaMedica }: FichaMedicaProps) {
       });
   
       if (response.ok) {
-        setIsEditing(false); // Cambiar los campos a no editables nuevamente
+        const updatedFicha = await response.json();
+        setOriginalData(updatedFicha);
+        setAlergias(updatedFicha.alergias);
+        setDiagnostico(updatedFicha.diagnostico);
+        setTratamientos(updatedFicha.tratamientos);
+        setMedicamentosRecetados(updatedFicha.medicamentos_recetados);
+        setIsEditing(false);
         console.log("Ficha médica actualizada correctamente");
       } else {
         console.error("Error al actualizar la ficha médica");
@@ -75,7 +83,15 @@ export default function FichaMedica({ fichaMedica }: FichaMedicaProps) {
     } catch (error) {
       console.error("Error en la solicitud:", error);
     }
-  };  
+  };
+
+  const handleCancel = () => {
+    setAlergias(originalData.alergias);
+    setDiagnostico(originalData.diagnostico);
+    setTratamientos(originalData.tratamientos);
+    setMedicamentosRecetados(originalData.medicamentos_recetados);
+    setIsEditing(false);
+  };
 
   return (
     <div className="bg-gray-200 p-4 mt-6 rounded-md shadow-inner">
@@ -105,19 +121,18 @@ export default function FichaMedica({ fichaMedica }: FichaMedicaProps) {
         )}
       </div>
 
-      <div className="flex justify-end mt-6">
+      <div className="flex justify-end mt-6 gap-2">
         {isEditing ? (
           <>
-            <Button onClick={() => setIsEditing(false)} variant="destructive">
+            <Button className="bg-red-700" onClick={handleCancel} variant="destructive">
               Cancelar
             </Button>
-            <Button onClick={handleSave} variant="outline">
+            <Button className="bg-secundario text-white hover:bg-primario hover:text-white" onClick={handleSave} variant="outline">
               Guardar
             </Button>
-            
           </>
         ) : (
-          <Button onClick={() => setIsEditing(true)} variant="outline">
+          <Button className="bg-secundario text-white hover:bg-primario hover:text-white" onClick={() => setIsEditing(true)} variant="outline">
             Editar
           </Button>
         )}

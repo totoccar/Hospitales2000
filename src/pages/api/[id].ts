@@ -1,4 +1,3 @@
-// src/pages/api/ficha-medica/[id].ts
 import prisma from "@/src/lib/db";
 import { NextApiRequest, NextApiResponse } from "next";
 

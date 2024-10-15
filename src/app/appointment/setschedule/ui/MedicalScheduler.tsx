@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "src/components/ui/select";
@@ -22,13 +22,13 @@ interface HorariosDia {
 
 export default function MedicalScheduler({
   userRole,
-  selectedDoctorId, // Añadimos la prop para el id del médico
+  selectedDoctorId: initialSelectedDoctorId, // Cambiamos el nombre para evitar conflictos con el estado
 }: {
   userRole: string;
   selectedDoctorId?: string;
 }) {
-  const [selectedDoctorIdState, setSelectedDoctorId] = useState<string>(
-    selectedDoctorId || ""
+  const [selectedDoctorId, setSelectedDoctorId] = useState<string>(
+    initialSelectedDoctorId || ""
   );
   const [doctors, setDoctors] = useState<Doctor[]>([]);
   const [duracionTurno, setDuracionTurno] = useState<number>(15);
@@ -50,8 +50,8 @@ export default function MedicalScheduler({
         if (userRole === "Secretaria") {
           const doctorsList = await getDoctors();
           setDoctors(doctorsList);
-          if (selectedDoctorId) {
-            setSelectedDoctorId(selectedDoctorId);
+          if (initialSelectedDoctorId) {
+            setSelectedDoctorId(initialSelectedDoctorId);
           }
         } else if (userRole === "Medico") {
           const { schedules, appointmentDuration } = await getDoctorSchedule();
@@ -66,7 +66,7 @@ export default function MedicalScheduler({
     }
 
     loadInitialData();
-  }, [userRole, selectedDoctorId]);
+  }, [userRole, initialSelectedDoctorId]);
 
   useEffect(() => {
     if (selectedDoctorId && userRole === 'Secretaria') {
@@ -278,7 +278,7 @@ export default function MedicalScheduler({
           <Label htmlFor="doctorSelect">Seleccionar Médico</Label>
           <Select
             value={selectedDoctorId}
-            onValueChange={setSelectedDoctorId}
+            onValueChange={(value) => setSelectedDoctorId(value)}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Seleccione un médico" />
@@ -357,7 +357,6 @@ export default function MedicalScheduler({
                   <Button 
                     onClick={() => eliminarIntervalo(dia, index)}
                     variant="destructive"
-                    
                   >
                     Eliminar
                   </Button>
@@ -368,7 +367,7 @@ export default function MedicalScheduler({
 
           <Button 
             onClick={guardarHorarios} 
-            className="mt-6 w-full bg-primario"
+            className="mt-6 w-full"
             disabled={guardando || !guardarHabilitado}
           >
             {guardando ? (
