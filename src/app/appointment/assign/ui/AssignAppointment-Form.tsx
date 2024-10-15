@@ -5,6 +5,7 @@ import { Label } from "@/src/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/src/components/ui/radio-group";
 import {
   AppointmentState,
+  assignAppointment,
   computeAvailableTimeslots,
   createAppointment,
 } from "@/src/lib/requestAppointment";
@@ -20,13 +21,13 @@ interface RequestAppointmentFormProps {
   duracion_cita?: number;
 }
 
-export default function RequestAppointmentForm({
+export default function AssignppointmentForm({
   medico_id,
   paciente_id,
   duracion_cita,
 }: RequestAppointmentFormProps) {
   const initialState: AppointmentState = { message: null, errors: {} };
-  const [state, formAction] = useFormState(createAppointment, initialState);
+  const [state, formAction] = useFormState(assignAppointment, initialState);
 
   const [date, setDate] = useState<Date | undefined>(new Date());
   const [isFirstTime, setIsFirstTime] = useState<string | undefined>();

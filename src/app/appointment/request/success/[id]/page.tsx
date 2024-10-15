@@ -22,7 +22,7 @@ export default async function AppointmentSuccess({ params }: { params: { id: str
         <h1 className="text-primario text-3xl font-sans mb-4">Tu cita ha sido agendada con éxito</h1>
         <h2 className="text-secundario text-xl">El médico {doctor.nombre} {doctor.apellido} especialista en {especialidad?.toLocaleLowerCase()}  te atenderá</h2>
         <div className="bg-primario text-white p-4 rounded-lg m-4 ">
-        <p className="m-2">Te hemos enviado un correo de confirmación con los detalles de la cita. <br></br>
+        <p className="m-2">Recuerda agendar esta fecha en tu calendario para no perderla.  <br></br>
         Si necesitas modificar o cancelar la cita, puedes hacerlo desde tu perfil.</p>
         </div>
         <Link href={"/"}>

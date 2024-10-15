@@ -1,8 +1,14 @@
 
-import { Button } from '@react-email/components';
-import { Eye ,NotepadText,CalendarPlus,ArrowRight,CalendarDays, CalendarClock,SquareX, Trash, Trash2    } from 'lucide-react';
+import { Eye ,NotepadText,CalendarPlus,ArrowRight,CalendarDays, CalendarClock,SquareX  } from 'lucide-react';
 import Link from 'next/link';
+import { getRole } from '../app/lib/actions';
  
+const mapRoles = {
+  'Paciente': 'Paciente',
+  'Medico': 'Medico',
+  'Secretaria': 'Secretaria',
+  'Administrador': 'Administrador',
+}
 
 export function ViewPatient({ id }: { id: string }) {
   return (
@@ -50,16 +56,49 @@ export function ViewSecretary({ id }: { id: string }) {
 }
 
 
-export function ViewMedicalRecord({ id, disabled }: { id: string; disabled?: boolean }) {
+
+export async function ViewMedicalRecord({ id, disabled }: { id: string; disabled?: boolean }) {
+  const role = await getRole();
+  if (role !== mapRoles.Medico)
+    disabled = true;
   return (
     <Link
-      href={`/view/medicalrecord/${id}`}
+      href={disabled ? '#' : `/view/medicalrecord/${id}`}
       className={`rounded-md border p-2 ${disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-100'}`}
     >
       <NotepadText className="w-5" />
     </Link>
   );
 }
+
+export async function AssignAppointment({ medico_id,patient_id, disabled }: { medico_id: string; patient_id:string; disabled?: boolean }) {
+  const role = await getRole();
+  if (role !== mapRoles.Secretaria)
+    disabled = true;
+  return (
+    <Link
+      href={disabled ? '#' :`/appointment/assignAppointment/${patient_id}/${medico_id}`}
+      className={`rounded-md border p-2 ${disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-100'}`}
+    >
+      <CalendarPlus className="w-10" />
+    </Link>
+  );
+}
+
+export async function SelectPatientForAppointment({ patient_id, disabled }: { patient_id:string; disabled?: boolean }) {
+  const role = await getRole();
+  if (role !== mapRoles.Secretaria)
+    disabled = true;
+  return (
+    <Link
+      href={disabled ? '#' :`/appointment/assign?patient_id=${patient_id}`}
+      className={`rounded-md border p-2 ${disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-100'}`}
+    >
+      <CalendarPlus className="w-10" />
+    </Link>
+  );
+}
+
 
 
 export function DeleteAppointment( {id,disabled} : {id: string; disabled?:boolean }){
