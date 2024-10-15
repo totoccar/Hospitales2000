@@ -119,7 +119,7 @@ export default function DoctorEditForm({ usuario, ubicacionUsuario, Especialidad
             <Input 
                 id="placeOfBirth" 
                 name="descripcion"
-                placeholder="Ingrese el lugar de nacimiento" 
+                placeholder="Ingrese una descripcion" 
                 onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
                 defaultValue={usuario.medico?.descripcion || ""}
                 required

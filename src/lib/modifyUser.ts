@@ -175,7 +175,7 @@ export async function modifyPatient(prevState: PatientState, formData: FormData)
 //-----------------------------------------------CREATE DOCTOR FORM-----------------------------------------------
 export type DoctorState = {
     errors?: {
-        typeId?: string[];
+        //typeId?: string[];
         numberId?: string[];
         regType?: string[];
         regNumber?: string[];
@@ -189,22 +189,23 @@ export type DoctorState = {
         cityState?: string[];
         email?: string[];
         specialty?: string[];
+        
     };
     message?: string | null;
 };
 
 const DoctorFormSchema = z.object({
     id: z.string(),
-    typeId: z.enum(['CEDULA_IDENTIDAD', 'DOCUMENTO_NACIONAL_IDENTIDAD', 
+    /*typeId: z.enum(['CEDULA_IDENTIDAD', 'DOCUMENTO_NACIONAL_IDENTIDAD', 
         'LIBRETA_CIVICA', 'LIBRETA_ENROLAMIENTO', 'PASAPORTE'], {
             invalid_type_error: 'Por favor seleccione un tipo de documento.',
         }
-    ),
+    ),*/
     numberId: z.string({
         invalid_type_error: 'Por favor ingrese el número de documento.',
     }),
     regType: z.enum(['nacional', 'provincial'], {
-        invalid_type_error: 'Por favor seleccione una fecha de nacimiento.',
+        invalid_type_error: 'Por favor ingrese matricula.',
     }),
     regNumber: z.string({
         invalid_type_error: 'Por favor ingrese la ciudad de nacimiento.',
@@ -239,14 +240,14 @@ const DoctorFormSchema = z.object({
     specialty: z.string({
         invalid_type_error: 'Por favor seleccione una especialidad.',
     }),
-    description: z.string(),
+    description: z.string().optional(),  // Campo opcional
 });
 
 const ModifyDoctor = DoctorFormSchema.omit({id: true});
 
 export async function modifyDoctor(prevState: DoctorState, formData: FormData) {
     const validatedFields = ModifyDoctor.safeParse({
-        typeId: formData.get('tipo_documento'),
+       // typeId: formData.get('tipo_documento'),
         numberId: formData.get('numero_documento'),
         regType: formData.get('tipo_matricula'),
         regNumber: formData.get('numero_matricula'),
@@ -277,8 +278,8 @@ export async function modifyDoctor(prevState: DoctorState, formData: FormData) {
 
     console.log('validatedFields: ', validatedFields);
 
-    const { typeId, numberId, regType, regNumber, doctorName, doctorLastName,
-        phoneNumber, city, streetName, streetNumber, postalCode, cityState, email, specialty    } = validatedFields.data; 
+    const {  numberId, regType, regNumber, doctorName, doctorLastName,
+        phoneNumber, city, streetName, streetNumber, postalCode, cityState, email, specialty   } = validatedFields.data; 
 
     const hashedPassword = await hash(numberId, 10);
 
@@ -286,7 +287,7 @@ export async function modifyDoctor(prevState: DoctorState, formData: FormData) {
         const updatedDoctor = await prisma.usuario.update({
             where: { numero_documento: numberId },
             data: {
-                tipo_documento: typeId,
+                //tipo_documento: typeId,
                 nombre: doctorName,
                 apellido: doctorLastName,
                 correo_electronico: email,
