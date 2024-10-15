@@ -16,7 +16,7 @@ export default async function Component({ params }: { params: { id: string } }) 
     'Secretaria': 'Secretaria',
     'Administrador': 'Administrador',
   }
-  if (role != mapRoles.Secretaria) {
+  if (role != mapRoles.Administrador) {
     disabled = true;
   } else {
     disabled = false;
