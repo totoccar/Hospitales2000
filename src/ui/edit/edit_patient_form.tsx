@@ -27,26 +27,25 @@ export default function PatientEditForm({ usuario, ubicacionUsuario, obrasSocial
     <form action={formAction} className="space-y-8 max-w-3xl rounded-md xs:p-1 p-2 bg-fondo md:p-4 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-            <label htmlFor="documentType" className="block text-sm font-medium text-gray-700">Tipo de Documento</label>
-            <Input 
-                id="documentType"
-                name="tipo_documento" 
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                defaultValue={usuario.tipo_documento}
-                readOnly
-            />
+                <label htmlFor="documentType" className="block text-sm font-medium text-gray-700">Tipo de Documento</label>
+                <Input 
+                    id="documentType"
+                    name="tipo_documento" 
+                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 bg-gray-100 text-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                    defaultValue={usuario.tipo_documento}
+                    readOnly
+                />
             </div>
             
             <div className="space-y-2">
-            <label htmlFor="documentNumber" className="block text-sm font-medium text-gray-700">Número de Documento</label>
-            <Input 
-                id="documentNumber"
-                name="numero_documento" 
-                placeholder="Ingrese el número de documento" 
-                onChange={(e) => handleInputChange(e, /^\d*$/)}
-                defaultValue={usuario.numero_documento}
-                readOnly
-            />
+                <label htmlFor="documentNumber" className="block text-sm font-medium text-gray-700">Número de Documento</label>
+                <Input 
+                    id="documentNumber"
+                    name="numero_documento" 
+                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-300 bg-gray-100 text-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                    defaultValue={usuario.numero_documento}
+                    readOnly
+                />
             </div>
 
             <div className="space-y-2">
