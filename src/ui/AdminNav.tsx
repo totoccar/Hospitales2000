@@ -13,6 +13,7 @@ export default function AdminNav({ userName }: { userName: string }) {
     { name: 'Registrar Secretaria', href: '/admin/create/secretary', icon: User2 },
     { name: 'Buscar Medico', href: '/search/doctor', icon: Search },
     { name: 'Buscar Secreraria', href: '/search/secretary', icon: Search },
+    { name: 'Buscar Paciente', href: '/search/patient', icon: Search },
   ];
 
   return (
