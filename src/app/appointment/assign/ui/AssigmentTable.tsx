@@ -1,6 +1,6 @@
 import { getEspecialidadById } from '@/src/lib/getMedicoById';
 import { findDoctorsAppointmentsByQuery, findDoctorsByQuery } from '@/src/lib/searchdoctor';
-import { RequestAppointment } from '@/src/ui/Buttons';
+import { AssignAppointment, RequestAppointment } from '@/src/ui/Buttons';
 import { TipoDocumentoEnum } from '@prisma/client';
 
 interface SearchParamsAppoitment {
@@ -49,7 +49,7 @@ export default async function AssigmentTable({
               <p>{getEspecialidadById(doctor.especialidad_id)}</p>
             </div>
             <div className="">
-            <RequestAppointment id={doctor.usuario.id} />
+            <AssignAppointment medico_id={doctor.usuario.id} patient_id={patient_id || ''} />
             </div>
             </div>
           ))}
@@ -84,7 +84,7 @@ export default async function AssigmentTable({
               <td className="whitespace-nowrap px-3 py-3">{getEspecialidadById(doctor.especialidad_id)}</td>
               <td className="whitespace-nowrap py-3 pr-3">
                 <div className="flex justify-center">
-                  <RequestAppointment id={doctor.usuario.id} />
+                <AssignAppointment medico_id={doctor.usuario.id} patient_id={patient_id || ''} />
                 </div>
               </td>
               </tr>

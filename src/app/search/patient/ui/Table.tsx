@@ -1,7 +1,7 @@
 
 import { findPacientesByQuery } from '@/src/lib/searchpatient';
 import { obtenerIniciales } from '@/src/lib/utils';
-import { AssignAppointment, ViewMedicalRecord, ViewPatient } from '@/src/ui/Buttons';
+import { AssignAppointment, SelectPatientForAppointment, ViewMedicalRecord, ViewPatient } from '@/src/ui/Buttons';
 import { TipoDocumentoEnum } from '@prisma/client';
 
 export default async function Table({
@@ -47,7 +47,7 @@ export default async function Table({
                     <ViewMedicalRecord disabled={false} id={patient.ficha_medica_id} />
                     </div>
                     <div className="flex justify-center ">
-                    <AssignAppointment disabled={false} id={patient.ficha_medica_id} />
+                    <SelectPatientForAppointment disabled={false} patient_id={patient.ficha_medica_id} />
                     </div>
                 </div>
               </div>
@@ -91,7 +91,7 @@ export default async function Table({
                     <div className="flex justify-center gap-2">
                     <ViewPatient id={patient.usuario.id} />
                     <ViewMedicalRecord disabled={false} id={patient.ficha_medica_id} />
-                    <AssignAppointment disabled={false} id={patient.usuario.id} />
+                    <SelectPatientForAppointment disabled={false} patient_id={patient.usuario.id} />
                     </div>
                   </td>
                   </tr>

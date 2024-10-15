@@ -60,16 +60,28 @@ export function ViewMedicalRecord({ id, disabled }: { id: string; disabled?: boo
   );
 }
 
-export function AssignAppointment({ id, disabled }: { id: string; disabled?: boolean }) {
+export function AssignAppointment({ medico_id,patient_id, disabled }: { medico_id: string; patient_id:string; disabled?: boolean }) {
   return (
     <Link
-      href={`/appointment/assign/${id}`}
+      href={`/appointment/assignAppointment/${patient_id}/${medico_id}`}
       className={`rounded-md border p-2 ${disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-100'}`}
     >
-      <CalendarPlus   className="w-10" />
+      <CalendarPlus className="w-10" />
     </Link>
   );
 }
+
+export function SelectPatientForAppointment({ patient_id, disabled }: { patient_id:string; disabled?: boolean }) {
+  return (
+    <Link
+      href={`/appointment/assign?patient_id=${patient_id}`}
+      className={`rounded-md border p-2 ${disabled ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-100'}`}
+    >
+      <CalendarPlus className="w-10" />
+    </Link>
+  );
+}
+
 
 
 export function DeleteAppointment( {id,disabled} : {id: string; disabled?:boolean }){
