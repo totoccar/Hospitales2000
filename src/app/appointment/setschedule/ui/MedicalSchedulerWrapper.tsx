@@ -20,7 +20,7 @@ export default function MedicalSchedulerWrapper({
   }, []);
 
   if (!userRole) {
-    return <div></div>;
+    return null;
   }
 
   return (

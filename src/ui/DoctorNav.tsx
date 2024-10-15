@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { Menu, X, Hospital, Search, PowerIcon, Calendar } from 'lucide-react';
+import { Menu, X, Hospital, Search, PowerIcon, Calendar, Clock } from 'lucide-react';
 import Link from 'next/link';
 import UserOptionsButton from './UserOptionsButton';
 
@@ -10,7 +10,8 @@ export default function DoctorNav({ userName }: { userName: string }) {
   const navItems = [
     { name: 'Buscar Paciente', href: '/search/patient', icon: Search },
     { name: 'Buscar Medico', href: '/search/doctor', icon: Search },
-    { name: 'Ver calendario', href: 'appointment/calendar', icon: Calendar }
+    { name: 'Establecer horario de atencion', href: 'appointment/setschedule', icon: Clock },
+    { name: 'Ver calendario', href: 'appointment/medicalcalendar', icon: Calendar }
   ];
 
   return (
