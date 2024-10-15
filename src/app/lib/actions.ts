@@ -34,3 +34,4 @@ export async function getRole(): Promise<string> {
   const role = (await auth())?.user.role;
   return role;
 }
+
