@@ -5,8 +5,6 @@ import {
   getAmountAppointment,
   getEspecialidades,
 } from "@/src/lib/searchdoctor";
-import AppointmentSearch from "../../ui/AppointmentSearch";
-import AppointmentTable from "../../ui/AppointmentTable";
 import Pagination from "@/src/app/search/ui/Pagination";
 import { getUsuarioById } from "@/src/lib/getUsuarioById";
 import AppointmentAssigmentSearch from "./AppointmentAssigmentSearch";
