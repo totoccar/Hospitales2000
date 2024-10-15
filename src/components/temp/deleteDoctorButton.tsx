@@ -11,7 +11,7 @@ interface ClientButtonsProps {
 const ClientButtons: React.FC<ClientButtonsProps> = ({ id, disabled }: {id: string, disabled: boolean}) => {
 
   const handleDelete = () => {
-    const confirmed = window.confirm("Está a punto de eliminar toda la información relacionada con el doctor. ¿Está seguro?");
+    const confirmed = window.confirm("Está a punto de eliminar toda la información relacionada con el médico. ¿Está seguro?");
     if (confirmed) {
       deleteDoctor(id);
     }
