@@ -9,8 +9,8 @@ export default function DoctorNav({ userName }: { userName: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const navItems = [
     { name: 'Buscar Paciente', href: '/search/patient', icon: Search },
-    { name: 'Establecer horario de atencion', href: 'appointment/setschedule', icon: Clock },
-    { name: 'Ver calendario', href: 'appointment/medicalcalendar', icon: Calendar }
+    { name: 'Establecer horario de atencion', href: '/appointment/setschedule', icon: Clock },
+    { name: 'Ver calendario', href: '/appointment/medicalcalendar', icon: Calendar }
   ];
 
   return (
