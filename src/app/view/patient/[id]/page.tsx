@@ -1,8 +1,26 @@
 import { Button } from "@/src/components/ui/button";
 import { getObraSocialById, getUbicacionById, getUsuarioById } from "@/src/lib/getUsuarioById";
 import ClientButtons from "@/src/components/temp/deletePatientButton";
+import { getRole } from "@/src/app/lib/actions";
 
 export default async function Component({ params }: { params: { id: string } }) {
+
+  let disabled;
+
+  //Get user role.
+  const role = await getRole();
+  const mapRoles = {
+    'Paciente': 'Paciente',
+    'Medico': 'Medico',
+    'Secretaria': 'Secretaria',
+    'Administrador': 'Administrador',
+  }
+  if (role != mapRoles.Administrador) {
+    disabled = true;
+  } else {
+    disabled = false;
+  }
+
   const id = params.id as string;
   const usuario = await getUsuarioById(id);
   let ubicacionUsuario=null;
@@ -41,7 +59,7 @@ export default async function Component({ params }: { params: { id: string } }) 
         
       </div>
       <div className="flex justify-end space-x-4 mt-6">
-        <ClientButtons id={id} />
+        <ClientButtons id={id} disabled={disabled}/>
       </div>
       <p className="text-sm text-gray-500 mt-4">Solo disponible para rol de secretaria</p>
     </div>
