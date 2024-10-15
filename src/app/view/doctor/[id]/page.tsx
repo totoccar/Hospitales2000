@@ -61,7 +61,6 @@ export default async function Component({ params }: { params: { id: string } }) 
       <div className="flex justify-end space-x-4 mt-6">
         <ClientButtons id={id} disabled={disabled} />
       </div>
-      <p className="text-sm text-gray-500 mt-4">Solo disponible para rol de administrador</p>
     </div>
     </MaxWidthWrapper>
   );
