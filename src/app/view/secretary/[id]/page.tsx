@@ -1,8 +1,25 @@
 import { Button } from "@/src/components/ui/button";
 import { getUbicacionById, getUsuarioById } from "@/src/lib/getSecretariaById";
-
+import ClientButtons from "@/src/components/temp/deleteSecretaryButton";
+import { getRole } from "@/src/app/lib/actions";
 
 export default async function Component({ params }: { params: { id: string } }) {
+
+  let disabled;
+
+  //Get user role.
+  const role = await getRole();
+  const mapRoles = {
+    'Paciente': 'Paciente',
+    'Medico': 'Medico',
+    'Secretaria': 'Secretaria',
+    'Administrador': 'Administrador',
+  }
+  if (role != mapRoles.Administrador) {
+    disabled = true;
+  } else {
+    disabled = false;
+  }
 
   const id = params.id as string;
   const usuario = await getUsuarioById(id);
@@ -37,8 +54,7 @@ export default async function Component({ params }: { params: { id: string } }) 
         <DisplayField label="Correo electrónico" value={usuario.correo_electronico} />
       </div>
       <div className="flex justify-end space-x-4 mt-6">
-        <Button disabled={true} variant="outline">Editar</Button>
-        <Button disabled={true} variant="destructive">Eliminar</Button>
+        <ClientButtons id={id} disabled={disabled} />
       </div>
       <p className="text-sm text-gray-500 mt-4">Solo disponible para rol de administrador</p>
     </div>
