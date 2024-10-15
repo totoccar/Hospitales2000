@@ -72,14 +72,14 @@ export async function deleteDoctor(id: string) {
         await prisma.medico.delete({
             where: {usuario_id: user?.medico?.usuario_id}
         });
+        await prisma.intervaloAtencion.deleteMany({
+            where: {medico_id: user?.medico?.usuario_id}
+        });
         await prisma.cita.deleteMany({
             where: {medico_id: user?.medico?.usuario_id}
         });
         await prisma.ubicacion.delete({
             where: {id: user?.medico?.ubicacion.id}
-        });
-        await prisma.intervaloAtencion.deleteMany({
-            where: {medico_id: user?.medico?.usuario_id}
         });
         await prisma.usuario.delete({
             where: {id: id},
