@@ -22,8 +22,12 @@ export default function MedCalendar() {
   useEffect(() => {
     const fetchMedicoData = async () => {
       setLoading(true);
-      try {
+      const fetchInitialTurnos = async () => {
+        await fetchDoctorTurns(date);
+      };
 
+      fetchInitialTurnos();
+      try {
         const dni = await getDni();
         const id_medico = await getMedicoIdByDNI(dni);
 
@@ -38,8 +42,10 @@ export default function MedCalendar() {
       }
     };
 
+
     fetchMedicoData();
-  }, []);
+
+  }, [date]);
 
   const fetchDoctorTurns = async (selectedDate: Date | undefined) => {
     if (!selectedDate) return; // Verifica que la fecha no sea undefined
