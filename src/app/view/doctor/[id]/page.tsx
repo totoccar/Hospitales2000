@@ -60,7 +60,7 @@ export default async function Component({ params }: { params: { id: string } }) 
       </div>
       <div className="flex justify-end space-x-4 mt-6">
         <ClientButtons id={id} disabled={disabled} />
-      </div>
+      </div> 
     </div>
     </MaxWidthWrapper>
   );
