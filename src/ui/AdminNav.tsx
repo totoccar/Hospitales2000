@@ -11,10 +11,8 @@ export default function AdminNav({ userName }: { userName: string }) {
     { name: 'Registrar Paciente', href: '/admin/create/patient', icon: User2 },
     { name: 'Registrar Medico', href: '/admin/create/doctor', icon: User2 },
     { name: 'Registrar Secretaria', href: '/admin/create/secretary', icon: User2 },
-    { name: 'Buscar Paciente', href: '/search/patient', icon: Search },
     { name: 'Buscar Medico', href: '/search/doctor', icon: Search },
     { name: 'Buscar Secreraria', href: '/search/secretary', icon: Search },
-    {name : 'Establecer horario de atencion', href: '', icon: Clock},
   ];
 
   return (
