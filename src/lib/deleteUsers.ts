@@ -69,11 +69,11 @@ export async function deleteDoctor(id: string) {
         console.log(id);
         console.log(user);
         //Delete all related fields.
-        await prisma.medico.delete({
-            where: {usuario_id: user?.medico?.usuario_id}
-        });
         await prisma.intervaloAtencion.deleteMany({
             where: {medico_id: user?.medico?.usuario_id}
+        });
+        await prisma.medico.delete({
+            where: {usuario_id: user?.medico?.usuario_id}
         });
         await prisma.cita.deleteMany({
             where: {medico_id: user?.medico?.usuario_id}
