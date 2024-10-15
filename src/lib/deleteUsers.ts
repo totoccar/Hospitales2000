@@ -26,11 +26,11 @@ export async function deletePatient(id: string) {
         await prisma.cita.deleteMany({
             where: {paciente_id: user?.paciente?.usuario_id}
         });
-        await prisma.fichaMedica.delete({
-            where: {id: user?.paciente?.ficha_medica_id},
-        });
         await prisma.paciente.delete({
             where: {usuario_id: user?.paciente?.usuario_id}
+        });
+        await prisma.fichaMedica.delete({
+            where: {id: user?.paciente?.ficha_medica_id},
         });
         await prisma.ubicacion.delete({
             where: {id: user?.paciente?.ubicacion.id}
