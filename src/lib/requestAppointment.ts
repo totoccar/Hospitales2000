@@ -73,6 +73,47 @@ export async function createAppointment(
   redirect(`/appointment/request/success/${medico_id}`);
 }
 
+export async function assignAppointment(
+  prevState: AppointmentState,
+  formData: FormData
+) {
+  const validatedFields = CreateAppointment.safeParse({
+    fecha_hora: formData.get("fecha_hora"),
+    paciente_id: formData.get("paciente_id"),
+    medico_id: formData.get("medico_id"),
+    description: formData.get("description"),
+  });
+
+  if (!validatedFields.success) {
+    console.log("error on validatedFields.");
+    console.log(validatedFields.error.flatten().fieldErrors);
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Campos incompletos. Error al crear una nueva cita medica.",
+    };
+  }
+
+  const { fecha_hora, paciente_id, medico_id, description } =
+    validatedFields.data;
+
+  try {
+    const newAppointment = await prisma.cita.create({
+      data: {
+        fecha_hora: fecha_hora,
+        paciente_id: paciente_id,
+        medico_id: medico_id,
+        description: description,
+      },
+    });
+    console.log("Cita creada:", newAppointment);
+  } catch (error) {
+    console.error("Error al crear una cita:", error);
+    throw error;
+  }
+  revalidatePath("appointment/assign/[patient_id]/[medico_id]");
+  redirect(`/appointment/assign/success/${paciente_id}/${medico_id}`);
+}
+
 export async function getDoctorIntervalsForIdAndDay(
   doctorId: string,
   date: Date
