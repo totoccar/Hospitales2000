@@ -56,11 +56,10 @@ export default async function Component({ params }: { params: { id: string } }) 
         <DisplayField label="Provincia" value={ubicacionUsuario?.provincia||""} />
         <DisplayField label="Correo electrónico" value={usuario.correo_electronico} />
         <DisplayField label="Obra social" value={ usuario.paciente?.obra_social_id ? await getObraSocialById(usuario.paciente.obra_social_id) || "": "No tiene obra social"}/>
-        
       </div>
       <div className="flex justify-end space-x-4 mt-6">
         <ClientButtons id={id} disabled={disabled}/>
-      </div>
+      </div> 
     </div>
   );
 }
