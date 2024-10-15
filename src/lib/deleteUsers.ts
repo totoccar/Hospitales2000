@@ -23,11 +23,11 @@ export async function deletePatient(id: string) {
         console.log(id);
         console.log(user);
         //Delete all related fields.
-        await prisma.paciente.delete({
-            where: {usuario_id: user?.paciente?.usuario_id}
-        });
         await prisma.cita.deleteMany({
             where: {paciente_id: user?.paciente?.usuario_id}
+        });
+        await prisma.paciente.delete({
+            where: {usuario_id: user?.paciente?.usuario_id}
         });
         await prisma.fichaMedica.delete({
             where: {id: user?.paciente?.ficha_medica_id},
@@ -69,11 +69,11 @@ export async function deleteDoctor(id: string) {
         console.log(id);
         console.log(user);
         //Delete all related fields.
-        await prisma.medico.delete({
-            where: {usuario_id: user?.medico?.usuario_id}
-        });
         await prisma.cita.deleteMany({
             where: {medico_id: user?.medico?.usuario_id}
+        });
+        await prisma.medico.delete({
+            where: {usuario_id: user?.medico?.usuario_id}
         });
         await prisma.ubicacion.delete({
             where: {id: user?.medico?.ubicacion.id}
