@@ -26,16 +26,15 @@ export default function DoctorEditForm({ usuario, ubicacionUsuario, Especialidad
   return (
     <form action={formAction} className="space-y-8 max-w-3xl rounded-md xs:p-1 p-2 bg-fondo md:p-4 mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-            <label htmlFor="documentNumber" className="block text-sm font-medium text-gray-700">Número de Documento</label>
-            <Input 
-                id="documentNumber"
-                name="numero_documento" 
-                placeholder="Ingrese el número de documento" 
-                onChange={(e) => handleInputChange(e, /^\d*$/)}
-                defaultValue={usuario.numero_documento}
-                readOnly
-            />
+        <div className="space-y-2">
+                <label htmlFor="documentNumber" className="block text-sm font-medium text-gray-700">Número de Documento</label>
+                <Input 
+                    id="documentNumber"
+                    name="numero_documento" 
+                   className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-400 bg-gray-200 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                    defaultValue={usuario.numero_documento}
+                    readOnly
+                />
             </div>
 
             <div className="space-y-2">
@@ -65,14 +64,14 @@ export default function DoctorEditForm({ usuario, ubicacionUsuario, Especialidad
             </div>
 
             <div className="space-y-2">
-            <label htmlFor="MatriculaType" className="block text-sm font-medium text-gray-700">Tipo de Matricula</label>
-            <Input 
-                id="MatriculaType"
-                name="tipo_matricula" 
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                defaultValue={usuario.medico.tipo_matricula}
-                readOnly
-            />
+                <label htmlFor="MatriculaType" className="block text-sm font-medium text-gray-700">Tipo de Matricula</label>
+                <Input 
+                    id="MatriculaType"
+                    name="tipo_matricula" 
+                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-400 bg-gray-200 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                    defaultValue={usuario.medico.tipo_matricula}
+                    readOnly
+                />
             </div>
 
             <div className="space-y-2">
@@ -88,14 +87,14 @@ export default function DoctorEditForm({ usuario, ubicacionUsuario, Especialidad
             </div>
 
             <div className="space-y-2">
-            <label htmlFor="matriculanumber" className="block text-sm font-medium text-gray-700">Numero de Matricula</label>
-            <Input 
-                id="matriculanumber"
-                name="numero_matricula" 
-                className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
-                defaultValue={usuario.medico.numero_matricula}
-                readOnly
-            />
+                <label htmlFor="matriculanumber" className="block text-sm font-medium text-gray-700">Número de Matricula</label>
+                <Input 
+                    id="matriculanumber"
+                    name="numero_matricula" 
+                    className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-gray-400 bg-gray-200 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
+                    defaultValue={usuario.medico.numero_matricula}
+                    readOnly
+                />
             </div>
           
             <div className="space-y-2">
@@ -122,7 +121,7 @@ export default function DoctorEditForm({ usuario, ubicacionUsuario, Especialidad
                 placeholder="Ingrese una descripcion" 
                 onChange={(e) => handleInputChange(e, /^[A-Za-z\s]*$/)}
                 defaultValue={usuario.medico?.descripcion || ""}
-                required
+                //required
             />
             </div>
 

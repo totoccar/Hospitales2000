@@ -189,7 +189,7 @@ export type DoctorState = {
         cityState?: string[];
         email?: string[];
         specialty?: string[];
-        
+        description?: string[];
     };
     message?: string | null;
 };
@@ -208,7 +208,7 @@ const DoctorFormSchema = z.object({
         invalid_type_error: 'Por favor ingrese matricula.',
     }),
     regNumber: z.string({
-        invalid_type_error: 'Por favor ingrese la ciudad de nacimiento.',
+        invalid_type_error: 'Por favor ingrese numero de matricula.',
     }),
     doctorName: z.string({
         invalid_type_error: 'Por favor ingrese el nombre.',
@@ -269,7 +269,8 @@ export async function modifyDoctor(prevState: DoctorState, formData: FormData) {
     console.log('validatedFields: ', validatedFields);
 
     if (!validatedFields.success) {
-        console.log("error on validatedFields.");
+        //console.log("error on validatedFields.");
+        console.log("Error en la validación de los campos:", validatedFields.error.flatten().fieldErrors);
         return {
             errors: validatedFields.error.flatten().fieldErrors,
             message: 'Campos incompletos. Error al crear un doctor nuevo.',
@@ -279,7 +280,7 @@ export async function modifyDoctor(prevState: DoctorState, formData: FormData) {
     console.log('validatedFields: ', validatedFields);
 
     const {  numberId, regType, regNumber, doctorName, doctorLastName,
-        phoneNumber, city, streetName, streetNumber, postalCode, cityState, email, specialty   } = validatedFields.data; 
+        phoneNumber, city, streetName, streetNumber, postalCode, cityState, email, specialty,description  } = validatedFields.data; 
 
     const hashedPassword = await hash(numberId, 10);
 
@@ -302,6 +303,7 @@ export async function modifyDoctor(prevState: DoctorState, formData: FormData) {
                                 id: specialty,
                             }
                         },
+                        ...(description !== undefined && { descripcion: description }),
                         ubicacion: {
                             update: {
                                 calle: streetName,
