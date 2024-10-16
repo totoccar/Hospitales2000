@@ -1,4 +1,4 @@
-import { Button } from "@/src/components/ui/button";
+
 import { getEspecialidadById, getUbicacionById, getUsuarioById } from "@/src/lib/getMedicoById";
 
 import Link from "next/link";
@@ -25,7 +25,7 @@ export default async function Component({ params }: { params: { id: string } }) 
   } else {
     disabled = false;
   }
-  if (role != mapRoles.Secretaria) {
+  if (role != mapRoles.Administrador) {
     disabledEdit = true;
   } else {
     disabledEdit = false;
