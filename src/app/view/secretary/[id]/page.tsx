@@ -23,7 +23,7 @@ export default async function Component({ params }: { params: { id: string } }) 
   } else {
     disabled = false;
   }
-  if (role != mapRoles.Secretaria) {
+  if (role != mapRoles.Administrador) {
     disabledEdit = true;
   } else {
     disabledEdit = false;
