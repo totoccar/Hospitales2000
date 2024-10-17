@@ -1,14 +1,12 @@
 
 import { getUbicacionById, getUsuarioById } from "@/src/lib/getSecretariaById";
 import Link from "next/link";
-
 import ClientButtons from "@/src/components/temp/modifySecretaryButton";
 import { getRole } from "@/src/app/lib/actions";
 
 
 export default async function Component({ params }: { params: { id: string } }) {
 
-  let disabled;
   let disabledEdit;
   //Get user role.
   const role = await getRole();
@@ -18,12 +16,8 @@ export default async function Component({ params }: { params: { id: string } }) 
     'Secretaria': 'Secretaria',
     'Administrador': 'Administrador',
   }
-  if (role != mapRoles.Administrador) {
-    disabled = true;
-  } else {
-    disabled = false;
-  }
-  if (role != mapRoles.Administrador) {
+
+  if (role !== mapRoles.Administrador) {
     disabledEdit = true;
   } else {
     disabledEdit = false;
@@ -62,7 +56,7 @@ export default async function Component({ params }: { params: { id: string } }) 
         <DisplayField label="Correo electrónico" value={usuario.correo_electronico} />
       </div>
       <div className="flex justify-end space-x-4 mt-6">
-        <Link href={`/view/secretary/${id}/editSecretary`}>
+        <Link href={disabledEdit ? "#" :`/view/secretary/${id}/editSecretary`}>
           <ClientButtons id={id} disabledEdit={disabledEdit} />
         </Link>
       </div>
