@@ -1,7 +1,7 @@
 
 import { findPacientesByQuery } from '@/src/lib/searchpatient';
 import { obtenerIniciales } from '@/src/lib/utils';
-import { ViewMedicalRecord, ViewPatient } from '@/src/ui/Buttons';
+import { AssignAppointment, SelectPatientForAppointment, ViewMedicalRecord, ViewPatient } from '@/src/ui/Buttons';
 import { TipoDocumentoEnum } from '@prisma/client';
 
 export default async function Table({
@@ -46,6 +46,9 @@ export default async function Table({
                   <div className="flex justify-center ">
                     <ViewMedicalRecord disabled={false} id={patient.ficha_medica_id} />
                     </div>
+                    <div className="flex justify-center ">
+                    <SelectPatientForAppointment disabled={false} patient_id={patient.ficha_medica_id} />
+                    </div>
                 </div>
               </div>
             ))}
@@ -59,8 +62,7 @@ export default async function Table({
                 <th scope="col" className="px-3 py-5 font-medium text-sm ">Tipo De Documento</th>
                 <th scope="col" className="px-3 py-5 font-medium text-sm ">N° de Documento</th>
                 <th scope="col" className="px-3 py-5 font-medium text-sm ">N° de Telefono</th>
-                <th scope="col" className="px-3 py-5 font-medium text-sm ">Ver Datos Personales</th>
-                <th scope="col" className="px-3 py-5 font-medium text-sm ">Ver Ficha medica</th>
+                <th scope="col" className="px-3 py-5 font-medium text-center text-sm ">Acciones</th>
               </tr>
             </thead>
             <tbody className="bg-white">
@@ -86,13 +88,10 @@ export default async function Table({
                   <td className="whitespace-nowrap px-3 py-3">{patient.usuario.numero_documento}</td>
                   <td className="whitespace-nowrap px-3 py-3">{patient.numero_telefono}</td>
                   <td className="whitespace-nowrap py-3 pr-3">
-                    <div className="flex justify-center ">
+                    <div className="flex justify-center gap-2">
                     <ViewPatient id={patient.usuario.id} />
-                    </div>
-                  </td>
-                  <td className="whitespace-nowrap py-3 pr-3">
-                    <div className="flex justify-center ">
                     <ViewMedicalRecord disabled={false} id={patient.ficha_medica_id} />
+                    <SelectPatientForAppointment disabled={false} patient_id={patient.usuario.id} />
                     </div>
                   </td>
                   </tr>

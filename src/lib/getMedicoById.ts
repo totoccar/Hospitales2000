@@ -60,3 +60,5 @@ export async function getUbicacionById(ubicacionId: string) {
     await prisma.$disconnect();
   }
 }
+
+

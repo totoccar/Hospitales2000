@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { Menu, X, Hospital, Home, Search, PowerIcon, User2 } from 'lucide-react';
+import { Menu, X, Hospital, Home, Search, PowerIcon, User2, Clock } from 'lucide-react';
 import Link from 'next/link';
 import UserOptionsButton from './UserOptionsButton';
 
