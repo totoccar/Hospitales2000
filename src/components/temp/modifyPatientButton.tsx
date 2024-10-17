@@ -14,7 +14,7 @@ const ClientButtons: React.FC<ClientButtonsProps> = ({ id, disabledEdit }: {id: 
 
 
   return (
-    <div className="flex justify-end space-x-4 mt-6">
+    <div className={`flex justify-end space-x-4 mt-6 ${disabledEdit ? 'cursor-not-allowed opacity-50' : 'hover:bg-gray-100'}`}>
      <Button disabled={disabledEdit} variant="outline">Editar</Button>
     </div>
   );
