@@ -1,13 +1,15 @@
-import { Button } from "@/src/components/ui/button";
+
 import { getUbicacionById, getUsuarioById } from "@/src/lib/getSecretariaById";
-import ClientButtons from "@/src/components/temp/deleteSecretaryButton";
+import Link from "next/link";
+
+import ClientButtons from "@/src/components/temp/modifySecretaryButton";
 import { getRole } from "@/src/app/lib/actions";
-import { obtenerIniciales } from "@/src/lib/utils";
+
 
 export default async function Component({ params }: { params: { id: string } }) {
 
   let disabled;
-
+  let disabledEdit;
   //Get user role.
   const role = await getRole();
   const mapRoles = {
@@ -21,9 +23,14 @@ export default async function Component({ params }: { params: { id: string } }) 
   } else {
     disabled = false;
   }
-
+  if (role != mapRoles.Administrador) {
+    disabledEdit = true;
+  } else {
+    disabledEdit = false;
+  }
   const id = params.id as string;
   const usuario = await getUsuarioById(id);
+
   let ubicacionUsuario = null;
   if (usuario.secretaria) {
     ubicacionUsuario = await getUbicacionById(usuario.secretaria.ubicacion_id);
@@ -42,7 +49,7 @@ export default async function Component({ params }: { params: { id: string } }) 
     <div className="w-full max-w-3xl mx-auto p-6 mt-5 bg-fondo rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-center">Vista de datos personales de la secretaria</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <DisplayField label="Tipo de documento" value={obtenerIniciales(usuario.tipo_documento)} />
+        <DisplayField label="Tipo de documento" value={usuario.tipo_documento} />
         <DisplayField label="DNI" value={usuario.numero_documento} />
         <DisplayField label="Nombre" value={usuario.nombre} />
         <DisplayField label="Apellido" value={usuario.apellido} />
@@ -55,10 +62,10 @@ export default async function Component({ params }: { params: { id: string } }) 
         <DisplayField label="Correo electrónico" value={usuario.correo_electronico} />
       </div>
       <div className="flex justify-end space-x-4 mt-6">
-        <ClientButtons id={id} disabled={disabled} />
+        <Link href={`/view/secretary/${id}/editSecretary`}>
+          <ClientButtons id={id} disabledEdit={disabledEdit} />
+        </Link>
       </div>
-      <p className="text-sm text-gray-500 mt-4">Solo disponible para rol de administrador</p>
     </div>
   );
 }
-

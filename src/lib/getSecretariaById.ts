@@ -1,5 +1,6 @@
 import prisma from "./db";
 
+
 export async function getUsuarioById(usuarioId: string) {
   try {
     const usuario = await prisma.usuario.findUnique({
