@@ -3,8 +3,8 @@ import { getEspecialidadById, getUbicacionById, getUsuarioById } from "@/src/lib
 
 import Link from "next/link";
 
-import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
-import ClientButtons from "@/src/components/temp/deleteDoctorButton";
+//import ClientButtons from "@/src/components/temp/deletePatientButton";
+import ClientButtons from "@/src/components/temp/modifyDoctorButton";
 import { getRole } from "@/src/app/lib/actions";
 
 
@@ -12,7 +12,6 @@ export default async function Component({ params }: { params: { id: string } }) 
 
   let disabled;
   let disabledEdit;
-
   //Get user role.
   const role = await getRole();
   const mapRoles = {
@@ -31,14 +30,13 @@ export default async function Component({ params }: { params: { id: string } }) 
   } else {
     disabledEdit = false;
   }
-
   const id = params.id as string;
   const usuario = await getUsuarioById(id);
- 
+
   let ubicacionUsuario = null;
-  if (usuario.medico){
+  if (usuario.medico) {
     ubicacionUsuario = await getUbicacionById(usuario.medico.ubicacion_id);
-    }
+  }
   const DisplayField = ({ label, value }: { label: string; value: string }) => (
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
@@ -70,8 +68,9 @@ export default async function Component({ params }: { params: { id: string } }) 
       </div>
       <div className="flex justify-end space-x-4 mt-6">
         <Link href={`/view/doctor/${id}/editDoctor`}>
-        <ClientButtons id={id} disabledEdit={disabledEdit}/>
+          <ClientButtons id={id} disabledEdit={disabledEdit} />
         </Link>
+
       </div>
     </div>
   );
