@@ -73,7 +73,7 @@ export async function ViewMedicalRecord({ id, disabled }: { id: string; disabled
 
 export async function AssignAppointment({ medico_id,patient_id, disabled }: { medico_id: string; patient_id:string; disabled?: boolean }) {
   const role = await getRole();
-  if (role !== mapRoles.Secretaria)
+  if (role !== mapRoles.Secretaria && role !== mapRoles.Administrador)
     disabled = true;
   return (
     <Link
@@ -87,7 +87,7 @@ export async function AssignAppointment({ medico_id,patient_id, disabled }: { me
 
 export async function SelectPatientForAppointment({ patient_id, disabled }: { patient_id:string; disabled?: boolean }) {
   const role = await getRole();
-  if (role !== mapRoles.Secretaria)
+  if (role !== mapRoles.Secretaria && role !== mapRoles.Administrador)
     disabled = true;
   return (
     <Link
