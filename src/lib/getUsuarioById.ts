@@ -148,6 +148,15 @@ export async function getUbicacionById(ubicacionId: string) {
   }
 }
 
+export async function getObrasSociales() {
+  return await prisma.obraSocial.findMany({
+    select: {
+      id: true,
+      nombre: true, 
+    },
+  });
+}
+
 export async function getUserNameById(id: string) {
   try {
     const usuario = await prisma.usuario.findFirst({
@@ -166,3 +175,4 @@ export async function getUserNameById(id: string) {
     await prisma.$disconnect();
   }
 }
+

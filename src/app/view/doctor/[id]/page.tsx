@@ -1,13 +1,17 @@
-import { Button } from "@/src/components/ui/button";
+
 import { getEspecialidadById, getUbicacionById, getUsuarioById } from "@/src/lib/getMedicoById";
-import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
-import ClientButtons from "@/src/components/temp/deleteDoctorButton";
+
+import Link from "next/link";
+
+//import ClientButtons from "@/src/components/temp/deletePatientButton";
+import ClientButtons from "@/src/components/temp/modifyDoctorButton";
 import { getRole } from "@/src/app/lib/actions";
+
 
 export default async function Component({ params }: { params: { id: string } }) {
 
   let disabled;
-
+  let disabledEdit;
   //Get user role.
   const role = await getRole();
   const mapRoles = {
@@ -21,14 +25,18 @@ export default async function Component({ params }: { params: { id: string } }) 
   } else {
     disabled = false;
   }
-  
+  if (role != mapRoles.Administrador) {
+    disabledEdit = true;
+  } else {
+    disabledEdit = false;
+  }
   const id = params.id as string;
   const usuario = await getUsuarioById(id);
+
   let ubicacionUsuario = null;
   if (usuario.medico) {
     ubicacionUsuario = await getUbicacionById(usuario.medico.ubicacion_id);
   }
-
   const DisplayField = ({ label, value }: { label: string; value: string }) => (
     <div className="mb-4">
       <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
@@ -39,7 +47,7 @@ export default async function Component({ params }: { params: { id: string } }) 
   );
 
   return (
-    <MaxWidthWrapper>
+
     <div className="w-full max-w-3xl mx-auto p-6 bg-fondo mt-5 rounded-lg shadow-md">
       <h2 className="text-2xl font-bold mb-6 text-center">Vista de datos personales del médico</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -59,11 +67,11 @@ export default async function Component({ params }: { params: { id: string } }) 
         <DisplayField label="Correo electrónico" value={usuario.correo_electronico} />
       </div>
       <div className="flex justify-end space-x-4 mt-6">
-        <ClientButtons id={id} disabled={disabled} />
+        <Link href={`/view/doctor/${id}/editDoctor`}>
+          <ClientButtons id={id} disabledEdit={disabledEdit} />
+        </Link>
+
       </div>
-      <p className="text-sm text-gray-500 mt-4">Solo disponible para rol de administrador</p>
     </div>
-    </MaxWidthWrapper>
   );
 }
-
