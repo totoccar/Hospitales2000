@@ -3,8 +3,8 @@ import { getEspecialidadById, getUbicacionById, getUsuarioById } from "@/src/lib
 
 import Link from "next/link";
 
-//import ClientButtons from "@/src/components/temp/deletePatientButton";
-import ClientButtons from "@/src/components/temp/modifyDoctorButton";
+import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
+import ClientButtons from "@/src/components/temp/deleteDoctorButton";
 import { getRole } from "@/src/app/lib/actions";
 
 
@@ -12,6 +12,7 @@ export default async function Component({ params }: { params: { id: string } }) 
 
   let disabled;
   let disabledEdit;
+
   //Get user role.
   const role = await getRole();
   const mapRoles = {
@@ -30,6 +31,7 @@ export default async function Component({ params }: { params: { id: string } }) 
   } else {
     disabledEdit = false;
   }
+
   const id = params.id as string;
   const usuario = await getUsuarioById(id);
  
@@ -70,7 +72,6 @@ export default async function Component({ params }: { params: { id: string } }) 
         <Link href={`/view/doctor/${id}/editDoctor`}>
         <ClientButtons id={id} disabledEdit={disabledEdit}/>
         </Link>
-
       </div>
     </div>
   );

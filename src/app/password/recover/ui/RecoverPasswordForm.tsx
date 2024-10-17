@@ -9,6 +9,13 @@ import { authenticateDocument, getUserEmail } from '../../api/PasswordActions';
 import { TipoDocumentoEnum } from '@/src/lib/definitions';
 import { getUserIdByDocument } from '../../api/changePassword';
 
+function maskEmail(email: string) {
+    const emailParts = email.split('@');
+    const firstLetter = emailParts[0][0];
+    const maskedLocalPart = firstLetter + '*'.repeat(emailParts[0].length - 1);
+    return maskedLocalPart + '@' + emailParts[1];
+}
+
 export default function ChangePasswordForm() {
     // Manejo de estados
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -44,7 +51,8 @@ export default function ChangePasswordForm() {
                     });
 
                     if (response.ok) {
-                        setSuccessMessage("Se envió el link de cambio de contraseña a: " + user_email);
+                        const maskedEmail = maskEmail(user_email);
+                        setSuccessMessage("Se envió el link de cambio de contraseña a: " + maskedEmail);
                         setErrorMessage(null);
                         setIsDisabled(true);
                     } else {
