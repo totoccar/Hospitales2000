@@ -1,18 +1,14 @@
 
 import { getEspecialidadById, getUbicacionById, getUsuarioById } from "@/src/lib/getMedicoById";
-
 import Link from "next/link";
-
-//import ClientButtons from "@/src/components/temp/deletePatientButton";
 import ClientButtons from "@/src/components/temp/modifyDoctorButton";
 import { getRole } from "@/src/app/lib/actions";
 
 
 export default async function Component({ params }: { params: { id: string } }) {
 
-  let disabled;
   let disabledEdit;
-  //Get user role.
+
   const role = await getRole();
   const mapRoles = {
     'Paciente': 'Paciente',
@@ -20,12 +16,8 @@ export default async function Component({ params }: { params: { id: string } }) 
     'Secretaria': 'Secretaria',
     'Administrador': 'Administrador',
   }
-  if (role != mapRoles.Administrador) {
-    disabled = true;
-  } else {
-    disabled = false;
-  }
-  if (role != mapRoles.Administrador) {
+
+  if (role !== mapRoles.Administrador) {
     disabledEdit = true;
   } else {
     disabledEdit = false;
@@ -67,7 +59,7 @@ export default async function Component({ params }: { params: { id: string } }) 
         <DisplayField label="Correo electrónico" value={usuario.correo_electronico} />
       </div>
       <div className="flex justify-end space-x-4 mt-6">
-        <Link href={`/view/doctor/${id}/editDoctor`}>
+        <Link href={disabledEdit ? "#" :`/view/doctor/${id}/editDoctor`}>
           <ClientButtons id={id} disabledEdit={disabledEdit} />
         </Link>
 

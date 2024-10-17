@@ -1,15 +1,13 @@
 
 import { getObraSocialById, getUbicacionById, getUsuarioById } from "@/src/lib/getUsuarioById";
-//import ClientButtons from "@/src/components/temp/deletePatientButton";
 import ClientButtons from "@/src/components/temp/modifyPatientButton";
 import { getRole } from "@/src/app/lib/actions";
 import Link from "next/link";
 
 export default async function Component({ params }: { params: { id: string } }) {
 
-  let disabled;
   let disabledEdit;
-  //Get user role.
+
   const role = await getRole();
   const mapRoles = {
     'Paciente': 'Paciente',
@@ -17,19 +15,15 @@ export default async function Component({ params }: { params: { id: string } }) 
     'Secretaria': 'Secretaria',
     'Administrador': 'Administrador',
   }
-  if (role != mapRoles.Administrador) {
-    disabled = true;
-  } else {
-    disabled = false;
-  }
-  if (role != mapRoles.Secretaria) {
+  console.log(role);
+  if (role !== mapRoles.Secretaria && role !== mapRoles.Administrador) {
     disabledEdit = true;
   } else {
     disabledEdit = false;
   }
   const formatDate = (date: Date): string => {
-    const day = String(date.getDate()).padStart(2, '0'); // Asegura dos dígitos para el día
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Meses en JavaScript son de 0 a 11, así que sumamos 1
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); 
     const year = date.getFullYear();
     return `${day}/${month}/${year}`;
   };
@@ -70,7 +64,7 @@ export default async function Component({ params }: { params: { id: string } }) 
         <DisplayField label="Obra social" value={usuario.paciente?.obra_social_id ? await getObraSocialById(usuario.paciente.obra_social_id) || "" : "No tiene obra social"} />
       </div>
       <div className="flex justify-end space-x-4 mt-6">
-        <Link href={`/view/patient/${id}/editPatient`}>
+        <Link href={disabledEdit ? "#" : `/view/patient/${id}/editPatient`}>
           <ClientButtons id={id} disabledEdit={disabledEdit} />
         </Link>
       </div>
