@@ -1,10 +1,12 @@
 // src/components/DatosPaciente.tsx
 import { getObraSocialById } from "@/src/lib/fichaMedicaService";
+import { obtenerIniciales } from "@/src/lib/utils";
+import { TipoDocumentoEnum } from "@prisma/client";
 
 type UsuarioProps = {
   usuario: {
     numero_documento: string;
-    tipo_documento: string;
+    tipo_documento: TipoDocumentoEnum;
     nombre: string;
     apellido: string;
   };
@@ -30,7 +32,7 @@ export default async function DatosPaciente({ usuario, paciente }: UsuarioProps)
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
       <DisplayField label="DNI" value={usuario.numero_documento} />
-      <DisplayField label="Tipo de documento" value={usuario.tipo_documento} />
+      <DisplayField label="Tipo de documento" value={obtenerIniciales(usuario.tipo_documento)} />
       <DisplayField label="Nombre" value={usuario.nombre} />
       <DisplayField label="Obra social" value={obraSocial} />
       <DisplayField label="Apellido" value={usuario.apellido} />

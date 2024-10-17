@@ -8,6 +8,7 @@ import { Label } from '@/src/components/ui/label'
 import { Input } from '@/src/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/src/components/ui/select'
 import { Button } from '@/src/components/ui/button'
+import { obtenerIniciales } from '@/src/lib/utils'
 
 export default function SearchForm() {
   const [searchType, setSearchType] = useState('dni')
@@ -104,7 +105,7 @@ export default function SearchForm() {
             </SelectTrigger>
             <SelectContent>
             {Object.values(TipoDocumentoEnum).map((tipo) => (
-              <SelectItem key={tipo} value={tipo}>{tipo}</SelectItem>
+              <SelectItem key={tipo} value={tipo}>{obtenerIniciales(tipo)}</SelectItem>
             ))}
             </SelectContent>
           </Select>
