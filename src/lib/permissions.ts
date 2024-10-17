@@ -23,11 +23,11 @@ export function getPermission(pathname: string): string | null {
   }
 
   if (pathname.startsWith('/appointment/secretarycalendar')) {
-    return 'secretaria:access';
+    return 'adsec:access';
   }
 
   if (pathname.startsWith('/appointment/setschedule')) {
-    return 'medsec:access';
+    return 'admedsec:access';
   }
 
   if (pathname.startsWith('/appointment/cancel')) { 
@@ -39,7 +39,7 @@ export function getPermission(pathname: string): string | null {
   }
 
   if(pathname.startsWith('/appointment/assign')) {
-    return 'secretaria:access';
+    return 'adsec:access';
   }
 
   const routePermissions: Record<string, string> = {
