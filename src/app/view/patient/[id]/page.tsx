@@ -1,13 +1,13 @@
-import { Button } from "@/src/components/ui/button";
+
 import { getObraSocialById, getUbicacionById, getUsuarioById } from "@/src/lib/getUsuarioById";
-import ClientButtons from "@/src/components/temp/deletePatientButton";
+import ClientButtons from "@/src/components/temp/modifyPatientButton";
 import { getRole } from "@/src/app/lib/actions";
+import Link from "next/link";
 
 export default async function Component({ params }: { params: { id: string } }) {
 
-  let disabled;
+  let disabledEdit;
 
-  //Get user role.
   const role = await getRole();
   const mapRoles = {
     'Paciente': 'Paciente',
@@ -15,17 +15,23 @@ export default async function Component({ params }: { params: { id: string } }) 
     'Secretaria': 'Secretaria',
     'Administrador': 'Administrador',
   }
-  if (role != mapRoles.Administrador) {
-    disabled = true;
+  console.log(role);
+  if (role !== mapRoles.Secretaria && role !== mapRoles.Administrador) {
+    disabledEdit = true;
   } else {
-    disabled = false;
+    disabledEdit = false;
   }
-
+  const formatDate = (date: Date): string => {
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); 
+    const year = date.getFullYear();
+    return `${day}/${month}/${year}`;
+  };
   const id = params.id as string;
   const usuario = await getUsuarioById(id);
-  let ubicacionUsuario=null;
-  if (usuario.paciente){
-  ubicacionUsuario = await getUbicacionById(usuario.paciente.ubicacion_id);
+  let ubicacionUsuario = null;
+  if (usuario.paciente) {
+    ubicacionUsuario = await getUbicacionById(usuario.paciente.ubicacion_id);
   }
 
   const DisplayField = ({ label, value }: { label: string; value: string }) => (
@@ -45,21 +51,23 @@ export default async function Component({ params }: { params: { id: string } }) 
         <DisplayField label="Número de documento" value={usuario.numero_documento} />
         <DisplayField label="Nombre" value={usuario.nombre} />
         <DisplayField label="Apellido" value={usuario.apellido} />
-        <DisplayField label="Fecha de nacimiento" value={usuario.paciente?.fecha_nacimiento.toDateString()||""} />
-        <DisplayField label="Número de teléfono" value={usuario.paciente?.numero_telefono||""} />
-        <DisplayField label="Lugar de nacimiento" value={usuario.paciente?.lugar_nacimiento||""} />
-        <DisplayField label="Contacto de emergencia" value={usuario.paciente?.contacto_emergencia||""} />
-        <DisplayField label="Calle" value={ubicacionUsuario?.calle||""} />
-        <DisplayField label="Número" value={ubicacionUsuario?.numero||""} />
-        <DisplayField label="Código postal" value={ubicacionUsuario?.codigo_postal||""} />
-        <DisplayField label="Ciudad" value={ubicacionUsuario?.ciudad||""} />
-        <DisplayField label="Provincia" value={ubicacionUsuario?.provincia||""} />
+        <DisplayField label="Fecha de nacimiento" value={usuario.paciente?.fecha_nacimiento ? formatDate(usuario.paciente.fecha_nacimiento) : ""} />
+        <DisplayField label="Número de teléfono" value={usuario.paciente?.numero_telefono || ""} />
+        <DisplayField label="Lugar de nacimiento" value={usuario.paciente?.lugar_nacimiento || ""} />
+        <DisplayField label="Contacto de emergencia" value={usuario.paciente?.contacto_emergencia || ""} />
+        <DisplayField label="Calle" value={ubicacionUsuario?.calle || ""} />
+        <DisplayField label="Número" value={ubicacionUsuario?.numero || ""} />
+        <DisplayField label="Código postal" value={ubicacionUsuario?.codigo_postal || ""} />
+        <DisplayField label="Ciudad" value={ubicacionUsuario?.ciudad || ""} />
+        <DisplayField label="Provincia" value={ubicacionUsuario?.provincia || ""} />
         <DisplayField label="Correo electrónico" value={usuario.correo_electronico} />
-        <DisplayField label="Obra social" value={ usuario.paciente?.obra_social_id ? await getObraSocialById(usuario.paciente.obra_social_id) || "": "No tiene obra social"}/>
+        <DisplayField label="Obra social" value={usuario.paciente?.obra_social_id ? await getObraSocialById(usuario.paciente.obra_social_id) || "" : "No tiene obra social"} />
       </div>
       <div className="flex justify-end space-x-4 mt-6">
-        <ClientButtons id={id} disabled={disabled}/>
-      </div> 
+        <Link href={disabledEdit ? "#" : `/view/patient/${id}/editPatient`}>
+          <ClientButtons id={id} disabledEdit={disabledEdit} />
+        </Link>
+      </div>
     </div>
   );
 }
