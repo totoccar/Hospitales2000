@@ -35,7 +35,9 @@ export default function CreateDoctorForm({specialties}: {specialties: Especialid
           <select id="documentType" 
             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
             name="tipo_documento"
+            defaultValue=""
             >
+            <option value="" disabled>Seleccione el tipo de documento</option>
             <option value="DOCUMENTO_NACIONAL_IDENTIDAD">Documento Nacional de Indentidad</option>
             <option value="CEDULA_IDENTIDAD">Cédula de Identidad</option>
             <option value="LIBRETA_CIVICA">Libreta Cívica</option>
@@ -118,13 +120,26 @@ export default function CreateDoctorForm({specialties}: {specialties: Especialid
           <select 
             id="specialty" 
             name="especialidad"
+            aria-describedby="customer-error"
+            defaultValue=""
             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+            <option value="" disabled>
+              Seleccione una especialidad
+            </option>
             {specialties.map(especialidad => (
               <option key={especialidad.id} value={especialidad.id}>
                 {especialidad.nombre}
               </option>
             ))}
           </select>
+          <div id="customer-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.specialty &&
+              state.errors.specialty.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+            ))}
+          </div>
         </div>
 
         <div className="space-y-2">
