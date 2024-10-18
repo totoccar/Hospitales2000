@@ -2,6 +2,7 @@
 import { getUbicacionById, getUsuarioById } from "@/src/lib/getSecretariaById";
 import Link from "next/link";
 import ClientButtons from "@/src/components/temp/modifySecretaryButton";
+import Delete from "@/src/components/temp/deleteSecretaryButton";
 import { getRole } from "@/src/app/lib/actions";
 
 
@@ -55,10 +56,11 @@ export default async function Component({ params }: { params: { id: string } }) 
         <DisplayField label="Provincia" value={ubicacionUsuario?.provincia || ""} />
         <DisplayField label="Correo electrónico" value={usuario.correo_electronico} />
       </div>
-      <div className="flex justify-end space-x-4 mt-6">
-        <Link href={disabledEdit ? "#" :`/view/secretary/${id}/editSecretary`}>
+      <div className="flex md:w-full flex-row justify-center gap-2 p-2 m-2">
+        <Link href={disabledEdit ? "#" : `/view/secretary/${id}/editSecretary`}>
           <ClientButtons id={id} disabledEdit={disabledEdit} />
         </Link>
+          <Delete id={id} disabled={disabledEdit} />
       </div>
     </div>
   );

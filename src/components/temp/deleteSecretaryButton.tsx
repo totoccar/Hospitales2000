@@ -17,9 +17,8 @@ const ClientButtons: React.FC<ClientButtonsProps> = ({ id, disabled }: {id: stri
   };
 
   return (
-    <div className="flex justify-end space-x-4 mt-6">
-      <Button disabled={true} variant="outline">Editar</Button>
-      <Button disabled={disabled} onClick={handleDelete}>Eliminar</Button>
+    <div className="flex space-x-4 mt-6">
+      <Button className="bg-red-500" disabled={disabled} onClick={handleDelete}>Eliminar</Button>
     </div>
   );
 };

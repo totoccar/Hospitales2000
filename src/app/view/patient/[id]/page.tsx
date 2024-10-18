@@ -1,6 +1,7 @@
 
 import { getObraSocialById, getUbicacionById, getUsuarioById } from "@/src/lib/getUsuarioById";
 import ClientButtons from "@/src/components/temp/modifyPatientButton";
+import Delete from "@/src/components/temp/deletePatientButton";
 import { getRole } from "@/src/app/lib/actions";
 import Link from "next/link";
 
@@ -63,10 +64,11 @@ export default async function Component({ params }: { params: { id: string } }) 
         <DisplayField label="Correo electrónico" value={usuario.correo_electronico} />
         <DisplayField label="Obra social" value={usuario.paciente?.obra_social_id ? await getObraSocialById(usuario.paciente.obra_social_id) || "" : "No tiene obra social"} />
       </div>
-      <div className="flex justify-end space-x-4 mt-6">
+      <div className="flex md:w-full flex-row justify-center gap-2 p-2 m-2">
         <Link href={disabledEdit ? "#" : `/view/patient/${id}/editPatient`}>
           <ClientButtons id={id} disabledEdit={disabledEdit} />
         </Link>
+          <Delete id={id} disabled={disabledEdit} />
       </div>
     </div>
   );
