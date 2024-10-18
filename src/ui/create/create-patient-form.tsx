@@ -34,14 +34,25 @@ export default function CreatePatientForm({socialWorks}: {socialWorks: ObraSocia
           <select 
             id="documentType"
             name="tipo_documento" 
+            defaultValue=""
+            aria-describedby="customer-error"
             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md"
             >
+            <option value="" disabled>Seleccione el tipo de documento</option>
             <option value="DOCUMENTO_NACIONAL_IDENTIDAD">Documento Nacional de Indentidad</option>
             <option value="CEDULA_IDENTIDAD">Cédula de Identidad</option>
             <option value="LIBRETA_CIVICA">Libreta Cívica</option>
             <option value="LIBRETA_ENROLAMIENTO">Libreta de Enrolamiento</option>
             <option value="PASAPORTE">Pasaporte</option>
           </select>
+          <div id="customer-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.typeId &&
+              state.errors.typeId.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+            ))}
+          </div>
         </div>
         
         <div className="space-y-2">
@@ -203,13 +214,26 @@ export default function CreatePatientForm({socialWorks}: {socialWorks: ObraSocia
           <select 
             id="socialWork" 
             name="tipo_obra_social"
+            defaultValue=""
+            aria-describedby="customer-error"
             className="mt-1 block w-full pl-3 pr-10 py-2 text-base border border-black focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
+            <option value="" disabled>
+              Seleccione una obra social
+            </option>
             {socialWorks.map(obra => (
               <option key={obra.id} value={obra.id}>
                 {obra.nombre}
               </option>
             ))}
           </select>
+          <div id="customer-error" aria-live="polite" aria-atomic="true">
+            {state.errors?.socialWork &&
+              state.errors.socialWork.map((error: string) => (
+                <p className="mt-2 text-sm text-red-500" key={error}>
+                  {error}
+                </p>
+            ))}
+          </div>
         </div>
       </div>
 
