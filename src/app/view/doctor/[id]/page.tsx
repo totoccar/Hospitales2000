@@ -62,7 +62,6 @@ export default async function Component({ params }: { params: { id: string } }) 
         <Link href={disabledEdit ? "#" :`/view/doctor/${id}/editDoctor`}>
           <ClientButtons id={id} disabledEdit={disabledEdit} />
         </Link>
-
       </div>
     </div>
   );
