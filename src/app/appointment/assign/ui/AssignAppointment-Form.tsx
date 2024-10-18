@@ -82,9 +82,9 @@ export default function AssignppointmentForm({
 
   return (
     <MaxWidthWrapper>
-      <form action={formAction} className="m-6 bg-fondo rounded-md p-6 mt-5">
+      <form action={formAction} className="md:m-6 lg:m-6 m-3 bg-fondo rounded-md md:p-6 lg:p-6 pt-3 mt-5">
         <h2 className="text-xl font-bold">Selecciona el día y el horario que desees</h2>
-        <h3 className="text-md">Puedes agregar una acalaración para tu médico</h3>
+        <h3 className="text-md">Puedes agregar una aclaración para tu médico</h3>
 
         <div className="md:flex flex-row gap-4 ">
         <Calendar
@@ -97,7 +97,7 @@ export default function AssignppointmentForm({
             }
             computeFechaHora(selectedDate, selectedTime);
           }}
-          className="rounded-xl shadow border m-3 bg-white"
+          className="rounded-xl shadow border m-3 bg-white "
           disabled={isDateDisabled}
           onMonthChange={(date: Date) => {
             setCurrentMonth(getMonth(date) + 1);
@@ -106,7 +106,7 @@ export default function AssignppointmentForm({
           required
         />
 
-            <div className="w-full rounded-xl shadow bg-white m-3 p-3">
+            <div className="md:w-full rounded-xl shadow bg-white m-3 p-3">
             <Label className="mb-2 block text-center">Selecciona un horario</Label>
             {loading ? (
               <div className="text-center">Cargando horarios...</div>
@@ -139,7 +139,7 @@ export default function AssignppointmentForm({
               </select>
             )}
 
-            <div className="mt-3 text-center items-center justify-center">
+            <div className="md:mt-3 text-center items-center justify-center">
               <Label>¿Es la primera vez que se atiende?</Label>
               <RadioGroup value={isFirstTime} onValueChange={setIsFirstTime} required>
               <div className="flex mt-4 items-center space-x-2">
@@ -154,7 +154,7 @@ export default function AssignppointmentForm({
             </div>
             </div>
 
-          <div className="bg-white text-center w-full rounded-xl shadow m-3 p-3 text-gray-500">
+          <div className="bg-white text-center md:w-full rounded-xl shadow m-3 p-3 text-gray-500">
             <h1 className="text-xl ">Resumen de tu cita</h1>
             <p>Fecha: {date?.toLocaleDateString("es-ES")}</p>
             <p>
@@ -169,7 +169,7 @@ export default function AssignppointmentForm({
         <input type="hidden" name="paciente_id" required value={paciente_id} />
         <input type="hidden" name="medico_id" required value={medico_id} />
 
-        <div className="w-full md:w-auto lg:w-auto bg-white m-3 p-3 rounded-xl shadow">
+        <div className="md:w-full  lg:w-auto bg-white m-3 p-3 rounded-xl shadow">
           <Label className="mb-2 block text-center">Descripción</Label>
           <textarea
             id="description"
@@ -179,7 +179,7 @@ export default function AssignppointmentForm({
             placeholder="Añadir una descripción o pequeña acalaración"
           />
         </div>
-        <Button type="submit" disabled={intervalosPosibles.length===0} className="w-full bg-primario">
+        <Button type="submit" disabled={intervalosPosibles.length===0} className="md:w-full bg-primario">
           Solicitar cita
         </Button>
       </form>
