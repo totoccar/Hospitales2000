@@ -38,3 +38,7 @@ export function obtenerIniciales(tipoDocumento: TipoDocumentoEnum): string {
   
   return iniciales;
 }
+
+export function getUTCHoursAndMinutes(date: Date) {
+  return date.toISOString().split('T')[1].split('.')[0].slice(0, 5);
+}

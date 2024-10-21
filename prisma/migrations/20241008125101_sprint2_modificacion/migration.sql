@@ -34,6 +34,7 @@ CREATE TABLE "Medico" (
     "ubicacion_id" TEXT NOT NULL,
     "especialidad_id" TEXT NOT NULL,
     "descripcion" TEXT,
+    "duracion_cita" INTEGER,
 
     CONSTRAINT "Medico_pkey" PRIMARY KEY ("usuario_id")
 );
@@ -68,6 +69,8 @@ CREATE TABLE "Usuario" (
     "apellido" TEXT NOT NULL,
     "correo_electronico" TEXT NOT NULL,
     "contrasena" TEXT NOT NULL,
+    "resetToken" TEXT,
+    "resetTokenExpires" TIMESTAMP(3),
 
     CONSTRAINT "Usuario_pkey" PRIMARY KEY ("id")
 );
@@ -99,6 +102,17 @@ CREATE TABLE "ObraSocial" (
     CONSTRAINT "ObraSocial_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateTable
+CREATE TABLE "Cita" (
+    "id" TEXT NOT NULL,
+    "fecha_hora" TIMESTAMP(3) NOT NULL,
+    "medico_id" TEXT NOT NULL,
+    "paciente_id" TEXT NOT NULL,
+    "description" TEXT,
+
+    CONSTRAINT "Cita_pkey" PRIMARY KEY ("id")
+);
+
 -- CreateIndex
 CREATE UNIQUE INDEX "Secretaria_ubicacion_id_key" ON "Secretaria"("ubicacion_id");
 
@@ -124,31 +138,37 @@ CREATE UNIQUE INDEX "Especialidad_nombre_key" ON "Especialidad"("nombre");
 CREATE UNIQUE INDEX "ObraSocial_nombre_key" ON "ObraSocial"("nombre");
 
 -- AddForeignKey
-ALTER TABLE "Secretaria" ADD CONSTRAINT "Secretaria_usuario_id_fkey" FOREIGN KEY ("usuario_id") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "Secretaria" ADD CONSTRAINT "Secretaria_ubicacion_id_fkey" FOREIGN KEY ("ubicacion_id") REFERENCES "Ubicacion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Medico" ADD CONSTRAINT "Medico_usuario_id_fkey" FOREIGN KEY ("usuario_id") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Medico" ADD CONSTRAINT "Medico_ubicacion_id_fkey" FOREIGN KEY ("ubicacion_id") REFERENCES "Ubicacion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Secretaria" ADD CONSTRAINT "Secretaria_usuario_id_fkey" FOREIGN KEY ("usuario_id") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Medico" ADD CONSTRAINT "Medico_especialidad_id_fkey" FOREIGN KEY ("especialidad_id") REFERENCES "Especialidad"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Paciente" ADD CONSTRAINT "Paciente_usuario_id_fkey" FOREIGN KEY ("usuario_id") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Medico" ADD CONSTRAINT "Medico_ubicacion_id_fkey" FOREIGN KEY ("ubicacion_id") REFERENCES "Ubicacion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Paciente" ADD CONSTRAINT "Paciente_ubicacion_id_fkey" FOREIGN KEY ("ubicacion_id") REFERENCES "Ubicacion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "Paciente" ADD CONSTRAINT "Paciente_obra_social_id_fkey" FOREIGN KEY ("obra_social_id") REFERENCES "ObraSocial"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Medico" ADD CONSTRAINT "Medico_usuario_id_fkey" FOREIGN KEY ("usuario_id") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Paciente" ADD CONSTRAINT "Paciente_ficha_medica_id_fkey" FOREIGN KEY ("ficha_medica_id") REFERENCES "FichaMedica"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Paciente" ADD CONSTRAINT "Paciente_obra_social_id_fkey" FOREIGN KEY ("obra_social_id") REFERENCES "ObraSocial"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Paciente" ADD CONSTRAINT "Paciente_ubicacion_id_fkey" FOREIGN KEY ("ubicacion_id") REFERENCES "Ubicacion"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Paciente" ADD CONSTRAINT "Paciente_usuario_id_fkey" FOREIGN KEY ("usuario_id") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Admin" ADD CONSTRAINT "Admin_usuario_id_fkey" FOREIGN KEY ("usuario_id") REFERENCES "Usuario"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Cita" ADD CONSTRAINT "Cita_medico_id_fkey" FOREIGN KEY ("medico_id") REFERENCES "Medico"("usuario_id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Cita" ADD CONSTRAINT "Cita_paciente_id_fkey" FOREIGN KEY ("paciente_id") REFERENCES "Paciente"("usuario_id") ON DELETE RESTRICT ON UPDATE CASCADE;
