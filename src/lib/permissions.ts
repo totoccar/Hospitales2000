@@ -42,6 +42,10 @@ export function getPermission(pathname: string): string | null {
     return 'adsec:access';
   }
 
+  if(pathname.startsWith('/appointment/modify')) {
+    return 'admedsec:access';
+  }
+
   const routePermissions: Record<string, string> = {
     '/admin/create/doctor': 'adsec:access',
     '/admin/create/patient': 'adsec:access',
