@@ -1,5 +1,5 @@
 
-import { Eye ,NotepadText,CalendarPlus,ArrowRight,CalendarDays, CalendarClock,SquareX  } from 'lucide-react';
+import { Eye ,NotepadText,CalendarPlus,ArrowRight,CalendarDays, CalendarClock,SquareX, Pencil  } from 'lucide-react';
 import Link from 'next/link';
 import { getRole } from '../app/lib/actions';
  
@@ -55,6 +55,13 @@ export function ViewSecretary({ id }: { id: string }) {
   );
 }
 
+export function ModifyAppointment({ appointment_id }: { appointment_id: string }) {
+  return (
+    <Link href={'/appointment/modify'} className="rounded-md border p-2 hover:bg-gray-100">
+      <Pencil className="w-5" />
+    </Link>
+  );
+}
 
 
 export async function ViewMedicalRecord({ id, disabled }: { id: string; disabled?: boolean }) {
