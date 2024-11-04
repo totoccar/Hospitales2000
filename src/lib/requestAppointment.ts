@@ -72,13 +72,33 @@ export async function createAppointment(
   revalidatePath("appointment/request/[id]");
   redirect(`/appointment/request/success/${medico_id}`);
 }
+export type ModifyAppointmentState = {
+  message: string | null;
+  errors: {
+    fecha_hora?: string[];
+    appointment_id?: string[];
+  };
+}
 
-export async function ModifyAppointment(
-  prevState: AppointmentState,
+const ModifyAppointmentFormScheme = z.object({
+  appointment_id: z.string(),
+  fecha_hora: z
+    .string()
+    .datetime({
+      message: "Fecha y hora inválida. Debe estar en formato ISO 8601.",
+    })
+});
+
+
+const ModifyAppointment = ModifyAppointmentFormScheme.omit({ appointment_id: true });
+
+export async function modifyAppointment(
+  prevState: ModifyAppointmentState,
   formData: FormData
 ) {
-  const validatedFields = CreateAppointment.extend({
+  const validatedFields = ModifyAppointment.extend({
     appointment_id: z.string().min(1, { message: "El ID de la cita es obligatorio." }),
+    fecha_hora: z.string().datetime({message: "Fecha y hora inválida. Debe estar en formato ISO 8601."}),
   }).safeParse({
     fecha_hora: formData.get("fecha_hora"),
     appointment_id: formData.get("appointment_id"),
@@ -105,8 +125,8 @@ export async function ModifyAppointment(
     console.error("Error al actualizar la cita:", error);
     throw error;
   }
-  revalidatePath("appointment/request/[id]");
-  redirect(`/appointment/request/success/${appointment_id}`);
+  revalidatePath("appointment/modify/[id]");
+  redirect(`/appointment/modify/success/${appointment_id}`);
 }
 
 export async function assignAppointment(
