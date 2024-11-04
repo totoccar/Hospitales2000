@@ -23,7 +23,8 @@ export default function ChangePasswordForm() {
     const [isButtonDisabled, setButtonDisabled] = useState(true);
 
 
-    const validatePassword = (pwd: string) => {
+    const validatePassword = async (pwd: string): Promise<string> => {
+        const user_dni = await getDni();
         const minLength = /.{12,}/;  // Mínimo 12 caracteres
         const uppercase = /[A-Z]/;   // Al menos una letra mayúscula
         const lowercase = /[a-z]/;   // Al menos una letra minúscula
@@ -41,17 +42,18 @@ export default function ChangePasswordForm() {
             return 'La contraseña debe tener al menos un número.';
         } else if (!specialChar.test(pwd)) {
             return 'La contraseña debe tener al menos un carácter especial.';
+        } else if (pwd == user_dni) {
+            return 'La contraseña no puede ser igual al DNI.';
         }
-
         return '';
     };
 
     // Manejar el cambio en el input
-    const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handlePasswordChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         const pwd = e.target.value;
         setPassword(pwd);
         const errorMsg = validatePassword(pwd);
-        setErrorMessage(errorMsg);
+        setErrorMessage(await errorMsg);
     };
 
     // Manejar el cambio en el input de la confirmación de contraseña
