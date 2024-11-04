@@ -57,7 +57,8 @@ export function ViewSecretary({ id }: { id: string }) {
 
 export function ModifyAppointment({ appointment_id }: { appointment_id: string }) {
   return (
-    <Link href={'/appointment/modify'} className="rounded-md border p-2 hover:bg-gray-100">
+    <Link href={`/appointment/modify/${appointment_id}`} 
+      className="rounded-md border p-2 hover:bg-gray-100">
       <Pencil className="w-5" />
     </Link>
   );
