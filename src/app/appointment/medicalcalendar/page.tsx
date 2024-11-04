@@ -111,7 +111,7 @@ export default function MedCalendar() {
                         <div>
                           <h3 className="font-bold text-lg">{`Turno ${index + 1}`}</h3>
                           <p className="text-gray-700">
-                            <strong>Fecha y Hora:</strong> {new Date(new Date(turno.fecha_hora).getTime() + 3 * 60 * 60 * 1000).toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires' })}<br />
+                          <strong>Fecha y Hora:</strong> {new Date(new Date(turno.fecha_hora).getTime() + 3 * 60 * 60 * 1000).toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', hour12: false })}<br />
                             <strong>Paciente:</strong> {turno.paciente?.usuario ? `${turno.paciente.usuario.nombre} ${turno.paciente.usuario.apellido}` : 'Desconocido'}<br />
                             <strong>Obra Social:</strong> {turno.paciente?.obra_social.nombre ? `${turno.paciente.obra_social.nombre}` : 'Desconocido'}<br />
                           </p>

@@ -81,14 +81,15 @@ export default function ModifyRequestAppointmentForm({
   return (
     <MaxWidthWrapper>
       <form action={formAction} className="md:m-6 lg:m-6 m-3 p-4 bg-fondo rounded-md md:p-6 lg:p-6 pt-3 mt-5">
-        <h2 className="text-xl font-bold">Cambia el el día y/o el horario que desees</h2>
+        <h1 className="text-2xl font-bold">Modificar Cita Medica</h1>
+        <h2 className="text-xl font-semibold">Cambia el el día y/o el horario que desees,</h2>
         <h4 className="text-md text-gray-500">Siempre y cuando sea posible por el profesional</h4>
 
         <div className="md:flex flex-row gap-4 ">
         <Calendar
           mode="single"
           selected={date}
-          month={new Date(appointment.fecha_hora)}
+         defaultMonth={new Date(appointment.fecha_hora)}
           onSelect={(selectedDate) => {
             setDate(selectedDate);
             if (selectedDate) {
