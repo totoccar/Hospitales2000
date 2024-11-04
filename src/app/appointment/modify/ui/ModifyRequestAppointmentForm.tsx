@@ -6,7 +6,8 @@ import { RadioGroup, RadioGroupItem } from "@/src/components/ui/radio-group";
 import {
   AppointmentState,
   computeAvailableTimeslots,
-  createAppointment,
+  modifyAppointment,
+  ModifyAppointmentState,
 } from "@/src/lib/requestAppointment";
 import { useFormState } from "react-dom";
 import { Calendar } from "@/components/ui/calendar";
@@ -15,27 +16,28 @@ import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
 import { getUTCHoursAndMinutes } from "@/src/lib/utils";
 import { Cita } from "@prisma/client";
 
-interface RequestAppointmentFormProps {
+interface ModifyAppointmentProps {
   medico_id: string;
   appointment: Cita;
+  appointment_id: string;
   duracion_cita?: number;
 }
 
 export default function ModifyRequestAppointmentForm({
   medico_id,
   appointment,
+  appointment_id,
   duracion_cita
-}: RequestAppointmentFormProps) {
-  const initialState: AppointmentState = { message: null, errors: {} };
-  const [state, formAction] = useFormState(createAppointment, initialState);
-
+}: ModifyAppointmentProps) {
+  const initialState: ModifyAppointmentState = { message: null, errors: {} };
+  const [state, formAction] = useFormState(modifyAppointment, initialState);
+  
   const [date, setDate] = useState<Date | undefined>(appointment.fecha_hora ? new Date(appointment.fecha_hora) : undefined);
-  const [isFirstTime, setIsFirstTime] = useState<string | undefined>();
   const [selectedTime, setSelectedTime] = useState<string | undefined>(appointment.fecha_hora ? appointment.fecha_hora.toString() : undefined);
   const [fecha_hora, setFecha_hora] = useState<string | null>(appointment.fecha_hora ? appointment.fecha_hora.toString() : null);
   const [unavailableDates, setUnavailableDates] = useState<Date[]>([]);
-  const [currentMonth, setCurrentMonth] = useState<number>(new Date().getMonth() + 1);
-  const [currentYear, setCurrentYear] = useState<number>(new Date().getFullYear());
+  const [currentMonth, setCurrentMonth] = useState<number>(getMonth(new Date(appointment.fecha_hora)));
+  const [currentYear, setCurrentYear] = useState<number>(getYear(new Date(appointment.fecha_hora)));
   const [intervalosPosibles, setIntervalosPosibles] = useState<{ start: Date; end: Date }[]>([]);
 
   const [loading, setLoading] = useState(false);
@@ -43,7 +45,6 @@ export default function ModifyRequestAppointmentForm({
   const fetchDoctorIntervals = async (date: Date) => {
     setLoading(true);
     try {
-      console.log("FRAN RATA")
       const intervalos = await computeAvailableTimeslots(medico_id, date, duracion_cita ?? 30);
       setIntervalosPosibles(intervalos);
     } catch (error) {
@@ -66,8 +67,7 @@ export default function ModifyRequestAppointmentForm({
   };
 
   useEffect(() => {
-    const fetchUnavailableDates = async () => {
-    };
+    const fetchUnavailableDates = async () => {};
     fetchUnavailableDates();
   }, [medico_id, currentMonth, currentYear]);
 
@@ -83,12 +83,12 @@ export default function ModifyRequestAppointmentForm({
       <form action={formAction} className="md:m-6 lg:m-6 m-3 p-4 bg-fondo rounded-md md:p-6 lg:p-6 pt-3 mt-5">
         <h2 className="text-xl font-bold">Cambia el el día y/o el horario que desees</h2>
         <h4 className="text-md text-gray-500">Siempre y cuando sea posible por el profesional</h4>
-        <h3 className="text-md">Puedes modificar la aclaración para tu médico</h3>
 
         <div className="md:flex flex-row gap-4 ">
         <Calendar
           mode="single"
           selected={date}
+          month={new Date(appointment.fecha_hora)}
           onSelect={(selectedDate) => {
             setDate(selectedDate);
             if (selectedDate) {
@@ -111,7 +111,7 @@ export default function ModifyRequestAppointmentForm({
               <div className="text-center">Cargando horarios...</div>
             ) : intervalosPosibles.length === 0 ? (
               <div className="text-center text-red-500">
-              El medico no establecio horarios de atencion para el dia seleccionado
+              Selecciona un dia para ver los horarios disponibles
               </div>
             ) : (
               <select
@@ -137,20 +137,6 @@ export default function ModifyRequestAppointmentForm({
               ))}
               </select>
             )}
-
-            <div className="md:mt-3 text-center items-center justify-center">
-              <Label>¿Es la primera vez que se atiende?</Label>
-              <RadioGroup value={isFirstTime} onValueChange={setIsFirstTime} required>
-              <div className="flex mt-4 items-center space-x-2">
-                <RadioGroupItem value="yes" id="yes" />
-                <Label htmlFor="yes">Sí</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <RadioGroupItem value="no" id="no" />
-                <Label htmlFor="no">No</Label>
-              </div>
-              </RadioGroup>
-            </div>
             </div>
 
           <div className="bg-white text-center  md:w-full rounded-xl shadow m-3 p-3 text-gray-500">
@@ -165,22 +151,19 @@ export default function ModifyRequestAppointmentForm({
           </div>
         </div>
 
-        <input type="hidden" name="paciente_id" required value={appointment.id} />
-        <input type="hidden" name="medico_id" required value={medico_id} />
+        <input type="hidden" name="appointment_id" required value={appointment_id} />
+
 
         <div className=" md:w-full  lg:w-auto bg-white m-3 p-3 rounded-xl shadow">
           <Label className="mb-2 block text-center">Descripción</Label>
-          <textarea
-            id="description"
-            name="description"  
-            className="w-full p-2 border rounded-md resize-none"
-            rows={4}
-            placeholder="Añadir una descripción o pequeña acalaración"
-          />
+          <p  className="w-full p-2 border rounded-md resize-none h-36"> {appointment.description}</p>
+           
+            
+          
         </div>
         <div className="flex justify-center">
           <Button type="submit" disabled={intervalosPosibles.length === 0} className="items-center justify-center md:w-full bg-primario">
-            Solicitar cita
+            Modificar cita
           </Button>
         </div>
       </form>
