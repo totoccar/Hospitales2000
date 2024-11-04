@@ -108,7 +108,7 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
                           </p>
                         </div>
                         <div className="flex space-x-2">
-                          <ModifyAppointment appointment_id={""}/>
+                          <ModifyAppointment appointment_id={turno.id}/>
                           <Link href={'#'} className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400">
                             <CircleX className="w-5" />
                           </Link>
