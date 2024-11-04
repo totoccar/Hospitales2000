@@ -7,6 +7,7 @@ import Link from "next/link";
 import { CircleX, Pencil } from "lucide-react";
 import { isWeekend } from "date-fns";
 import { getDni } from "../../lib/actions";
+import { ModifyAppointment } from "@/src/ui/Buttons";
 
 
 export default function MedCalendar() {
@@ -103,20 +104,25 @@ export default function MedCalendar() {
               <p>Cargando turnos...</p>
             ) : (
               <>
-                {turnos.length > 0 ? (
+                 {turnos.length > 0 ? (
                   <div className="space-y-4 overflow-auto max-h-[400px]">
                     {turnos.map((turno, index) => (
-                      <div key={index} className="p-4 border rounded-lg shadow-md bg-white flex flex-col justify-center items-center">
-                        <div className="text-center">
+                      <div key={index} className="p-4 border rounded-lg shadow-md bg-white flex justify-between items-center">
+                        <div>
                           <h3 className="font-bold text-lg">{`Turno ${index + 1}`}</h3>
                           <p className="text-gray-700">
-                            <strong>Fecha y Hora:</strong> {new Date(new Date(turno.fecha_hora).setHours(new Date(turno.fecha_hora).getHours() + 3)).toLocaleString()}<br />
-                            <strong>Paciente:</strong> {turno.paciente?.usuario ? `${turno.paciente.usuario.nombre} ${turno.paciente.usuario.apellido}` : "Desconocido"}<br />
-                            <strong>Obra Social:</strong> {turno.paciente?.obra_social.nombre ? `${turno.paciente.obra_social.nombre}` : "Desconocido"}<br />
+                          <strong>Fecha y Hora:</strong> {new Date(new Date(turno.fecha_hora).getTime() + 3 * 60 * 60 * 1000).toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', hour12: false })}<br />
+                            <strong>Paciente:</strong> {turno.paciente?.usuario ? `${turno.paciente.usuario.nombre} ${turno.paciente.usuario.apellido}` : 'Desconocido'}<br />
+                            <strong>Obra Social:</strong> {turno.paciente?.obra_social.nombre ? `${turno.paciente.obra_social.nombre}` : 'Desconocido'}<br />
                           </p>
                         </div>
+                        <div className="flex space-x-2">
+                          <ModifyAppointment appointment_id={turno.id}/>
+                          <Link href={'#'} className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400">
+                            <CircleX className="w-5" />
+                          </Link>
+                        </div>
                       </div>
-
                     ))}
                   </div>
                 ) : (

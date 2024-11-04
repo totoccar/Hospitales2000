@@ -6,6 +6,7 @@ import { getFechasTurnosByMedicoId, getTurnosByMedicoId } from "@/src/lib/calend
 import Link from "next/link";
 import { CircleX, Pencil } from "lucide-react";
 import { isWeekend } from "date-fns/isWeekend";
+import { ModifyAppointment } from "@/src/ui/Buttons";
 
 export default function SecCalendar({ params }: { params: { id: string } }) {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -101,15 +102,13 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
                         <div>
                           <h3 className="font-bold text-lg">{`Turno ${index + 1}`}</h3>
                           <p className="text-gray-700">
-                            <strong>Fecha y Hora:</strong> {new Date(turno.fecha_hora).toLocaleString()}<br />
+                            <strong>Fecha y Hora:</strong> {new Date(new Date(turno.fecha_hora).getTime() + 3 * 60 * 60 * 1000).toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', hour12: false })}<br />
                             <strong>Paciente:</strong> {turno.paciente?.usuario ? `${turno.paciente.usuario.nombre} ${turno.paciente.usuario.apellido}` : 'Desconocido'}<br />
                             <strong>Obra Social:</strong> {turno.paciente?.obra_social.nombre ? `${turno.paciente.obra_social.nombre}` : 'Desconocido'}<br />
                           </p>
                         </div>
                         <div className="flex space-x-2">
-                          <Link href={'#'} className="rounded-md border p-2 hover:bg-gray-100">
-                            <Pencil className="w-5" />
-                          </Link>
+                          <ModifyAppointment appointment_id={turno.id}/>
                           <Link href={'#'} className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400">
                             <CircleX className="w-5" />
                           </Link>
