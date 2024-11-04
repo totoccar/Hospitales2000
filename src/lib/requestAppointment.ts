@@ -72,6 +72,62 @@ export async function createAppointment(
   revalidatePath("appointment/request/[id]");
   redirect(`/appointment/request/success/${medico_id}`);
 }
+export type ModifyAppointmentState = {
+  message: string | null;
+  errors: {
+    fecha_hora?: string[];
+    appointment_id?: string[];
+  };
+}
+
+const ModifyAppointmentFormScheme = z.object({
+  appointment_id: z.string(),
+  fecha_hora: z
+    .string()
+    .datetime({
+      message: "Fecha y hora inválida. Debe estar en formato ISO 8601.",
+    })
+});
+
+
+const ModifyAppointment = ModifyAppointmentFormScheme.omit({ appointment_id: true });
+
+export async function modifyAppointment(
+  prevState: ModifyAppointmentState,
+  formData: FormData
+) {
+  const validatedFields = ModifyAppointment.extend({
+    appointment_id: z.string().min(1, { message: "El ID de la cita es obligatorio." }),
+    fecha_hora: z.string().datetime({message: "Fecha y hora inválida. Debe estar en formato ISO 8601."}),
+  }).safeParse({
+    fecha_hora: formData.get("fecha_hora"),
+    appointment_id: formData.get("appointment_id"),
+  });
+
+  if (!validatedFields.success) {
+    console.log("error on validatedFields.");
+    console.log(validatedFields.error.flatten().fieldErrors);
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+      message: "Campos incompletos. Error al modificar la cita medica.",
+    };
+  }
+
+  const { fecha_hora, appointment_id } = validatedFields.data;
+
+  try {
+    const updatedAppointment = await prisma.cita.update({
+      where: { id: appointment_id },
+      data: { fecha_hora: fecha_hora },
+    });
+    console.log("Cita actualizada:", updatedAppointment);
+  } catch (error) {
+    console.error("Error al actualizar la cita:", error);
+    throw error;
+  }
+  revalidatePath("appointment/modify/[id]");
+  redirect(`/appointment/modify/success/${appointment_id}`);
+}
 
 export async function assignAppointment(
   prevState: AppointmentState,
@@ -133,6 +189,20 @@ export async function getDoctorIntervalsForIdAndDay(
     return [];
   }
   return doctor.intervalos;
+}
+
+export async function getDoctorDurationById(id: string) {
+  const doctor = await prisma.medico.findUnique({
+    where: { usuario_id: id },
+  });
+
+  return doctor?.duracion_cita;
+}
+
+export async function getAppointment(id: string) {
+  return await prisma.cita.findUnique({
+    where: { id: id },
+  });
 }
 
 function convertDayToDiaSemanaEnum(day: number): DiaSemanaEnum | undefined {
