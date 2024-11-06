@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   }
-
+  console.log("email", email);
   const resend = new Resend(process.env.H2000_API);
 
   try {
