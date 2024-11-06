@@ -1,9 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Bold, CircleCheck } from 'lucide-react';
-
-import { getDni } from "@/src/app/lib/actions";
 import { getEspecialidadById } from "@/src/lib/getMedicoById";
-import { getUsuarioByDNI, getUsuarioById, getUsuarioMedicoById } from "@/src/lib/getUsuarioById";
+import { getUsuarioById, getUsuarioMedicoById } from "@/src/lib/getUsuarioById";
 import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
 import Link from "next/link";
 import { getAppointment } from "@/src/lib/requestAppointment";
@@ -15,13 +13,16 @@ export default async function AppointmentSuccess({ params }: { params: { id: str
   const especialidad = doctor?.medico ? await getEspecialidadById(doctor.medico.especialidad_id) : null;
   const doctorName = doctor ? `${doctor.nombre} ${doctor.apellido}` : '';
 
-
-    const response = await fetch("modify/api/mail", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: user?.correo_electronico, doctorName: doctorName, especialidad: especialidad, fecha: appointment?.fecha_hora }),
-    });
-  
+  const response = await fetch("appointment/modify/api", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email: user?.correo_electronico,
+      doctorName: doctorName,
+      especialidad: especialidad,
+      fecha: appointment?.fecha_hora,
+    }),
+  });
 
   return (
     <MaxWidthWrapper>
