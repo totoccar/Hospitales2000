@@ -15,15 +15,13 @@ export default async function AppointmentSuccess({ params }: { params: { id: str
   const especialidad = doctor?.medico ? await getEspecialidadById(doctor.medico.especialidad_id) : null;
   const doctorName = doctor ? `${doctor.nombre} ${doctor.apellido}` : '';
 
-  async function sendEmail(){
-    return await fetch("api", {
+
+    const response = await fetch("modify/api/mail", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email: user?.correo_electronico, doctorName: doctorName, especialidad: especialidad, fecha: appointment?.fecha_hora }),
     });
-  }
-
-  const response = sendEmail();
+  
 
   return (
     <MaxWidthWrapper>
@@ -36,12 +34,11 @@ export default async function AppointmentSuccess({ params }: { params: { id: str
         <h2 className="text-white font-bold text-xl">
           {appointment?.fecha_hora ? `Dia: ${appointment.fecha_hora.toLocaleDateString()} y Hora: ${new Date(appointment.fecha_hora.getTime() + 3 * 60 * 60 * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} hs` : ''}
         </h2>
-        if(response.ok) {
+        {response ? (
           <p className="m-2">Se ha enviado un correo a {user?.correo_electronico} con los detalles de la cita</p>
-        }
-        else{
+        ) : (
           <p className="m-2">Hubo un error al enviar el correo a {user?.correo_electronico}</p>
-        }
+        )}
         </div>
         <Link href={"/"}>
           <Button className="bg-primario items-center">Volver al inicio</Button>
