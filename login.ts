@@ -27,14 +27,14 @@ export async function login(_data: LoginData) {
 
         // Verifica si la contraseña es igual al número de documento
         if (_data.numero_documento === _data.contrasena) {
-            // Redirige a la página de cambio de contraseña
-            redirect("/password/change");
-            return;
+            // Redirige a la página de selección de rol
+            const params = new URLSearchParams({ callbackUrl: "/password/change" });
+            redirect("/selectrole?" + params.toString());
+        } else {
+            // Si no se requiere cambio de contraseña, continúa con la redirección normal
+            const params = new URLSearchParams({ callbackUrl: callback });
+            redirect("/selectrole?" + params.toString());
         }
-
-        // Si no se requiere cambio de contraseña, continúa con la redirección normal
-        const params = new URLSearchParams({ callbackUrl: callback });
-        redirect("/selectrole?" + params.toString());
     } catch (e) {
         const error = e as CallbackError;
         if (error.type == "CallbackRouteError") {
