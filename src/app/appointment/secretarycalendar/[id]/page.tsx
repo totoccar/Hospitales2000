@@ -7,6 +7,9 @@ import Link from "next/link";
 import { CircleX, Pencil } from "lucide-react";
 import { isWeekend } from "date-fns/isWeekend";
 import { ModifyAppointment } from "@/src/ui/Buttons";
+import { cancelAppointmentAsSecretary } from "@/src/lib/cancelAppointment";
+import { Button } from "@/components/ui/button";
+import router from "next/router";
 
 export default function SecCalendar({ params }: { params: { id: string } }) {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -109,9 +112,14 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
                         </div>
                         <div className="flex space-x-2">
                           <ModifyAppointment appointment_id={turno.id}/>
-                          <Link href={'#'} className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400">
+                            <Button onClick={
+                              async () => {
+                              await cancelAppointmentAsSecretary(turno.id, params.id);
+                              alert("Cita eliminada exitosamente");
+                              
+                            }} className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400">
                             <CircleX className="w-5" />
-                          </Link>
+                            </Button>
                         </div>
                       </div>
                     ))}
