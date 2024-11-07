@@ -8,6 +8,8 @@ import { CircleX, Pencil } from "lucide-react";
 import { isWeekend } from "date-fns";
 import { getDni } from "../../lib/actions";
 import { ModifyAppointment } from "@/src/ui/Buttons";
+import { cancelAppointmentAsDoctor } from "@/src/lib/cancelAppointment";
+import { Button } from "@/components/ui/button";
 
 
 export default function MedCalendar() {
@@ -118,9 +120,12 @@ export default function MedCalendar() {
                         </div>
                         <div className="flex space-x-2">
                           <ModifyAppointment appointment_id={turno.id}/>
-                          <Link href={'#'} className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400">
+                            <Button onClick={async () => {
+                              await cancelAppointmentAsDoctor(turno.id);
+                              alert("Cita eliminada exitosamente");
+                            }} className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400">
                             <CircleX className="w-5" />
-                          </Link>
+                            </Button>
                         </div>
                       </div>
                     ))}
