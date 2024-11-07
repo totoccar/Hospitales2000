@@ -1,9 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Bold, CircleCheck } from 'lucide-react';
-
-import { getDni } from "@/src/app/lib/actions";
 import { getEspecialidadById } from "@/src/lib/getMedicoById";
-import { getUsuarioByDNI, getUsuarioById, getUsuarioMedicoById } from "@/src/lib/getUsuarioById";
+import { getUsuarioById, getUsuarioMedicoById } from "@/src/lib/getUsuarioById";
 import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
 import Link from "next/link";
 import { getAppointment } from "@/src/lib/requestAppointment";
@@ -13,6 +11,18 @@ export default async function AppointmentSuccess({ params }: { params: { id: str
   const user = appointment ? await getUsuarioById(appointment.paciente_id) : null;
   const doctor = appointment?.medico_id ? await getUsuarioMedicoById(appointment.medico_id) : null;
   const especialidad = doctor?.medico ? await getEspecialidadById(doctor.medico.especialidad_id) : null;
+  const doctorName = doctor ? `${doctor.nombre} ${doctor.apellido}` : '';
+
+  const response = await fetch("appointment/modify/api", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      email: user?.correo_electronico,
+      doctorName: doctorName,
+      especialidad: especialidad,
+      fecha: appointment?.fecha_hora,
+    }),
+  });
 
   return (
     <MaxWidthWrapper>
@@ -25,6 +35,11 @@ export default async function AppointmentSuccess({ params }: { params: { id: str
         <h2 className="text-white font-bold text-xl">
           {appointment?.fecha_hora ? `Dia: ${appointment.fecha_hora.toLocaleDateString()} y Hora: ${new Date(appointment.fecha_hora.getTime() + 3 * 60 * 60 * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false })} hs` : ''}
         </h2>
+        {response ? (
+          <p className="m-2">Se ha enviado un correo a {user?.correo_electronico} con los detalles de la cita</p>
+        ) : (
+          <p className="m-2">Hubo un error al enviar el correo a {user?.correo_electronico}</p>
+        )}
         </div>
         <Link href={"/"}>
           <Button className="bg-primario items-center">Volver al inicio</Button>
