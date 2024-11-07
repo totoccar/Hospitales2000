@@ -15,7 +15,6 @@ type CallbackError = {
 
 export async function login(_data: LoginData) {
     try {
-        // Realiza la autenticación
         const callback = await signIn("credentials", {
             numero_documento: _data.numero_documento,
             contrasena: _data.contrasena,
@@ -27,7 +26,7 @@ export async function login(_data: LoginData) {
             const params = new URLSearchParams({ callbackUrl: "/password/change" });
             redirect("/selectrole?" + params.toString());
         } else {
-            const params = new URLSearchParams({ callbackUrl: callback });
+            const params = new URLSearchParams({ callbackUrl: callback?.url || "/" });
             redirect("/selectrole?" + params.toString());
         }
     } catch (e) {
@@ -46,6 +45,7 @@ export async function selectRole(_role: RoleProfile, callbackUrl?: string): Prom
         console.error("DNI not set");
         redirect("/login");
     }
+
     if (!(await auth())?.user.role) {
         const role = z.string().safeParse(_role);
         if (role.success) {
@@ -65,10 +65,14 @@ export async function selectRole(_role: RoleProfile, callbackUrl?: string): Prom
                 redirect("/login");
             }
 
-            if (callbackUrl && new URL(callbackUrl).host === headers().get("host"))
+            const currentHost = headers().get("host");
+            const baseUrl = `http://${currentHost}`; 
+
+            if (callbackUrl && new URL(callbackUrl, baseUrl).host === currentHost) {
                 redirect(callbackUrl);
-            else
+            } else {
                 redirect("/");
+            }
         }
     }
     redirect("/login");
