@@ -1,5 +1,5 @@
 
-
+"use server"
 import prisma from "./db";
 
 export async function getUsuarioById(usuarioId: string) {
@@ -176,3 +176,17 @@ export async function getUserNameById(id: string) {
   }
 }
 
+export async function getPatientEmailById(id: string) {
+  const patient = await prisma.paciente.findUnique({
+    where: { usuario_id: id },
+    include: {
+      usuario: true,
+    },
+  });
+
+  if (!patient) {
+    throw new Error('Paciente no encontrado!!!!!!');
+  }
+
+  return patient.usuario.correo_electronico;
+}
