@@ -1,5 +1,5 @@
 
-
+"use server"
 import prisma from "./db";
 
 export async function getUsuarioById(usuarioId: string) {
@@ -190,5 +190,4 @@ export async function getPatientEmailById(id: string) {
 
   return patient.usuario.correo_electronico;
 }
-
 
