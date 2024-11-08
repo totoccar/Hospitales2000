@@ -42,3 +42,19 @@ export function obtenerIniciales(tipoDocumento: TipoDocumentoEnum): string {
 export function getUTCHoursAndMinutes(date: Date) {
   return date.toISOString().split('T')[1].split('.')[0].slice(0, 5);
 }
+
+export function formatDate(dateString: string) {
+  const date = new Date(dateString);
+
+  // Formatear día, mes y año
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); 
+  const year = String(date.getFullYear()).slice(-2); 
+
+  // Formatear horas y minutos
+  const hours = String(date.getHours() + 3).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+
+  // Crear el formato final
+  return `${day}/${month}/${year} a las ${hours}:${minutes}`;
+}
