@@ -1,5 +1,5 @@
 
-
+"use server"
 import prisma from "./db";
 
 export async function getUsuarioById(usuarioId: string) {
@@ -7,7 +7,7 @@ export async function getUsuarioById(usuarioId: string) {
     const usuario = await prisma.usuario.findUnique({
       where: { id: usuarioId },
       include: {
-        paciente: true, 
+        paciente: true,
       },
     });
 
@@ -15,7 +15,7 @@ export async function getUsuarioById(usuarioId: string) {
       throw new Error('El usuario no es un paciente o no existe.');
     }
 
-    return usuario; 
+    return usuario;
   } catch (error) {
     console.error('Error al obtener el paciente:', error);
     throw error;
@@ -29,7 +29,7 @@ export async function getUsuarioMedicoById(usuarioId: string) {
     const usuario = await prisma.usuario.findUnique({
       where: { id: usuarioId },
       include: {
-        medico: true, 
+        medico: true,
       },
     });
 
@@ -37,7 +37,7 @@ export async function getUsuarioMedicoById(usuarioId: string) {
       throw new Error('El usuario no es un medico o no existe.');
     }
 
-    return usuario; 
+    return usuario;
   } catch (error) {
     console.error('Error al obtener el medico:', error);
     throw error;
@@ -47,7 +47,7 @@ export async function getUsuarioMedicoById(usuarioId: string) {
 }
 
 export async function getUsuarioByDNI(DNI: string) {
-  try{
+  try {
     const usuario = await prisma.usuario.findUnique({
       where: { numero_documento: DNI },
       include: {
@@ -61,7 +61,7 @@ export async function getUsuarioByDNI(DNI: string) {
 
     return usuario;
   }
-  catch (error){
+  catch (error) {
     console.error('Error al obtener el medico:', error);
     throw error;
   } finally {
@@ -70,7 +70,7 @@ export async function getUsuarioByDNI(DNI: string) {
 }
 
 export async function getMedicoByDNI(DNI: string) {
-  try{
+  try {
     const usuario = await prisma.usuario.findUnique({
       where: { numero_documento: DNI },
       include: {
@@ -84,7 +84,7 @@ export async function getMedicoByDNI(DNI: string) {
 
     return usuario;
   }
-  catch (error){
+  catch (error) {
     console.error('Error al obtener el medico:', error);
     throw error;
   } finally {
@@ -139,7 +139,7 @@ export async function getUbicacionById(ubicacionId: string) {
       throw new Error('Ubicación no encontrada');
     }
 
-    return ubicacion; 
+    return ubicacion;
   } catch (error) {
     console.error('Error al obtener la ubicación:', error);
     throw error;
@@ -152,7 +152,7 @@ export async function getObrasSociales() {
   return await prisma.obraSocial.findMany({
     select: {
       id: true,
-      nombre: true, 
+      nombre: true,
     },
   });
 }
@@ -167,12 +167,27 @@ export async function getUserNameById(id: string) {
       throw new Error('Usuario no encontrado');
     }
 
-    return usuario.nombre + ' ' + usuario.apellido;  
+    return usuario.nombre + ' ' + usuario.apellido;
   } catch (error) {
     console.error('Error al obtener el usuario:', error);
     throw error;
   } finally {
     await prisma.$disconnect();
   }
+}
+
+export async function getPatientEmailById(id: string) {
+  const patient = await prisma.paciente.findUnique({
+    where: { usuario_id: id },
+    include: {
+      usuario: true,
+    },
+  });
+
+  if (!patient) {
+    throw new Error('Paciente no encontrado!!!!!!');
+  }
+
+  return patient.usuario.correo_electronico;
 }
 

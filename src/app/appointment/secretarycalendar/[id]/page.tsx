@@ -3,9 +3,14 @@ import React, { useState, useEffect } from "react";
 import { Calendar } from "@/components/ui/calendar";
 import MaxWidthWrapper from "@/src/ui/MaxWidthWrapper";
 import { getFechasTurnosByMedicoId, getTurnosByMedicoId } from "@/src/lib/calendarActions";
-import Link from "next/link";
-import { CircleX, Pencil } from "lucide-react";
+import { CircleX } from "lucide-react";
 import { isWeekend } from "date-fns/isWeekend";
+import { ModifyAppointment } from "@/src/ui/Buttons";
+import { cancelAppointmentAsSecretary } from "@/src/lib/cancelAppointment";
+import { Button } from "@/components/ui/button";
+import { Cita } from "@prisma/client";
+import {getPatientEmailById, getUserNameById } from "@/src/lib/getUsuarioById";
+import { formatDate } from "@/src/lib/utils";
 
 export default function SecCalendar({ params }: { params: { id: string } }) {
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -39,6 +44,7 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
     };
 
     fetchMedicoData();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [params.id, date]);
 
 
@@ -101,18 +107,38 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
                         <div>
                           <h3 className="font-bold text-lg">{`Turno ${index + 1}`}</h3>
                           <p className="text-gray-700">
-                            <strong>Fecha y Hora:</strong> {new Date(turno.fecha_hora).toLocaleString()}<br />
+                            <strong>Fecha y Hora:</strong> {new Date(new Date(turno.fecha_hora).getTime() + 3 * 60 * 60 * 1000).toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', hour12: false })}<br />
                             <strong>Paciente:</strong> {turno.paciente?.usuario ? `${turno.paciente.usuario.nombre} ${turno.paciente.usuario.apellido}` : 'Desconocido'}<br />
                             <strong>Obra Social:</strong> {turno.paciente?.obra_social.nombre ? `${turno.paciente.obra_social.nombre}` : 'Desconocido'}<br />
                           </p>
                         </div>
                         <div className="flex space-x-2">
-                          <Link href={'#'} className="rounded-md border p-2 hover:bg-gray-100">
-                            <Pencil className="w-5" />
-                          </Link>
-                          <Link href={'#'} className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400">
+                          <ModifyAppointment appointment_id={turno.id}/>
+                            <Button onClick={
+                              async () => {
+                                const patient_id = turno.paciente_id
+                                const doctor_id = turno.medico_id
+                                const doctor_name = await getUserNameById(doctor_id);
+                                const user_email = await getPatientEmailById(patient_id);
+                                const fecha = formatDate(turno.fecha_hora);
+                                
+                                const link = `La cita medica con el médico ${doctor_name} para el día ${fecha} ha sido cancelada.`;
+                                await cancelAppointmentAsSecretary(turno.id, params.id);
+                                
+                                const response = await fetch("/appointment/api/cancel", {
+                                  method: "POST",
+                                  headers: { "Content-Type": "application/json" },
+                                  body: JSON.stringify({ email: user_email, message: link }),
+                                });
+                              if(response.ok){
+                                alert(`Cita eliminada exitosamente, se ha enviado un correo al paciente: ${user_email}`);
+                              }
+                              else{
+                                alert("La cita se ha eliminado. Ocurrio un error al enviar el correo al paciente.");
+                              }
+                            }} className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400">
                             <CircleX className="w-5" />
-                          </Link>
+                            </Button>
                         </div>
                       </div>
                     ))}
@@ -129,3 +155,5 @@ export default function SecCalendar({ params }: { params: { id: string } }) {
     </MaxWidthWrapper>
   );
 }
+
+

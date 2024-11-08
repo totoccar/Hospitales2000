@@ -30,16 +30,35 @@ export function getPermission(pathname: string): string | null {
     return 'admedsec:access';
   }
 
-  if (pathname.startsWith('/appointment/cancel')) { 
+  if (pathname.startsWith('/appointment/cancel')) {
     return 'paciente:access';
   }
 
-  if(pathname.startsWith('/appointment/request')) {
+  if (pathname.startsWith('/appointment/request')) {
     return 'common:access';
   }
 
-  if(pathname.startsWith('/appointment/assign')) {
+  if (pathname.startsWith('/appointment/assign')) {
     return 'adsec:access';
+  }
+
+  if (pathname.startsWith('/appointment/modify')) {
+    return 'admedsec:access';
+  }
+  if (pathname.startsWith('/api')) {
+    return 'common:access';
+  }
+
+  if(pathname.startsWith('/appointment/medicalcalendar')) {
+    return 'medico:access';
+  }
+
+  if(pathname.startsWith('/appointment/secretarycalendar')) {
+    return 'adsec:access';
+  }
+
+  if(pathname.startsWith('/appointment/api/cancel')) {
+    return 'common:access';
   }
 
   const routePermissions: Record<string, string> = {
@@ -59,8 +78,10 @@ export function getPermission(pathname: string): string | null {
     '/appointment/view/doctor': 'common:access',
     '/appointment/view/patient': 'common:access',
     '/appointment/medicalcalendar': 'medico:access',
-    'appointment/setschedule': 'medsec:access',
-    
+    '/appointment/setschedule': 'medsec:access',
+    '/app/api/modify-appointment': 'medsec:access'
+    ,
+
   };
 
   return routePermissions[pathname] || null;
@@ -69,12 +90,12 @@ export function getPermission(pathname: string): string | null {
 
 export function hasPermission(role: string, permission: string): boolean {
   const rolePermissions: Record<string, string[]> = {
-    'Administrador': ['admin:access', 'adsec:access', 'common:access','admedsec:access'],
-    'Medico': ['medico:access', 'medsec:access', 'common:access','admedsec:access'],
-    'Secretaria': ['secretaria:access', 'medsec:access', 'adsec:access', 'common:access','admedsec:access'],
+    'Administrador': ['admin:access', 'adsec:access', 'common:access', 'admedsec:access'],
+    'Medico': ['medico:access', 'medsec:access', 'common:access', 'admedsec:access'],
+    'Secretaria': ['secretaria:access', 'medsec:access', 'adsec:access', 'common:access', 'admedsec:access'],
     'Paciente': ['paciente:access', 'common:access'],
   };
 
   const permissions = rolePermissions[role] || [];
-  return permissions.includes(permission); 
+  return permissions.includes(permission);
 }

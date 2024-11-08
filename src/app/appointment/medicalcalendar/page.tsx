@@ -7,6 +7,11 @@ import Link from "next/link";
 import { CircleX, Pencil } from "lucide-react";
 import { isWeekend } from "date-fns";
 import { getDni } from "../../lib/actions";
+import { ModifyAppointment } from "@/src/ui/Buttons";
+import { cancelAppointmentAsDoctor } from "@/src/lib/cancelAppointment";
+import { Button } from "@/components/ui/button";
+import { getPatientEmailById, getUserNameById } from "@/src/lib/getUsuarioById";
+import { formatDate } from "@/src/lib/utils";
 
 
 export default function MedCalendar() {
@@ -103,20 +108,45 @@ export default function MedCalendar() {
               <p>Cargando turnos...</p>
             ) : (
               <>
-                {turnos.length > 0 ? (
+                 {turnos.length > 0 ? (
                   <div className="space-y-4 overflow-auto max-h-[400px]">
                     {turnos.map((turno, index) => (
-                      <div key={index} className="p-4 border rounded-lg shadow-md bg-white flex flex-col justify-center items-center">
-                        <div className="text-center">
+                      <div key={index} className="p-4 border rounded-lg shadow-md bg-white flex justify-between items-center">
+                        <div>
                           <h3 className="font-bold text-lg">{`Turno ${index + 1}`}</h3>
                           <p className="text-gray-700">
-                            <strong>Fecha y Hora:</strong> {new Date(new Date(turno.fecha_hora).setHours(new Date(turno.fecha_hora).getHours() + 3)).toLocaleString()}<br />
-                            <strong>Paciente:</strong> {turno.paciente?.usuario ? `${turno.paciente.usuario.nombre} ${turno.paciente.usuario.apellido}` : "Desconocido"}<br />
-                            <strong>Obra Social:</strong> {turno.paciente?.obra_social.nombre ? `${turno.paciente.obra_social.nombre}` : "Desconocido"}<br />
+                          <strong>Fecha y Hora:</strong> {new Date(new Date(turno.fecha_hora).getTime() + 3 * 60 * 60 * 1000).toLocaleString('es-AR', { timeZone: 'America/Argentina/Buenos_Aires', hour12: false })}<br />
+                            <strong>Paciente:</strong> {turno.paciente?.usuario ? `${turno.paciente.usuario.nombre} ${turno.paciente.usuario.apellido}` : 'Desconocido'}<br />
+                            <strong>Obra Social:</strong> {turno.paciente?.obra_social.nombre ? `${turno.paciente.obra_social.nombre}` : 'Desconocido'}<br />
                           </p>
                         </div>
+                        <div className="flex space-x-2">
+                          <ModifyAppointment appointment_id={turno.id}/>
+                            <Button onClick={async () => {
+                              const patient_id = turno.paciente_id
+                              const doctor_id = turno.medico_id
+                              const doctor_name = await getUserNameById(doctor_id);
+                              const user_email = await getPatientEmailById(patient_id);
+                              const fecha = formatDate(turno.fecha_hora);
+                              
+                              const link = `La cita medica con el médico ${doctor_name} para el día ${fecha} ha sido cancelada.`;
+                              await cancelAppointmentAsDoctor(turno.id);
+                              const response = await fetch("/appointment/api/cancel", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ email: user_email, message: link }),
+                              });
+                              if(response.ok){
+                                alert(`Cita eliminada exitosamente, se ha enviado un correo al paciente: ${user_email}`);
+                              }
+                              else{
+                                alert("La cita se ha eliminado. Ocurrio un error al enviar el correo al paciente.");
+                              }
+                            }} className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400">
+                            <CircleX className="w-5" />
+                            </Button>
+                        </div>
                       </div>
-
                     ))}
                   </div>
                 ) : (
