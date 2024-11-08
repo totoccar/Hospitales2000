@@ -54,6 +54,10 @@ export function getPermission(pathname: string): string | null {
     return 'adsec:access';
   }
 
+  if(pathname.startsWith('/appointment/api/cancel')) {
+    return 'common:access';
+  }
+
   const routePermissions: Record<string, string> = {
     '/admin/create/doctor': 'adsec:access',
     '/admin/create/patient': 'adsec:access',
