@@ -8,6 +8,10 @@ import { CircleX, Pencil } from "lucide-react";
 import { isWeekend } from "date-fns";
 import { getDni } from "../../lib/actions";
 import { ModifyAppointment } from "@/src/ui/Buttons";
+import { cancelAppointmentAsDoctor } from "@/src/lib/cancelAppointment";
+import { Button } from "@/components/ui/button";
+import { getPatientEmailById, getUserNameById } from "@/src/lib/getUsuarioById";
+import { formatDate } from "@/src/lib/utils";
 
 
 export default function MedCalendar() {
@@ -118,9 +122,29 @@ export default function MedCalendar() {
                         </div>
                         <div className="flex space-x-2">
                           <ModifyAppointment appointment_id={turno.id}/>
-                          <Link href={'#'} className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400">
+                            <Button onClick={async () => {
+                              const patient_id = turno.paciente_id
+                              const doctor_id = turno.medico_id
+                              const doctor_name = await getUserNameById(doctor_id);
+                              const user_email = await getPatientEmailById(patient_id);
+                              const fecha = formatDate(turno.fecha_hora);
+                              
+                              const link = `La cita medica con el médico ${doctor_name} para el día ${fecha} ha sido cancelada.`;
+                              await cancelAppointmentAsDoctor(turno.id);
+                              const response = await fetch("/appointment/api/cancel", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ email: user_email, message: link }),
+                              });
+                              if(response.ok){
+                                alert(`Cita eliminada exitosamente, se ha enviado un correo al paciente: ${user_email}`);
+                              }
+                              else{
+                                alert("La cita se ha eliminado. Ocurrio un error al enviar el correo al paciente.");
+                              }
+                            }} className="rounded-md border text-white p-2 bg-red-500 hover:bg-red-400">
                             <CircleX className="w-5" />
-                          </Link>
+                            </Button>
                         </div>
                       </div>
                     ))}
