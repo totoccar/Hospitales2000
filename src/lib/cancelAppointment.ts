@@ -14,7 +14,7 @@ export async function cancelAppointmentAsDoctor(appointmentId: string) {
         }
     }
     revalidatePath(`/appointment/medicalcalendar`);
-    redirect(`/appointment/medicalcalendar`);
+    redirect('');
 }
 
 export async function cancelAppointmentAsSecretary(appointmentId: string,doctorID:string) {
